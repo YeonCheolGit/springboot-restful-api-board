@@ -1,9 +1,10 @@
 package com.example.springbootjpaboard.respository;
 
-import com.example.springbootjpaboard.domain.Board;
+import com.example.springbootjpaboard.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface UserJpaRepo extends JpaRepository<User, Long> {
+
 }
