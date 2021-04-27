@@ -1,8 +1,11 @@
-# SpringBoot-JPA-Board
+# SpringBoot-Restful-API-Board
 
 
 ### Getting Started
-[JDK 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html), [SpringBoot 2.4.4](https://spring.io/projects/spring-boot), [Gradle 6.8.3](https://gradle.org/install/)
+![Generic badge](https://img.shields.io/badge/jdk-11-red.svg)
+![Generic badge](https://img.shields.io/badge/springboot-2.4.4-green.svg)
+![Generic badge](https://img.shields.io/badge/swagger2-2.6.1-lightgreen.svg)
+![Generic badge](https://img.shields.io/badge/lombok-1.18.18-yellow.svg)
 ```
 $ git clone https://github.com/YeonCheolGit/springboot-board-backend.git
 ```

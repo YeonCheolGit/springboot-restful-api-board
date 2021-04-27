@@ -33,6 +33,8 @@ dependencies {
 //    testImplementation 'org.springframework.security:spring-security-test'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.5'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.5'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
 }
 
 test {
