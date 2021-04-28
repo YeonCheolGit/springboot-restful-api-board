@@ -1,4 +1,4 @@
-package com.example.springbootjpaboard.model.response;
+package com.example.springboot.model.response;
 
 import lombok.Getter;
 import lombok.Setter;

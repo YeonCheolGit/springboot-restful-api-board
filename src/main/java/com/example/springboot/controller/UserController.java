@@ -1,12 +1,13 @@
-package com.example.springbootjpaboard.controller;
+package com.example.springboot.controller;
 
 
-import com.example.springbootjpaboard.entity.User;
-import com.example.springbootjpaboard.model.response.CommonResult;
-import com.example.springbootjpaboard.model.response.ListResult;
-import com.example.springbootjpaboard.model.response.SingleResult;
-import com.example.springbootjpaboard.service.ResponseService;
-import com.example.springbootjpaboard.service.User.UserService;
+import com.example.springboot.advice.exception.UserNotFoundException;
+import com.example.springboot.entity.User;
+import com.example.springboot.model.response.CommonResult;
+import com.example.springboot.model.response.ListResult;
+import com.example.springboot.model.response.SingleResult;
+import com.example.springboot.service.ResponseService;
+import com.example.springboot.service.User.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,7 +32,7 @@ public class UserController {
     @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 조회한다")
     @GetMapping(value = "/users/{msrl}")
     public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable long msrl) {
-        return responseService.getSingleResult(userService.findById(msrl).orElse(null));
+        return responseService.getSingleResult(userService.findById(msrl).orElseThrow(UserNotFoundException::new));
     }
 
     @ApiOperation(value = "회원 입력", notes = "회원을 입력한다")

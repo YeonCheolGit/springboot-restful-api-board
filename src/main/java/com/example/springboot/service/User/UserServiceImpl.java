@@ -1,7 +1,7 @@
-package com.example.springbootjpaboard.service.User;
+package com.example.springboot.service.User;
 
-import com.example.springbootjpaboard.entity.User;
-import com.example.springbootjpaboard.respository.UserJpaRepo;
+import com.example.springboot.entity.User;
+import com.example.springboot.respository.UserJpaRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

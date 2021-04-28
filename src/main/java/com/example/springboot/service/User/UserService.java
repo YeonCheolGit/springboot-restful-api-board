@@ -1,6 +1,6 @@
-package com.example.springbootjpaboard.service.User;
+package com.example.springboot.service.User;
 
-import com.example.springbootjpaboard.entity.User;
+import com.example.springboot.entity.User;
 
 import java.util.List;
 import java.util.Optional;

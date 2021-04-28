@@ -1,4 +1,4 @@
-package com.example.springbootjpaboard.model.response;
+package com.example.springboot.model.response;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

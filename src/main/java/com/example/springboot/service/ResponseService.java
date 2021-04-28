@@ -1,8 +1,8 @@
-package com.example.springbootjpaboard.service;
+package com.example.springboot.service;
 
-import com.example.springbootjpaboard.model.response.CommonResult;
-import com.example.springbootjpaboard.model.response.ListResult;
-import com.example.springbootjpaboard.model.response.SingleResult;
+import com.example.springboot.model.response.CommonResult;
+import com.example.springboot.model.response.ListResult;
+import com.example.springboot.model.response.SingleResult;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class ResponseService {
-
     @Getter
     public enum CommonResponse {
         SUCCESS(0, "성공하였습니다."),
