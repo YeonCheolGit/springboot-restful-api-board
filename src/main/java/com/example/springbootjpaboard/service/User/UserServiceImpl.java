@@ -1,10 +1,11 @@
 package com.example.springbootjpaboard.service.User;
 
-import com.example.springbootjpaboard.domain.User;
+import com.example.springbootjpaboard.entity.User;
 import com.example.springbootjpaboard.respository.UserJpaRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,5 +24,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         return userJpaRepo.save(user);
+    }
+
+    @Override
+    public Optional<User> findById(long msrl) {
+        return userJpaRepo.findById(msrl);
+    }
+
+    @Override
+    public void deleteById(long msrl) {
+        userJpaRepo.deleteById(msrl);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.springbootjpaboard.domain;
+package com.example.springbootjpaboard.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

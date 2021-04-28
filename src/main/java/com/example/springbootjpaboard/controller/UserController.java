@@ -1,15 +1,17 @@
 package com.example.springbootjpaboard.controller;
 
 
-import com.example.springbootjpaboard.domain.User;
+import com.example.springbootjpaboard.entity.User;
+import com.example.springbootjpaboard.model.response.CommonResult;
+import com.example.springbootjpaboard.model.response.ListResult;
+import com.example.springbootjpaboard.model.response.SingleResult;
+import com.example.springbootjpaboard.service.ResponseService;
 import com.example.springbootjpaboard.service.User.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api(tags = {"1.user"})
 @RequiredArgsConstructor
@@ -18,21 +20,49 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ResponseService responseService;
 
-    @ApiOperation(value = "회원조회", notes = "모든 회원을 조회한다")
-    @GetMapping(value = "/user")
-    public List<User> findAllUser() {
-        return userService.findAll();
+    @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
+    @GetMapping(value = "/users")
+    public ListResult<User> findAllUser() {
+        return responseService.getListResult(userService.findAll());
     }
 
-    @ApiOperation(value = "회입입력", notes = "회원을 입력한다")
+    @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 조회한다")
+    @GetMapping(value = "/users/{msrl}")
+    public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable long msrl) {
+        return responseService.getSingleResult(userService.findById(msrl).orElse(null));
+    }
+
+    @ApiOperation(value = "회원 입력", notes = "회원을 입력한다")
     @PostMapping(value = "/user")
-    public User save(@ApiParam(value = "회원아이디", required = true) @RequestParam String uid,
-                     @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
+    public SingleResult<User> save(@ApiParam(value = "회원아이디", required = true) @RequestParam String uid,
+                                   @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
         User user = User.builder()
                 .uid(uid)
                 .name(name)
                 .build();
-        return userService.save(user);
+        return responseService.getSingleResult(userService.save(user));
+    }
+
+    @ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
+    @PutMapping(value = "/user")
+    public SingleResult<User> modify(
+            @ApiParam(value = "회원번호", required = true) @RequestParam long msrl,
+            @ApiParam(value = "회원아이디", required = true) @RequestParam String uid,
+            @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
+        User user = User.builder()
+                .msrl(msrl)
+                .uid(uid)
+                .name(name)
+                .build();
+        return responseService.getSingleResult(userService.save(user));
+    }
+
+    @ApiOperation(value = "회원 삭제", notes = "userId로 회원정보를 삭제한다")
+    @DeleteMapping(value = "/user/{msrl}")
+    public CommonResult delete(@ApiParam(value = "회원번호", required = true) @PathVariable long msrl) {
+        userService.deleteById(msrl);
+        return responseService.getSuccessResult();
     }
 }
