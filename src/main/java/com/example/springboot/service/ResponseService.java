@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class ResponseService {
+
     @Getter
     public enum CommonResponse {
         SUCCESS(0, "성공하였습니다."),
@@ -19,6 +20,20 @@ public class ResponseService {
         String msg;
 
         CommonResponse(int code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
+    @Getter
+    public enum SignInFailedResponse {
+        SUCCESS(0, "로그인 성공했습니다."),
+        FAIL(-1, "로그인 실패 했습니다.");
+
+        int code;
+        String msg;
+
+        SignInFailedResponse(int code, String msg) {
             this.code = code;
             this.msg = msg;
         }
@@ -50,6 +65,14 @@ public class ResponseService {
         result.setSuccess(false);
         result.setCode(CommonResponse.FAIL.getCode());
         result.setMsg(CommonResponse.FAIL.getMsg());
+        return result;
+    }
+
+    public CommonResult getSignInFailResult() {
+        CommonResult result = new CommonResult();
+        result.setSuccess(false);
+        result.setCode(SignInFailedResponse.FAIL.getCode());
+        result.setMsg(SignInFailedResponse.FAIL.getMsg());
         return result;
     }
 

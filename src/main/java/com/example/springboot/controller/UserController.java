@@ -6,64 +6,66 @@ import com.example.springboot.entity.User;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;
 import com.example.springboot.model.response.SingleResult;
+import com.example.springboot.respository.UserJpaRepo;
 import com.example.springboot.service.ResponseService;
-import com.example.springboot.service.User.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = {"1.user"})
+/*
+ * 회원 조회, 수정, 삭제 컨트롤러
+ */
+@Api(tags = {"2.user"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/v1")
 public class UserController {
 
-    private final UserService userService;
+    private final UserJpaRepo userJpaRepo;
     private final ResponseService responseService;
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
     @GetMapping(value = "/users")
     public ListResult<User> findAllUser() {
-        return responseService.getListResult(userService.findAll());
+        return responseService.getListResult(userJpaRepo.findAll());
     }
 
-    @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 조회한다")
-    @GetMapping(value = "/users/{msrl}")
-    public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable long msrl) {
-        return responseService.getSingleResult(userService.findById(msrl).orElseThrow(UserNotFoundException::new));
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 한명 조회한다")
+    @GetMapping(value = "/users/{userId}")
+    public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable long userId) {
+        return responseService.getSingleResult(userJpaRepo.findByUserNo(userId).orElseThrow(UserNotFoundException::new));
     }
 
-    @ApiOperation(value = "회원 입력", notes = "회원을 입력한다")
-    @PostMapping(value = "/user")
-    public SingleResult<User> save(@ApiParam(value = "회원아이디", required = true) @RequestParam String uid,
-                                   @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
-        User user = User.builder()
-                .uid(uid)
-                .name(name)
-                .build();
-        return responseService.getSingleResult(userService.save(user));
-    }
-
-    @ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 수정", notes = "한명의 회원정보를 수정한다")
     @PutMapping(value = "/user")
     public SingleResult<User> modify(
-            @ApiParam(value = "회원번호", required = true) @RequestParam long msrl,
-            @ApiParam(value = "회원아이디", required = true) @RequestParam String uid,
-            @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
+            @ApiParam(value = "회원번호", required = true) @RequestParam long userNo,
+            @ApiParam(value = "회원아이디", required = true) @RequestParam String userId,
+            @ApiParam(value = "회원이름", required = true) @RequestParam String userName) {
         User user = User.builder()
-                .msrl(msrl)
-                .uid(uid)
-                .name(name)
+                .userNo(userNo)
+                .userId(userId)
+                .userName(userName)
                 .build();
-        return responseService.getSingleResult(userService.save(user));
+        return responseService.getSingleResult(userJpaRepo.save(user));
     }
 
-    @ApiOperation(value = "회원 삭제", notes = "userId로 회원정보를 삭제한다")
-    @DeleteMapping(value = "/user/{msrl}")
-    public CommonResult delete(@ApiParam(value = "회원번호", required = true) @PathVariable long msrl) {
-        userService.deleteById(msrl);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 삭제", notes = "userId로 한명의 회원정보를 삭제한다")
+    @DeleteMapping(value = "/user/{userNo}")
+    public CommonResult delete(@ApiParam(value = "회원번호", required = true) @PathVariable long userNo) {
+        userJpaRepo.deleteByUserNo(userNo);
         return responseService.getSuccessResult();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.springboot.advice;
 
+import com.example.springboot.advice.exception.EmailSignInFailException;
 import com.example.springboot.advice.exception.UserNotFoundException;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.service.ResponseService;
@@ -16,15 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionAdvice {
     private final ResponseService responseService;
 
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
-//        return responseService.getFailResult();
-//    }
-
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
         return responseService.getFailResult();
+    }
+
+    @ExceptionHandler(EmailSignInFailException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult emailNotFoundException(HttpServletRequest request, EmailSignInFailException e) {
+        return responseService.getSignInFailResult();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.springboot.config;
+package com.example.springboot.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SwaggerConfiguration {
 
     private ApiInfo swaggerInfo() {
         return new ApiInfoBuilder().title("Spring API Documentation")
-                .description("앱 개발시 사용되는 서버 API 연동 문서입니다.")
+                .description("장연철 게시판 개발에 사용되는 서버 API 연동 문서입니다.")
                 .license("YeonCheol").version("1").build();
     }
 }
