@@ -22,12 +22,11 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
+    private final UserDetailsService userDetailsService;
+
     @Value("spring.jwt.secret")
     private String secretKey;
-
     private final long tokenValidMillis = 100L * 60 * 60;
-
-    private final UserDetailsService userDetailsService;
 
     @PostConstruct
     protected void init() {

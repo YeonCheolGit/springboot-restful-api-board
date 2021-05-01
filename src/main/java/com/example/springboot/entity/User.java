@@ -10,6 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +29,7 @@ public class User implements UserDetails {
     private long userNo;
 
     @Column(nullable = false, unique = true, length = 50)
+    @Email
     private String userId;
 
     @Column(nullable = false, length = 50)
@@ -34,6 +37,7 @@ public class User implements UserDetails {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 100)
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*\\\\W)(?=\\\\S+$).{6,12}")
     private String userPwd;
 
     @ElementCollection(fetch = FetchType.EAGER) // One to Many

@@ -12,11 +12,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Collections;
 
 /*
@@ -33,7 +35,7 @@ public class SignController {
     private final ResponseService responseService;
     private final PasswordEncoder passwordEncoder;
 
-    @ApiOperation(value = "로그인", notes = "회원 로그인 한다")
+    @ApiOperation(value = "로그인", notes = "회원 로그인 합니다.")
     @PostMapping(value = "/signIn")
     public SingleResult<String> signIn(@ApiParam(value = "회원 ID : 이메일", required = true) @RequestParam String userId,
                                        @ApiParam(value = "회원 PW", required = true) @RequestParam String userPwd) {
@@ -46,11 +48,12 @@ public class SignController {
         return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));
     }
 
-    @ApiOperation(value = "회원가입", notes = "회원 가입 한다")
+    @ApiOperation(value = "회원가입", notes = "회원 가입 합니다.")
     @PostMapping(value = "/signUp")
-    public CommonResult signUp(@ApiParam(value = "회원 ID : 이메일", required = true) @RequestParam String userId,
-                                       @ApiParam(value = "회원 PW", required = true) @RequestParam String userPwd,
-                                       @ApiParam(value = "회원 이름", required = true) @RequestParam String userName) {
+    public CommonResult signUp(@ApiParam(value = "회원 ID : 이메일", required = true) @Valid @RequestParam String userId,
+                               @ApiParam(value = "회원 PW", required = true) @Valid @RequestParam String userPwd,
+                               @ApiParam(value = "회원 이름", required = true) @Valid @RequestParam String userName) {
+
         userJpaRepo.save(User.builder()
                 .userId(userId)
                 .userPwd(passwordEncoder.encode(userPwd))
