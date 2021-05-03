@@ -39,6 +39,20 @@ public class ResponseService {
         }
     }
 
+    @Getter
+    public enum FindUserFailResponse {
+        SUCCESS(0, "회원 조회 성공했습니다."),
+        FAIL(-1, "회원 조회 실패했습니다.");
+
+        int code;
+        String msg;
+
+        FindUserFailResponse(int code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+    }
+
     public <T> SingleResult<T> getSingleResult(T data) {
         // Result가 상속 중인 CommonResult msg, code 전부 result 객체 담음
         SingleResult<T> result = new SingleResult<>();
@@ -60,7 +74,8 @@ public class ResponseService {
         return result;
     }
 
-    public CommonResult getFailResult() {
+    // 기본 에러 발생
+    public CommonResult getDefaultFailResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
         result.setCode(CommonResponse.FAIL.getCode());
@@ -68,6 +83,16 @@ public class ResponseService {
         return result;
     }
 
+    // 회원 조회 실패 에러
+    public CommonResult getFindUserFailResult() {
+        CommonResult result = new CommonResult();
+        result.setSuccess(false);
+        result.setCode(FindUserFailResponse.FAIL.getCode());
+        result.setMsg(FindUserFailResponse.FAIL.getMsg());
+        return result;
+    }
+
+    // 로그인 실패 에러
     public CommonResult getSignInFailResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(false);

@@ -6,8 +6,9 @@ import com.example.springboot.entity.User;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;
 import com.example.springboot.model.response.SingleResult;
-import com.example.springboot.respository.UserJpaRepo;
+import com.example.springboot.respository.UserRepository;
 import com.example.springboot.service.ResponseService;
+import com.example.springboot.service.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"2. user"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/api/v1")
 public class UserController {
 
-    private final UserJpaRepo userJpaRepo;
+    private final UserService userService;
     private final ResponseService responseService;
 
     @ApiImplicitParams({
@@ -29,8 +30,8 @@ public class UserController {
     })
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회합니다.")
     @GetMapping(value = "/users")
-    public ListResult<User> findAllUser() {
-        return responseService.getListResult(userJpaRepo.findAll());
+    public ListResult<User> findAllUser() throws UserNotFoundException {
+        return responseService.getListResult(userService.findAll());
     }
 
     @ApiImplicitParams({
@@ -38,8 +39,8 @@ public class UserController {
     })
     @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 한명 조회합니다.")
     @GetMapping(value = "/users/{userId}")
-    public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable long userId) {
-        return responseService.getSingleResult(userJpaRepo.findByUserNo(userId).orElseThrow(UserNotFoundException::new));
+    public SingleResult<User> findUserById(@ApiParam(value = "회원ID : Email", required = true) @PathVariable long userId) {
+        return responseService.getSingleResult(userService.findByUserNo(userId).orElseThrow(UserNotFoundException::new));
     }
 
     @ApiImplicitParams({
@@ -56,7 +57,7 @@ public class UserController {
                 .userId(userId)
                 .userName(userName)
                 .build();
-        return responseService.getSingleResult(userJpaRepo.save(user));
+        return responseService.getSingleResult(userService.save(user));
     }
 
     @ApiImplicitParams({
@@ -65,7 +66,7 @@ public class UserController {
     @ApiOperation(value = "회원 삭제", notes = "userId로 한명의 회원정보를 삭제합니다.")
     @DeleteMapping(value = "/user/{userNo}")
     public CommonResult delete(@ApiParam(value = "회원번호", required = true) @PathVariable long userNo) {
-        userJpaRepo.deleteByUserNo(userNo);
+        userService.deleteByUserNo(userNo);
         return responseService.getSuccessResult();
     }
 }

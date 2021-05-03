@@ -17,15 +17,25 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionAdvice {
     private final ResponseService responseService;
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
+        System.out.println(e.getMessage());
+        return responseService.getDefaultFailResult();
+    }
+
+    // 회원 조회 에러 발생
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
-        return responseService.getFailResult();
+        System.out.println(e.getMessage());
+        return responseService.getFindUserFailResult();
     }
 
     @ExceptionHandler(EmailSignInFailException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult emailNotFoundException(HttpServletRequest request, EmailSignInFailException e) {
+        System.out.println(e.getMessage());
         return responseService.getSignInFailResult();
     }
 }
