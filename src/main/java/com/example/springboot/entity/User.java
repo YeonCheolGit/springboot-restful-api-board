@@ -13,8 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Builder
 @Entity
@@ -35,14 +36,12 @@ public class User implements UserDetails {
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false, length = 100)
-//    @Pattern(regexp = "[0-9]{10,11}")
-    private String userPwd;
+    @Column(length = 100)
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$") // 최소 1개의 숫자, 소문자, 대문자, 특수문자 필요 합니다
+    private String userPwd; // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
 
-//    @ElementCollection(fetch = FetchType.EAGER) // One to Many
-//    @Builder.Default
-//    @Column(nullable = false, length = 30)
-//    private List<String> roles = new ArrayList<>();
+    @Column(length = 100)
+    private String provider; // 소셜 로그인 제공자 (카카오)
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -61,7 +60,6 @@ public class User implements UserDetails {
         }
 
         return authorities;
-//        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

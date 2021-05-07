@@ -21,4 +21,6 @@ public interface UserService {
     User save(User user);
 
     void deleteByUserNo(long userNo);
+
+    Optional<User> findByUserIdAndProvider(String userId, String provider);
 }

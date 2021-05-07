@@ -1,9 +1,11 @@
 package com.example.springboot.advice;
 
+import com.example.springboot.advice.exception.DuplicatedUserException;
 import com.example.springboot.advice.exception.EmailSignInFailException;
+import com.example.springboot.advice.exception.KakaoApiException;
 import com.example.springboot.advice.exception.UserNotFoundException;
 import com.example.springboot.model.response.CommonResult;
-import com.example.springboot.service.ResponseService;
+import com.example.springboot.service.exception.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,18 +26,39 @@ public class ExceptionAdvice {
         return responseService.getDefaultFailResult();
     }
 
-    // 회원 조회 에러 발생
+    // 회원 조회 에러 발생 합니다
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
+        System.out.println("=================== userNotFoundException ===================");
         System.out.println(e.getMessage());
         return responseService.getFindUserFailResult();
     }
 
+    // 이메일 계정 로그인의 에러 발생 합니다
     @ExceptionHandler(EmailSignInFailException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult emailNotFoundException(HttpServletRequest request, EmailSignInFailException e) {
+        System.out.println("=================== emailNotFoundException ===================");
         System.out.println(e.getMessage());
-        return responseService.getSignInFailResult();
+        return responseService.getEmailSignInFailResult();
+    }
+
+    // 카카오 API 통신의 에러 발생 합니다
+    @ExceptionHandler(KakaoApiException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult kakaoApiException(HttpServletRequest request, KakaoApiException e) {
+        System.out.println("=================== KakaoApiException ===================");
+        System.out.println(e.getMessage());
+        return responseService.getKakaoApiFailResult();
+    }
+
+    // 이미 가입 된 회원 에러 입니다
+    @ExceptionHandler(DuplicatedUserException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult duplicatedUserException(HttpServletRequest request, KakaoApiException e) {
+        System.out.println("=================== KakaoApiException ===================");
+        System.out.println(e.getMessage());
+        return responseService.getDuplicatedUserResult();
     }
 }

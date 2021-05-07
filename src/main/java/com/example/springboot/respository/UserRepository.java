@@ -19,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User save(User user);
 
     void deleteByUserNo(long userNo);
+
+    // Provider(소셜 계정)으로
+    Optional<User> findByUserIdAndProvider(String userId, String provider);
 }
