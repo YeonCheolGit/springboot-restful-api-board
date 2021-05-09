@@ -1,4 +1,4 @@
-package com.example.springboot.service;
+package com.example.springboot.service.User;
 
 import com.example.springboot.entity.User;
 import com.example.springboot.respository.UserRepository;

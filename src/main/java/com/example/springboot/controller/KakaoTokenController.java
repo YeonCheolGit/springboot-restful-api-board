@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-@Api(tags = {"3. Social"})
+@Api(tags = {"4. Social"})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/social/login")

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class ResponseService {
-
     @Getter
     public enum CommonResponse {
         SUCCESS(0, "성공하였습니다."),
@@ -26,7 +25,6 @@ public class ResponseService {
     }
     @Getter
     public enum EmailSignInFailedResponse {
-        SUCCESS(0, "이메일 로그인 성공 했습니다."),
         FAIL(-1, "이메일 로그인 실패 했습니다.");
 
         int code;
@@ -39,7 +37,6 @@ public class ResponseService {
     }
     @Getter
     public enum FindUserFailResponse {
-        SUCCESS(0, "회원 조회 성공했습니다."),
         FAIL(-1, "회원 조회 실패했습니다.");
 
         int code;
@@ -52,7 +49,6 @@ public class ResponseService {
     }
     @Getter
     public enum KakaoApiFailResponse {
-        SUCCESS(0, "카카오 API 통신 성공"),
         FAIL(-1, "카카오 API 통신 실패");
 
         int code;
@@ -65,7 +61,6 @@ public class ResponseService {
     }
     @Getter
     public enum DuplicatedUserResponse {
-        SUCCESS(0, "가입되지 않은 회원 입니다"),
         FAIL(-1, "이미 가입된 회원 입니다");
 
         int code;
@@ -76,6 +71,7 @@ public class ResponseService {
             this.msg = msg;
         }
     }
+
     public <T> SingleResult<T> getSingleResult(T data) {
         SingleResult<T> result = new SingleResult<>();
         result.setData(data);
@@ -100,8 +96,11 @@ public class ResponseService {
     public CommonResult getDefaultFailResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
-        result.setCode(CommonResponse.FAIL.getCode());
-        result.setMsg(CommonResponse.FAIL.getMsg());
+        result.setCode(ErrorEnum.EMAIL_FAIL.getCode());
+        result.setMsg(ErrorEnum.EMAIL_FAIL.getMsg());
+//        result.setSuccess(false);
+//        result.setCode(CommonResponse.FAIL.getCode());
+//        result.setMsg(CommonResponse.FAIL.getMsg());
         return result;
     }
 
@@ -123,7 +122,7 @@ public class ResponseService {
         return result;
     }
 
-    // 카카오 API 연결 에러 입니다
+    // 카카오 API 연결 에러
     public CommonResult getKakaoApiFailResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
@@ -132,7 +131,7 @@ public class ResponseService {
         return result;
     }
 
-    // 이미 가입 된 회원 에러 입니다
+    // 이미 가입 된 회원 에러
     public CommonResult getDuplicatedUserResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(false);

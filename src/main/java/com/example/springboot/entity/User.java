@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Proxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,16 +14,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-@Builder
+
 @Entity
-@Getter
-@NoArgsConstructor @AllArgsConstructor
 @Table(name = "user")
-public class User implements UserDetails {
+@Getter
+@Builder
+@NoArgsConstructor @AllArgsConstructor
+@Proxy(lazy = false)
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +37,11 @@ public class User implements UserDetails {
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(length = 100)
+    @Column(nullable = false, length = 100)
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$") // 최소 1개의 숫자, 소문자, 대문자, 특수문자 필요 합니다
     private String userPwd; // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 100)
     private String provider; // 소셜 로그인 제공자 (카카오)
 
@@ -48,12 +50,12 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "userNo"),
             inverseJoinColumns = @JoinColumn(name = "roleNo"))
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<Role> roles = getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        Set<Role> roles = getRoles();
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));

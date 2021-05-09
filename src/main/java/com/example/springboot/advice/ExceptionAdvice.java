@@ -6,8 +6,11 @@ import com.example.springboot.advice.exception.KakaoApiException;
 import com.example.springboot.advice.exception.UserNotFoundException;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.service.exception.ResponseService;
+import com.nimbusds.oauth2.sdk.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -57,7 +60,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(DuplicatedUserException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult duplicatedUserException(HttpServletRequest request, KakaoApiException e) {
-        System.out.println("=================== KakaoApiException ===================");
+        System.out.println("=================== duplicatedUserException ===================");
         System.out.println(e.getMessage());
         return responseService.getDuplicatedUserResult();
     }

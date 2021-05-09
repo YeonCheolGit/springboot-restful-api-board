@@ -7,7 +7,7 @@ import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;
 import com.example.springboot.model.response.SingleResult;
 import com.example.springboot.service.exception.ResponseService;
-import com.example.springboot.service.UserService;
+import com.example.springboot.service.User.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

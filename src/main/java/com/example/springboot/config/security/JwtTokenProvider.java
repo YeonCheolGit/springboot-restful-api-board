@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
@@ -36,7 +37,7 @@ public class JwtTokenProvider {
     /*
      * 토큰 생성 한다
      */
-    public String createToken(String userPk, List<Role> roles) {
+    public String createToken(String userPk, Set<Role> roles) {
         log.debug("createToken");
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("roles", roles);

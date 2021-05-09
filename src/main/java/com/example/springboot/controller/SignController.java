@@ -11,17 +11,23 @@ import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.SingleResult;
 import com.example.springboot.service.social.KakaoService;
 import com.example.springboot.service.exception.ResponseService;
-import com.example.springboot.service.UserService;
+import com.example.springboot.service.User.UserService;
+import com.nimbusds.oauth2.sdk.ErrorResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /*
@@ -42,16 +48,20 @@ public class SignController {
 
     @ApiOperation(value = "회원가입", notes = "회원 가입 합니다")
     @PostMapping(value = "/signUp")
-    public CommonResult signUp(@ApiParam(value = "회원 아이디 (userId) : 이메일", required = true) @Valid @RequestParam String userId,
-                               @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @Valid @RequestParam String userPwd,
-                               @ApiParam(value = "회원 이름 (userName)", required = true) @Valid @RequestParam String userName) {
+    public CommonResult signUp(@ApiParam(value = "회원 아이디 (userId) : 이메일", required = true) @RequestParam @Valid String userId,
+                               @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam @Valid String userPwd,
+                               @ApiParam(value = "회원 이름 (userName)", required = true) @RequestParam @Valid String userName,
+                               BindingResult bindingResult) {
+        if (bindingResult.hasGlobalErrors())
+            responseService.getDefaultFailResult();
+
         Role role = new Role();
         role.setRoleNo(4);
         userService.save(User.builder()
                 .userId(userId)
                 .userPwd(passwordEncoder.encode(userPwd))
                 .userName(userName)
-                .roles(Collections.singletonList(role))
+                .roles(Collections.singleton(role))
                 .build()
         );
         return responseService.getSuccessResult();
@@ -88,7 +98,7 @@ public class SignController {
                 .userId(String.valueOf(profile.getUserId()))
                 .provider(provider)
                 .userName(userName)
-                .roles(Collections.singletonList(role))
+                .roles(Collections.singleton(role))
                 .build());
         return responseService.getSuccessResult();
     }
