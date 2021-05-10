@@ -44,9 +44,9 @@ public class KakaoService {
             if (response.getStatusCode() == HttpStatus.OK)
                 return gson.fromJson(response.getBody(), KakaoProfile.class);
         } catch (Exception e) {
-            throw new KakaoApiException();
+            throw new KakaoApiException("카카오 API 회원 정보 가지고 오는 것 에러 발생 했습니다.");
         }
-        throw new KakaoApiException();
+        throw new KakaoApiException("카카오 API 회원 정보 가지고 오는 것 에러 발생 했습니다.");
     }
 
     // 해당 회원의 카카오 Access Token 가져 옵니다

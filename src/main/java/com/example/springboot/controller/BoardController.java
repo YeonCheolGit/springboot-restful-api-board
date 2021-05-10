@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 @RestController
 @Api(tags = {"3. Board"})
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -45,7 +47,7 @@ public class BoardController {
     })
     @ApiOperation(value = "게시판에 글 작성", notes = "게시판에 글을 작성합니다")
     @PostMapping(value = "/{boardName}")
-    public SingleResult<Post> createPost(@PathVariable String boardName, @Valid @ModelAttribute CommonParamPost commonParamPost) {
+    public SingleResult<Post> createPost(@PathVariable String boardName, @ModelAttribute @Valid CommonParamPost commonParamPost) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         return responseService.getSingleResult(boardService.writePost(userId, boardName, commonParamPost));
@@ -62,7 +64,7 @@ public class BoardController {
     })
     @ApiOperation(value = "게시판의 글 수정", notes = "게시판의 글을 수정합니다")
     @PutMapping(value = "/post/{postNo}")
-    public SingleResult<Post> modifyPost(@PathVariable long postNo, @Valid @ModelAttribute CommonParamPost commonParamPost) {
+    public SingleResult<Post> modifyPost(@PathVariable long postNo, @ModelAttribute @Valid CommonParamPost commonParamPost) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         return responseService.getSingleResult(boardService.updatePost(postNo, userId, commonParamPost));

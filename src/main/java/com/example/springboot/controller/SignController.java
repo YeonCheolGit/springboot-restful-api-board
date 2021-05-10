@@ -1,33 +1,28 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.advice.exception.AuthFailException;
 import com.example.springboot.advice.exception.DuplicatedUserException;
 import com.example.springboot.advice.exception.EmailSignInFailException;
-import com.example.springboot.advice.exception.UserNotFoundException;
 import com.example.springboot.config.security.JwtTokenProvider;
 import com.example.springboot.entity.Role;
 import com.example.springboot.entity.User;
 import com.example.springboot.model.KakaoProfile;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.SingleResult;
-import com.example.springboot.service.social.KakaoService;
-import com.example.springboot.service.exception.ResponseService;
 import com.example.springboot.service.User.UserService;
-import com.nimbusds.oauth2.sdk.ErrorResponse;
+import com.example.springboot.service.exception.ResponseService;
+import com.example.springboot.service.social.KakaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /*
@@ -37,7 +32,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1")
-@Log4j2
+@Slf4j
 public class SignController {
 
     private final UserService userService;
@@ -52,8 +47,10 @@ public class SignController {
                                @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam @Valid String userPwd,
                                @ApiParam(value = "회원 이름 (userName)", required = true) @RequestParam @Valid String userName,
                                BindingResult bindingResult) {
-        if (bindingResult.hasGlobalErrors())
+        if (bindingResult.hasGlobalErrors()) {
             responseService.getDefaultFailResult();
+        }
+
 
         Role role = new Role();
         role.setRoleNo(4);
@@ -74,7 +71,7 @@ public class SignController {
         User user = userService.findByUserId(userId).orElseThrow(EmailSignInFailException::new);
 
         if (!passwordEncoder.matches(userPwd, user.getPassword())) {
-            throw new EmailSignInFailException();
+            throw new EmailSignInFailException("회원 비밀번호가 일치하지 않습니다.");
         }
 
         return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));
@@ -92,7 +89,7 @@ public class SignController {
         Optional<User> user = userService.findByUserIdAndProvider(String.valueOf(profile.getUserId()), provider);
 
         if (user.isPresent())
-            throw new DuplicatedUserException();
+            throw new DuplicatedUserException("중복된 회원 이메일 입니다.");
 
         userService.save(User.builder()
                 .userId(String.valueOf(profile.getUserId()))
@@ -103,12 +100,13 @@ public class SignController {
         return responseService.getSuccessResult();
     }
 
-    @ApiOperation(value = "카카오 로그인", notes = "카카오 회원 로그인 한다")
+    @ApiOperation(value = "카카오 로그인", notes = "카카오 회원 로그인 합니다")
     @PostMapping(value = "/signIn/{provider}")
     public SingleResult<String> signInByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
                                                  @ApiParam(value = "카카오 액세스 토큰 (accessToken)", required = true) @RequestParam String accessToken) {
+
         KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
-        User user = userService.findByUserIdAndProvider(String.valueOf(profile.getUserId()), provider).orElseThrow(UserNotFoundException::new);
+        User user = userService.findByUserIdAndProvider(String.valueOf(profile.getUserId()), provider).orElseThrow(AuthFailException::new);
         return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));
     }
 }

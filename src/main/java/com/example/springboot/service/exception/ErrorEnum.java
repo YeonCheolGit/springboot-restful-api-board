@@ -5,9 +5,13 @@ import lombok.Getter;
 @Getter
 public enum ErrorEnum {
 
-    SUCCESS(true, 0, "성공하였습니다."),
-
-    EMAIL_FAIL(false, -1, "이메일 로그인 실패 했습니다222");
+    DEFAULT_SUCCESS(true, 0, "성공하였습니다."),
+    DEFAULT_FAIL(false, -1, "실패했습니다."),
+    EMAIL_SIGNIN_FAIL(false, -1, "이메일 로그인 실패 했습니다."),
+    FIND_USER_FAIL(false, -1, "회원 조회 실패했습니다."),
+    KAKAO_API_FAIL(false, -1, "카카오 API 통신 실패"),
+    DUPLICATED_USER_FAIL(false,-1, "이미 가입된 회원 입니다"),
+    AUTH_FAIL(false,-1, "회원 인증 오류 입니다");
 
 
     private boolean check;
