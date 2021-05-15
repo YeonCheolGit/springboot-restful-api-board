@@ -1,6 +1,7 @@
 # SpringBoot-Restful-API-Board
-![Generic badge](https://img.shields.io/badge/jdk-11-red.svg)
-![Generic badge](https://img.shields.io/badge/springboot-2.4.4-green.svg)
+![Generic badge](https://img.shields.io/badge/JDK-11-red.svg)
+![Generic badge](https://img.shields.io/badge/SrpingBoot-2.4.4-green.svg)
+![Generic badge](https://img.shields.io/badge/SpringSecurity-2.4.4-green.svg)
 ![Generic badge](https://img.shields.io/badge/jjwt-0.9.1-blue.svg)
 ![Generic badge](https://img.shields.io/badge/lombok-1.18.18-yellow.svg)
 
