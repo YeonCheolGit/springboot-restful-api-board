@@ -37,9 +37,9 @@ public class User implements UserDetails{
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 100) // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$") // 최소 1개의 숫자, 소문자, 대문자, 특수문자 필요 합니다
-    private String userPwd; // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
+    private String userPwd;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 100)
