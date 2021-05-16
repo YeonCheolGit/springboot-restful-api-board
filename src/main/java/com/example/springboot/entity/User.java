@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Proxy;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,15 +31,13 @@ public class User implements UserDetails{
     private long userNo;
 
     @Column(nullable = false, unique = true, length = 50)
-    @Email
     private String userId;
 
     @Column(nullable = false, length = 50)
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = true, length = 100) // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$") // 최소 1개의 숫자, 소문자, 대문자, 특수문자 필요 합니다
+    @Column(length = 100) // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
     private String userPwd;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

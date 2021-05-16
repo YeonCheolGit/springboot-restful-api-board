@@ -4,19 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+// 카카오 Access Token으로 정보 가지고 올 경우 제공 정보 입니다
 @Getter @Setter
 @ToString
-// 카카오 Access Token으로 정보 가지고 올 경우 제공 정보 입니다
 public class KakaoProfile {
 
-    private long userId;
-    private Properties properties;
+    public Kakao_account kakao_account;
 
     @Getter @Setter
     @ToString
-    private static class Properties {
-        private String nickName;
-        private String thumbnail_image;
-        private String profile_image;
+    public static class Kakao_account {
+        private String email;
     }
 }

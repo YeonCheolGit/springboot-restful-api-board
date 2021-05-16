@@ -4,6 +4,9 @@ import com.example.springboot.advice.exception.KakaoApiException;
 import com.example.springboot.model.KakaoAuth;
 import com.example.springboot.model.KakaoProfile;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -13,6 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 @RequiredArgsConstructor

@@ -1,5 +1,6 @@
 package com.example.springboot.service.User;
 
+import com.example.springboot.DTO.UserRequestDTO;
 import com.example.springboot.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +15,17 @@ public interface UserService {
     @Transactional(readOnly = true)
     Optional<User> findByUserId(String userId);
 
+//    @Transactional(readOnly = true)
+//    Optional<UserResponseDTO> findByUserId(String userId);
+
     @Transactional(readOnly = true)
     List<User> findAll();
 
     @Transactional
     User save(User user);
+
+    @Transactional
+    void saveDTO(UserRequestDTO userRequestDTO);
 
     void deleteByUserNo(long userNo);
 
