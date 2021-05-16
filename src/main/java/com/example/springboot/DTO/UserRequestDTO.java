@@ -3,12 +3,9 @@ package com.example.springboot.DTO;
 import com.example.springboot.entity.Role;
 import com.example.springboot.entity.User;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Collections;
 
@@ -17,9 +14,6 @@ import java.util.Collections;
 @NoArgsConstructor @AllArgsConstructor
 @Data
 public class UserRequestDTO {
-
-    private long userNo;
-
     @NotEmpty
     @Email(message = "아이디는 비밀번호 형식으로 입력하셔야 합니다.")
     private String userId;

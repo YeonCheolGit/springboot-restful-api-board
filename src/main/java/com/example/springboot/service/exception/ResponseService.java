@@ -11,68 +11,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class ResponseService {
-//    @Getter
-//    public enum CommonResponse {
-//        SUCCESS(0, "성공하였습니다."),
-//        FAIL(-1, "실패하였습니다.");
-//
-//        int code;
-//        String msg;
-//
-//        CommonResponse(int code, String msg) {
-//            this.code = code;
-//            this.msg = msg;
-//        }
-//    }
-//    @Getter
-//    public enum EmailSignInFailedResponse {
-//        FAIL(-1, "이메일 로그인 실패 했습니다.");
-//
-//        int code;
-//        String msg;
-//
-//        EmailSignInFailedResponse(int code, String msg) {
-//            this.code = code;
-//            this.msg = msg;
-//        }
-//    }
-//    @Getter
-//    public enum FindUserFailResponse {
-//        FAIL(-1, "회원 조회 실패했습니다.");
-//
-//        int code;
-//        String msg;
-//
-//        FindUserFailResponse(int code, String msg) {
-//            this.code = code;
-//            this.msg = msg;
-//        }
-//    }
-//    @Getter
-//    public enum KakaoApiFailResponse {
-//        FAIL(-1, "카카오 API 통신 실패");
-//
-//        int code;
-//        String msg;
-//
-//        KakaoApiFailResponse(int code, String msg) {
-//            this.code = code;
-//            this.msg = msg;
-//        }
-//    }
-//    @Getter
-//    public enum DuplicatedUserResponse {
-//        FAIL(-1, "이미 가입된 회원 입니다");
-//
-//        int code;
-//        String msg;
-//
-//        DuplicatedUserResponse(int code, String msg) {
-//            this.code = code;
-//            this.msg = msg;
-//        }
-//    }
-
     public <T> SingleResult<T> getSingleResult(T data) {
         SingleResult<T> result = new SingleResult<>();
         result.setData(data);

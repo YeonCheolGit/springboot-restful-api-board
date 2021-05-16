@@ -75,7 +75,7 @@ public class SignController {
         User user = userService.findByUserId(userId).orElseThrow(EmailSignInFailException::new);
 
         if (!passwordEncoder.matches(userPwd, user.getPassword())) {
-            throw new EmailSignInFailException("입력된 비밀번호가 일치하지 않습니다.");
+            throw new EmailSignInFailException(user.getUserId() + " > 입력된 비밀번호가 일치하지 않습니다.");
         }
 
         return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));

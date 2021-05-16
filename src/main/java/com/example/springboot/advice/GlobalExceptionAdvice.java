@@ -50,7 +50,7 @@ public class GlobalExceptionAdvice {
     // 이미 가입 된 회원 에러 입니다
     @ExceptionHandler(DuplicatedUserException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult duplicatedUserException(KakaoApiException e) {
+    protected CommonResult duplicatedUserException(DuplicatedUserException e) {
         log.error("duplicatedUserException : ", e);
         return responseService.getDuplicatedUserResult();
     }
