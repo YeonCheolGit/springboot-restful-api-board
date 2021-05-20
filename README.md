@@ -10,7 +10,7 @@
 https://github.com/YeonCheolGit/angular-frontend
 ```
 
-### Database UML
+### Database UML Imgae Link
 https://user-images.githubusercontent.com/65603611/118960297-1a2c1500-b99e-11eb-93b2-6611f710341c.png
 
 ### Getting Started
