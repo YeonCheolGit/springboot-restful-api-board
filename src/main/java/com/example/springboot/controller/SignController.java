@@ -1,8 +1,8 @@
 package com.example.springboot.controller;
 
-import com.example.springboot.DTO.UserRequestDTO;
+import com.example.springboot.DTO.user.UserRequestDTO;
 import com.example.springboot.advice.exception.AuthFailException;
-import com.example.springboot.advice.exception.DuplicatedUserException;
+import com.example.springboot.advice.exception.DuplicatedDataException;
 import com.example.springboot.advice.exception.EmailSignInFailException;
 import com.example.springboot.config.security.JwtTokenProvider;
 import com.example.springboot.entity.Role;
@@ -25,9 +25,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Optional;
 
-/*
- * 회원 가입, 로그인 컨트롤러
- */
+// 회원 로그인, 가입 관련 컨트롤러
 @Api(tags = {"1. Sign"})
 @RequiredArgsConstructor
 @RestController
@@ -60,24 +58,26 @@ public class SignController {
 //        return responseService.getSuccessResult();
 //    }
 
-    // DTO --> Entity
+    /*
+     * 회원가입 합니다.
+     * DTO 거쳐서 Entity 접근 합니다.
+     */
     @ApiOperation(value = "회원가입", notes = "회원 가입 합니다")
     @PostMapping(value = "/signUp")
-    public CommonResult signUp(@RequestBody @Valid UserRequestDTO userRequestDTO) {
+    public CommonResult signUp(@ModelAttribute @Valid UserRequestDTO userRequestDTO) {
         userService.saveDTO(userRequestDTO);
-        return responseService.getSuccessResult();
+        return responseService.getSuccessCreated();
     }
 
     @ApiOperation(value = "로그인", notes = "회원 로그인 합니다")
     @PostMapping(value = "/signIn")
-    public SingleResult<String> signIn(@ApiParam(value = "회원 아이디 (userId): 이메일", required = true) @RequestParam String userId,
+    public CommonResult signIn(@ApiParam(value = "회원 아이디 (userId): 이메일", required = true) @RequestParam String userId,
                                        @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam String userPwd) {
         User user = userService.findByUserId(userId).orElseThrow(EmailSignInFailException::new);
 
         if (!passwordEncoder.matches(userPwd, user.getPassword())) {
-            throw new EmailSignInFailException(user.getUserId() + " > 입력된 비밀번호가 일치하지 않습니다.");
+            throw new EmailSignInFailException(userId + " > 입력된 비밀번호가 일치하지 않습니다.");
         }
-
         return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));
     }
 
@@ -87,7 +87,6 @@ public class SignController {
     public CommonResult signUpByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
                                          @ApiParam(value = "카카오 토큰 (access_token)", required = true) @RequestParam String accessToken,
                                          @ApiParam(value = "회원 이름 (userName)", required = true) @RequestParam String userName) {
-
         Role role = new Role();
         role.setRoleNo(1);
 
@@ -95,7 +94,7 @@ public class SignController {
 
         Optional<User> user = userService.findByUserIdAndProvider(String.valueOf(profile.getKakao_account().getEmail()), provider);
         if (user.isPresent())
-            throw new DuplicatedUserException("중복된 회원 이메일 입니다.");
+            throw new DuplicatedDataException("중복된 회원 이메일 입니다.");
 
         userService.save(User.builder()
                 .userId(String.valueOf(profile.getKakao_account().getEmail()))
@@ -103,14 +102,14 @@ public class SignController {
                 .userName(userName)
                 .roles(Collections.singleton(role))
                 .build());
-        return responseService.getSuccessResult();
+        return responseService.getSuccessCreated();
     }
 
+    // 카카오 토큰을 이용해서 로그인 합니다.
     @ApiOperation(value = "카카오 로그인", notes = "카카오 회원 로그인 합니다")
     @PostMapping(value = "/signIn/{provider}")
     public SingleResult<String> signInByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
                                                  @ApiParam(value = "카카오 액세스 토큰 (accessToken)", required = true) @RequestParam String accessToken) {
-
         KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
         User user = userService.findByUserIdAndProvider(String.valueOf(profile.getKakao_account().getEmail()), provider).orElseThrow(AuthFailException::new);
         return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));

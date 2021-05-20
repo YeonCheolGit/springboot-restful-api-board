@@ -1,4 +1,4 @@
-package com.example.springboot.DTO;
+package com.example.springboot.DTO.user;
 
 import com.example.springboot.entity.Role;
 import com.example.springboot.entity.User;

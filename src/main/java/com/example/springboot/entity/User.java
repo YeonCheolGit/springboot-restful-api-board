@@ -1,26 +1,23 @@
 package com.example.springboot.entity;
 
+import com.example.springboot.DTO.user.UserRequestDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Proxy;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "user")
-@Getter
+@Getter @Setter
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Proxy(lazy = false)
@@ -33,6 +30,7 @@ public class User implements UserDetails{
     @Column(nullable = false, unique = true, length = 50)
     private String userId;
 
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     @Column(nullable = false, length = 50)
     private String userName;
 
@@ -40,7 +38,6 @@ public class User implements UserDetails{
     @Column(length = 100) // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
     private String userPwd;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 100)
     private String provider; // 소셜 로그인 제공자 (카카오)
 

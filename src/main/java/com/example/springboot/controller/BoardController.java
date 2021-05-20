@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RequestMapping(value = "/v1/board")
+@RequestMapping(value = "/api/v1/board")
 @RestController
 @Api(tags = {"3. Board"})
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class BoardController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "게시판에 글 작성", notes = "게시판에 글을 작성합니다")
-    @PostMapping(value = "/{boardName}")
+    @PostMapping(value = "/{boardName}/post")
     public SingleResult<Post> createPost(@PathVariable String boardName, @ModelAttribute @Valid CommonParamPost commonParamPost) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();

@@ -1,7 +1,8 @@
 package com.example.springboot.service.User;
 
-import com.example.springboot.DTO.UserRequestDTO;
-import com.example.springboot.advice.exception.DuplicatedUserException;
+import com.example.springboot.DTO.user.UserRequestDTO;
+import com.example.springboot.advice.exception.DuplicatedDataException;
+import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.User;
 import com.example.springboot.respository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -31,11 +32,13 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByUserId(String userId) {
         return userRepository.findByUserId(userId);
     }
-//
-//    @Override
-//    public Optional<UserResponseDTO> findByUserId(String userId) {
-//        return userRepository.findByUserId(userId);
-//    }
+
+    @Override
+    public User findByUserIdAndToken(String userId, String newUserName) {
+        User user = userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new);
+        user.setUserName(newUserName);
+        return userRepository.save(user);
+    }
 
     @Override
     public List<User> findAll() {
@@ -56,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     private void verifyDuplicateEmail(String userId) {
         if (userRepository.findByUserId(userId).isPresent()) {
-            throw new DuplicatedUserException(userId + " > 이미 가입된 회원 아이디 입니다.");
+            throw new DuplicatedDataException(userId + " > 이미 가입된 회원 아이디 입니다.");
         }
     }
 
