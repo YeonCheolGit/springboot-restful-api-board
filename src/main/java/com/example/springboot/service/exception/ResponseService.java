@@ -35,10 +35,10 @@ public class ResponseService {
     public CommonResult getSuccessCreated() {
         log.debug("getSuccessCreated()");
         CommonResult result = new CommonResult();
-        result.setSuccess(ErrorEnum.DEFAULT_FAIL.isCheck());
-        result.setCode(ErrorEnum.DEFAULT_FAIL.getCode());
-        result.setMsg(ErrorEnum.DEFAULT_FAIL.getMsg());
-        result.setStatus(ErrorEnum.DEFAULT_FAIL.getStatus());
+        result.setSuccess(ErrorEnum.SUCCESS_CREATED.isCheck());
+        result.setCode(ErrorEnum.SUCCESS_CREATED.getCode());
+        result.setMsg(ErrorEnum.SUCCESS_CREATED.getMsg());
+        result.setStatus(ErrorEnum.SUCCESS_CREATED.getStatus());
         return result;
     }
 
