@@ -93,4 +93,9 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
+    public User updateUserName(String newUserName) {
+        userName = newUserName;
+        return User.this;
+    }
 }

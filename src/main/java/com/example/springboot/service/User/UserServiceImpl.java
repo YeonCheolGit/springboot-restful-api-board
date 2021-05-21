@@ -33,11 +33,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(userId);
     }
 
+//    @Override
+//    public User findByUserIdAndToken(String userId, String newUserName) {
+//        User user = userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new);
+//        user.setUserName(newUserName);
+//        return userRepository.save(user);
+//    }
+
     @Override
     public User findByUserIdAndToken(String userId, String newUserName) {
         User user = userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new);
-        user.setUserName(newUserName);
-        return userRepository.save(user);
+//        User user = userRepository.getOne(userId).orElseThrow(FindAnyFailException::new);
+
+//        UserRequestDTO userRequestDTO = new UserRequestDTO();
+//        userRequestDTO.setUserName(newUserName);
+        return userRepository.save(user.updateUserName(newUserName));
+//        return userRepository.save(user.update(user.getUserId(), userRequestDTO.getUserName()));
     }
 
     @Override

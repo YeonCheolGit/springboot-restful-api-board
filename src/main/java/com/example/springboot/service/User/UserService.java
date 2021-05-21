@@ -15,7 +15,7 @@ public interface UserService {
     @Transactional(readOnly = true)
     Optional<User> findByUserId(String userId);
 
-    @Transactional()
+    @Transactional
     User findByUserIdAndToken(String userId, String userName);
 
     @Transactional(readOnly = true)

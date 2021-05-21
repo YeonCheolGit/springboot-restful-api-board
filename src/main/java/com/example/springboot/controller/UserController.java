@@ -74,12 +74,22 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "회원 수정", notes = "한명의 회원정보를 수정 합니다")
+    @ApiOperation(value = "회원 이름 수정", notes = "한명의 회원 이름을 수정 합니다")
     @PutMapping(value = "/user")
     public SingleResult<User> modify(@ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName));
     }
+
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+//    })
+//    @ApiOperation(value = "회원 수정", notes = "한명의 회원정보를 수정 합니다")
+//    @PutMapping(value = "/user")
+//    public SingleResult<User> modify(@ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        return responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName));
+//    }
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
