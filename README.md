@@ -35,7 +35,7 @@ localhost:8080/swagger-ui.html
 https://github.com/YeonCheolGit/angular-frontend
 ```
 
-### LICENSE
-[Spring Boot is Open Source software released under the Apache 2.0 license.](https://www.apache.org/licenses/)
+### LICENSES
+[Spring Boot is Open Source software released under the Apache 2.0 license.](https://www.apache.org/licenses/)  
 [OAuth Non-Assertion Covenant and Author's Contribution License](https://oauth.net/license/core/1.0/)
 
