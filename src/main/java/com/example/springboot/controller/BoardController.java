@@ -42,15 +42,27 @@ public class BoardController {
         return responseService.getListResult(boardService.findPosts(boardName));
     }
 
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
+//    })
+//    @ApiOperation(value = "게시판에 글 작성", notes = "게시판에 글을 작성합니다")
+//    @PostMapping(value = "/{boardName}/post")
+//    public SingleResult<Post> createPost(@PathVariable String boardName, @ModelAttribute @Valid CommonParamPost commonParamPost) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String userId = authentication.getName();
+//        return responseService.getSingleResult(boardService.writePost(userId, boardName, commonParamPost));
+//    }
+
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "게시판에 글 작성", notes = "게시판에 글을 작성합니다")
     @PostMapping(value = "/{boardName}/post")
-    public SingleResult<Post> createPost(@PathVariable String boardName, @ModelAttribute @Valid CommonParamPost commonParamPost) {
+    public CommonResult createPost(@PathVariable String boardName, @ModelAttribute @Valid CommonParamPost commonParamPost) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
-        return responseService.getSingleResult(boardService.writePost(userId, boardName, commonParamPost));
+        boardService.writePost(userId, boardName, commonParamPost);
+        return responseService.getSuccessCreated();
     }
 
     @ApiOperation(value = "게시판의 글 상세보기", notes = "게시판의 글을 상세보기 합니다")
@@ -59,15 +71,27 @@ public class BoardController {
         return responseService.getSingleResult(boardService.getPost(postNo));
     }
 
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
+//    })
+//    @ApiOperation(value = "게시판의 글 수정", notes = "게시판의 글을 수정합니다")
+//    @PutMapping(value = "/post/{postNo}")
+//    public SingleResult<Post> modifyPost(@PathVariable long postNo, @ModelAttribute @Valid CommonParamPost commonParamPost) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String userId = authentication.getName();
+//        return responseService.getSingleResult(boardService.updatePost(postNo, userId, commonParamPost));
+//    }
+
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "게시판의 글 수정", notes = "게시판의 글을 수정합니다")
     @PutMapping(value = "/post/{postNo}")
-    public SingleResult<Post> modifyPost(@PathVariable long postNo, @ModelAttribute @Valid CommonParamPost commonParamPost) {
+    public CommonResult modifyPost(@PathVariable long postNo, @ModelAttribute @Valid CommonParamPost commonParamPost) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
-        return responseService.getSingleResult(boardService.updatePost(postNo, userId, commonParamPost));
+        boardService.updatePost(postNo, userId, commonParamPost);
+        return responseService.getSuccessResult();
     }
 
     @ApiImplicitParams({
@@ -79,6 +103,6 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.deletePost(postNo, userId);
-        return responseService.getSuccessResult();
+        return responseService.getSuccessDeleted();
     }
 }

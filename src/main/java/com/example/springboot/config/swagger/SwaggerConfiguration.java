@@ -9,14 +9,21 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.service.Contact;
 
 @Configuration
 @EnableSwagger2
 public class SwaggerConfiguration {
 
+    Contact contact = new Contact("YeonCheol",
+            "https://github.com/YeonCheolGit",
+            "yeoncheol.jang@gmail.com");
+
     @Bean
     public Docket swaggerApi() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(swaggerInfo()).select()
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(swaggerInfo())
+                .select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.springboot.controller"))
                 .paths(PathSelectors.any())
                 .build()
@@ -24,8 +31,10 @@ public class SwaggerConfiguration {
     }
 
     private ApiInfo swaggerInfo() {
-        return new ApiInfoBuilder().title("Spring API Documentation")
+        return new ApiInfoBuilder()
+                .title("SpringBoot REST API Documentation")
                 .description("장연철 게시판 개발에 사용되는 서버 API 연동 문서입니다.")
+                .contact(contact)
                 .license("YeonCheol").version("1").build();
     }
 }

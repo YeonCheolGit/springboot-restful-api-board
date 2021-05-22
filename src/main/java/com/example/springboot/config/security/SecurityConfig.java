@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable() // 기본 로그인 폼 사용 X
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 토큰 사용으로 세션 필요 X
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 토큰 사용으로 세션 필요 없습니다.
                 .and()
                     .authorizeRequests()
                     .antMatchers("/**/signIn", "/**/signIn/**", "/**/signUp", "/**/signUp/**", "/social/**").permitAll()
