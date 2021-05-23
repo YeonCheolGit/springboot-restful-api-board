@@ -1,6 +1,5 @@
 package com.example.springboot.entity;
 
-import com.example.springboot.DTO.user.UserRequestDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
