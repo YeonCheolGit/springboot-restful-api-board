@@ -32,15 +32,6 @@ public class UserController {
         return responseService.getListResult(userService.findAll());
     }
 
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-//    })
-//    @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 한명 조회합니다")
-//    @GetMapping(value = "/users/{userNo}")
-//    public SingleResult<User> findUserById(@ApiParam(value = "회원ID : Email", required = true) @PathVariable long userNo) {
-//        return responseService.getSingleResult(userService.findByUserNo(userNo).orElseThrow(UserNotFoundException::new));
-//    }
-
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -52,25 +43,6 @@ public class UserController {
         return responseService.getSingleResult(userService.findByUserId(userId).orElseThrow(FindAnyFailException::new));
     }
 
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-//    })
-//    @ApiOperation(value = "회원 수정", notes = "한명의 회원정보를 수정 합니다")
-//    @PutMapping(value = "/user")
-//    public SingleResult<User> modify(
-//            @ApiParam(value = "회원번호(userNo)", required = true) @RequestParam long userNo,
-//            @ApiParam(value = "회원아이디(userId) : Email", required = true) @RequestParam String userId,
-//            @ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName,
-//            @ApiParam(value = "회원비밀번호(userPwd)", required = true) @RequestParam String userPwd) {
-//        User user = User.builder()
-//                .userNo(userNo)
-//                .userId(userId)
-//                .userName(userName)
-//                .userPwd(userPwd)
-//                .build();
-//        return responseService.getSingleResult(userService.save(user));
-//    }
-
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -80,16 +52,6 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName));
     }
-
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-//    })
-//    @ApiOperation(value = "회원 수정", notes = "한명의 회원정보를 수정 합니다")
-//    @PutMapping(value = "/user")
-//    public SingleResult<User> modify(@ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        return responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName));
-//    }
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")

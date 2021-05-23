@@ -4,10 +4,15 @@
 ![Generic badge](https://img.shields.io/badge/SpringSecurity-2.4.4-green.svg)
 ![Generic badge](https://img.shields.io/badge/JWT-0.9.1-blue.svg)
 ![Generic badge](https://img.shields.io/badge/Oauth2-black.svg)
+![Generic badge](https://img.shields.io/badge/Swagger-2.6.1-black.svg)
 ![Generic badge](https://img.shields.io/badge/Lombok-1.18.18-yellow.svg)
 
 ## Introduction
-This API provides CRUD operations for board application. This API focus on Authentication/Authorisation(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy. It offers Swagger library for testing API without client side project.
+This API provides CRUD operations for board application. This API focuses on Authentication/Authorisation(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
+
+### Introduction
+This API provides CRUD operations for board application. 
+This API focuses on Authentication/Authorisation(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
 
 ## Full Documentation
 See the [Wiki](https://github.com/YeonCheolGit/springboot-restful-api-board/wiki) for full documentation, examples, operational details and other information.

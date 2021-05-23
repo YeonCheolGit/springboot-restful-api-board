@@ -34,7 +34,6 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.4.6'
     implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.4.5'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '2.4.5'
-//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.4.5'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -49,8 +48,6 @@ dependencies {
 
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
-
-//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

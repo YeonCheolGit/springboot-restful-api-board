@@ -15,9 +15,11 @@ import springfox.documentation.service.Contact;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
-    Contact contact = new Contact("YeonCheol",
+    final Contact contact = new Contact(
+            "YeonCheol",
             "https://github.com/YeonCheolGit",
-            "yeoncheol.jang@gmail.com");
+            "yeoncheol.jang@gmail.com"
+    );
 
     @Bean
     public Docket swaggerApi() {
@@ -35,6 +37,8 @@ public class SwaggerConfiguration {
                 .title("SpringBoot REST API Documentation")
                 .description("장연철 게시판 개발에 사용되는 서버 API 연동 문서입니다.")
                 .contact(contact)
-                .license("YeonCheol").version("1").build();
+                .license("YeonCheol")
+                .version("1")
+                .build();
     }
 }

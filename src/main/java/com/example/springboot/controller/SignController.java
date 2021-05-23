@@ -18,6 +18,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,46 +41,28 @@ public class SignController {
     private final ResponseService responseService;
     private final PasswordEncoder passwordEncoder;
 
-//    @ApiOperation(value = "회원가입", notes = "회원 가입 합니다")
-//    @PostMapping(value = "/signUp")
-//    public CommonResult signUp(@ApiParam(value = "회원 아이디 (userId) : 이메일", required = true) @RequestParam String userId,
-//                               @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam String userPwd,
-//                               @ApiParam(value = "회원 이름 (userName)", required = true) @RequestParam String userName) {
-//
-//
-//        Role role = new Role();
-//        role.setRoleNo(1);
-//        userService.save(User.builder()
-//                .userId(userId)
-//                .userPwd(passwordEncoder.encode(userPwd))
-//                .userName(userName)
-//                .roles(Collections.singleton(role))
-//                .build()
-//        );
-//        return responseService.getSuccessResult();
-//    }
-
     /*
      * 회원가입 합니다.
      * DTO 거쳐서 Entity 접근 합니다.
      */
     @ApiOperation(value = "회원가입", notes = "회원 가입 합니다")
     @PostMapping(value = "/signUp")
-    public CommonResult signUp(@ModelAttribute @Valid UserRequestDTO userRequestDTO) {
+    public ResponseEntity<CommonResult> signUp(@ModelAttribute @Valid UserRequestDTO userRequestDTO) {
         userService.saveDTO(userRequestDTO);
-        return responseService.getSuccessCreated();
+        return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "로그인", notes = "회원 로그인 합니다")
     @PostMapping(value = "/signIn")
-    public CommonResult signIn(@ApiParam(value = "회원 아이디 (userId): 이메일", required = true) @RequestParam String userId,
-                                       @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam String userPwd) {
+    public ResponseEntity<CommonResult> signIn(@ApiParam(value = "회원 아이디 (userId): 이메일", required = true) @RequestParam String userId,
+                               @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam String userPwd) {
         User user = userService.findByUserId(userId).orElseThrow(EmailSignInFailException::new);
 
         if (!passwordEncoder.matches(userPwd, user.getPassword())) {
             throw new EmailSignInFailException(userId + " > 입력된 비밀번호가 일치하지 않습니다.");
         }
-        return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));
+        return new ResponseEntity<>(responseService.getSingleResult(
+                jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles())), HttpStatus.OK);
     }
 
     // 가지고 온 카카오 Access Token을 이용해서 가입합니다
