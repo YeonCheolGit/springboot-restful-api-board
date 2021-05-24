@@ -8,7 +8,7 @@ public enum ErrorEnum {
     // 성공 응답
     DEFAULT_SUCCESS(true, 0, "성공했습니다.", 200),
     SUCCESS_CREATED(true, 0, "생성에 성공했습니다.", 201),
-    SUCCESS_DELETED(true, 0, "삭제에 성공했습니다.", 204),
+    SUCCESS_DELETED(true, 0, "삭제에 성공했습니다.", 200),
 
     // 실패 응답
     DEFAULT_FAIL(false, -1, "실패했습니다.", 500),

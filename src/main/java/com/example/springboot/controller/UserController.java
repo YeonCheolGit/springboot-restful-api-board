@@ -10,6 +10,8 @@ import com.example.springboot.service.User.UserService;
 import com.example.springboot.service.exception.ResponseService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +30,8 @@ public class UserController {
     })
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회합니다")
     @GetMapping(value = "/users")
-    public ListResult<User> findAllUser() throws FindAnyFailException {
-        return responseService.getListResult(userService.findAll());
+    public ResponseEntity<ListResult<User>> findAllUser() throws FindAnyFailException {
+        return new ResponseEntity<>(responseService.getListResult(userService.findAll()), HttpStatus.OK);
     }
 
     @ApiImplicitParams({
@@ -37,10 +39,10 @@ public class UserController {
     })
     @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 한명 조회합니다")
     @GetMapping(value = "/user")
-    public SingleResult<User> findUserById() {
+    public ResponseEntity<SingleResult<User>> findUserById() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
-        return responseService.getSingleResult(userService.findByUserId(userId).orElseThrow(FindAnyFailException::new));
+        return new ResponseEntity<>(responseService.getSingleResult(userService.findByUserId(userId).orElseThrow(FindAnyFailException::new)), HttpStatus.OK);
     }
 
     @ApiImplicitParams({
@@ -48,9 +50,9 @@ public class UserController {
     })
     @ApiOperation(value = "회원 이름 수정", notes = "한명의 회원 이름을 수정 합니다")
     @PutMapping(value = "/user")
-    public SingleResult<User> modify(@ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName) {
+    public ResponseEntity<SingleResult<User>> modify(@ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName));
+        return new ResponseEntity<>(responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName)), HttpStatus.OK);
     }
 
     @ApiImplicitParams({
@@ -58,8 +60,8 @@ public class UserController {
     })
     @ApiOperation(value = "회원 삭제", notes = "userId로 한명의 회원정보를 삭제합니다")
     @DeleteMapping(value = "/user/{userNo}")
-    public CommonResult delete(@ApiParam(value = "회원번호", required = true) @PathVariable long userNo) {
+    public ResponseEntity<CommonResult> delete(@ApiParam(value = "회원번호", required = true) @PathVariable long userNo) {
         userService.deleteByUserNo(userNo);
-        return responseService.getSuccessDeleted();
+        return new ResponseEntity<>(responseService.getSuccessDeleted(), HttpStatus.OK);
     }
 }

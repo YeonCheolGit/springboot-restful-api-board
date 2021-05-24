@@ -68,7 +68,7 @@ public class SignController {
     // 가지고 온 카카오 Access Token을 이용해서 가입합니다
     @ApiOperation(value = "카카오 계정 가입", notes = "카카오 계정 Access Token 이용 회원가입 합니다")
     @PostMapping(value = "/signUp/{provider}")
-    public CommonResult signUpByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
+    public ResponseEntity<CommonResult> signUpByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
                                          @ApiParam(value = "카카오 토큰 (access_token)", required = true) @RequestParam String accessToken,
                                          @ApiParam(value = "회원 이름 (userName)", required = true) @RequestParam String userName) {
         Role role = new Role();
@@ -86,17 +86,19 @@ public class SignController {
                 .userName(userName)
                 .roles(Collections.singleton(role))
                 .build());
-        return responseService.getSuccessCreated();
+        return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
     }
 
-    // 카카오 토큰을 이용해서 로그인 합니다.
     @ApiOperation(value = "카카오 로그인", notes = "카카오 회원 로그인 합니다")
     @PostMapping(value = "/signIn/{provider}")
-    public SingleResult<String> signInByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
+    public ResponseEntity<SingleResult<String>> signInByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
                                                  @ApiParam(value = "카카오 액세스 토큰 (accessToken)", required = true) @RequestParam String accessToken) {
         KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
         User user = userService.findByUserIdAndProvider(String.valueOf(profile.getKakao_account().getEmail()), provider).orElseThrow(AuthFailException::new);
-        return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()));
+        return new ResponseEntity<>(
+                responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles())),
+                HttpStatus.OK
+        );
     }
 }
 

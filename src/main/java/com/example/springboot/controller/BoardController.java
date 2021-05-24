@@ -71,7 +71,7 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.updatePost(postNo, userId, commonParamPost);
-        return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
+        return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
     }
 
     @ApiImplicitParams({
