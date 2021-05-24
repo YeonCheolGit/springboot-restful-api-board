@@ -10,10 +10,6 @@
 ## Introduction
 This API provides CRUD operations for board application. This API focuses on Authentication/Authorisation(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
 
-### Introduction
-This API provides CRUD operations for board application. 
-This API focuses on Authentication/Authorisation(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
-
 ## Full Documentation
 See the [Wiki](https://github.com/YeonCheolGit/springboot-restful-api-board/wiki) for full documentation, examples, operational details and other information.
 
@@ -35,10 +31,8 @@ $ ./gradlew build
 localhost:8080/swagger-ui.html
 ```
 
-## Angualar Frontend project - Availabe call this API (4200 port)
-```
-https://github.com/YeonCheolGit/angular-frontend
-```
+## Angualar Frontend project
+[repository](https://github.com/YeonCheolGit/angular-frontend)
 
 ## LICENSES
 [Spring Boot is Open Source software released under the Apache 2.0 license.](https://www.apache.org/licenses/)  

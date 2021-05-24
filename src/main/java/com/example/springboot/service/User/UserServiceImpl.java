@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveDTO(UserRequestDTO userRequestDTO) {
+    public void saveEmailUser(UserRequestDTO userRequestDTO) {
         verifyDuplicateEmail(userRequestDTO.getUserId());
         userRequestDTO.setUserPwd(passwordEncoder.encode(userRequestDTO.getUserPwd()));
         userRepository.save(userRequestDTO.toEntity());
@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteByUserNo(long userNo) {
         userRepository.deleteByUserNo(userNo);
-//        userRepository.delete(userNo);
     }
 
     @Override

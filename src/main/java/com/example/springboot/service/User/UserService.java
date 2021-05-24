@@ -25,7 +25,7 @@ public interface UserService {
     User save(User user);
 
     @Transactional
-    void saveDTO(UserRequestDTO userRequestDTO);
+    void saveEmailUser(UserRequestDTO userRequestDTO);
 
     void deleteByUserNo(long userNo);
 

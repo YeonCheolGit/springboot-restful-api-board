@@ -17,7 +17,8 @@ public enum ErrorEnum {
     KAKAO_API_FAIL(false, -1, "카카오 API 통신 실패", 503),
     DUPLICATED_USER_FAIL(false,-1, "이미 가입된 회원 입니다", 409),
     AUTH_FAIL(false,-1, "회원 인증 오류 입니다", 403),
-    BIND_FAIL(false,-1, "데이터 바인딩 오류 입니다.", 400);
+    BIND_FAIL(false,-1, "데이터 바인딩 오류 입니다.", 400),
+    VALID_FAIL(false, -1, "@Valid 유효성 검증 오류 입니다.", 400);
 
     private final boolean check;
     private final int code;

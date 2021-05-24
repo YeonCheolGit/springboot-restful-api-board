@@ -103,7 +103,7 @@ public class ResponseService {
         return result;
     }
 
-    // 모든 삭제 성공에 대한 응답 입니다.
+    // 바인딩 에러에 대한 응답 입니다.
     public CommonResult getBindFailResult() {
         log.debug("getBindFailResult()");
         CommonResult result = new CommonResult();
@@ -111,6 +111,17 @@ public class ResponseService {
         result.setCode(ErrorEnum.BIND_FAIL.getCode());
         result.setMsg(ErrorEnum.BIND_FAIL.getMsg());
         result.setStatus(ErrorEnum.BIND_FAIL.getStatus());
+        return result;
+    }
+
+    // 유효성 검증 실패에 대한 응답 입니다.
+    public CommonResult getMethodArgumentNotValidResult() {
+        log.debug("getMethodArgumentNotValidResult()");
+        CommonResult result = new CommonResult();
+        result.setSuccess(ErrorEnum.VALID_FAIL.isCheck());
+        result.setCode(ErrorEnum.VALID_FAIL.getCode());
+        result.setMsg(ErrorEnum.VALID_FAIL.getMsg());
+        result.setStatus(ErrorEnum.VALID_FAIL.getStatus());
         return result;
     }
 

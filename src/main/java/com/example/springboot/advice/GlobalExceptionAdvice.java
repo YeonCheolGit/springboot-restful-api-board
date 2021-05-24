@@ -6,6 +6,7 @@ import com.example.springboot.service.exception.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -84,7 +85,15 @@ public class GlobalExceptionAdvice {
     // 모든 바인딩 에러 발생 합니다.
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected CommonResult successCreated(BindException e) {
+    protected CommonResult bindException(BindException e) {
+        log.info("BindException : ", e);
+        return responseService.getBindFailResult();
+    }
+
+    // @Valid 유효성 검증 에러 발생 합니다.
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResult methodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.info("BindException : ", e);
         return responseService.getBindFailResult();
     }

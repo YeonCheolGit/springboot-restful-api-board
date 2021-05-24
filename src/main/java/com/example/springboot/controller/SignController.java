@@ -48,7 +48,7 @@ public class SignController {
     @ApiOperation(value = "회원가입", notes = "회원 가입 합니다")
     @PostMapping(value = "/signUp")
     public ResponseEntity<CommonResult> signUp(@ModelAttribute @Valid UserRequestDTO userRequestDTO) {
-        userService.saveDTO(userRequestDTO);
+        userService.saveEmailUser(userRequestDTO);
         return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
     }
 
