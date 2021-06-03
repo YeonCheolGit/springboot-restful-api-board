@@ -49,7 +49,10 @@ public class SignController {
     @PostMapping(value = "/signUp")
     public ResponseEntity<CommonResult> signUp(@ModelAttribute @Valid UserRequestDTO userRequestDTO) {
         userService.saveEmailUser(userRequestDTO);
-        return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                responseService.getSuccessCreated(),
+                HttpStatus.CREATED
+        );
     }
 
     @ApiOperation(value = "로그인", notes = "회원 로그인 합니다")
@@ -61,8 +64,10 @@ public class SignController {
         if (!passwordEncoder.matches(userPwd, user.getPassword())) {
             throw new EmailSignInFailException(userId + " > 입력된 비밀번호가 일치하지 않습니다.");
         }
-        return new ResponseEntity<>(responseService.getSingleResult(
-                jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles())), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles())),
+                HttpStatus.OK
+        );
     }
 
     // 가지고 온 카카오 Access Token을 이용해서 가입합니다
@@ -86,7 +91,10 @@ public class SignController {
                 .userName(userName)
                 .roles(Collections.singleton(role))
                 .build());
-        return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                responseService.getSuccessCreated(),
+                HttpStatus.CREATED
+        );
     }
 
     @ApiOperation(value = "카카오 로그인", notes = "카카오 회원 로그인 합니다")

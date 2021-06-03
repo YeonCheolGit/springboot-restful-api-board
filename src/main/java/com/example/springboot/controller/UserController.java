@@ -31,7 +31,10 @@ public class UserController {
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회합니다")
     @GetMapping(value = "/users")
     public ResponseEntity<ListResult<User>> findAllUser() throws FindAnyFailException {
-        return new ResponseEntity<>(responseService.getListResult(userService.findAll()), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getListResult(userService.findAll()),
+                HttpStatus.OK
+        );
     }
 
     @ApiImplicitParams({
@@ -42,7 +45,10 @@ public class UserController {
     public ResponseEntity<SingleResult<User>> findUserById() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
-        return new ResponseEntity<>(responseService.getSingleResult(userService.findByUserId(userId).orElseThrow(FindAnyFailException::new)), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getSingleResult(userService.findByUserId(userId).orElseThrow(FindAnyFailException::new)),
+                HttpStatus.OK
+        );
     }
 
     @ApiImplicitParams({
@@ -52,7 +58,10 @@ public class UserController {
     @PutMapping(value = "/user")
     public ResponseEntity<SingleResult<User>> modify(@ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return new ResponseEntity<>(responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName)), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getSingleResult(userService.findByUserIdAndToken(authentication.getName(), userName)),
+                HttpStatus.OK
+        );
     }
 
     @ApiImplicitParams({
@@ -62,6 +71,9 @@ public class UserController {
     @DeleteMapping(value = "/user/{userNo}")
     public ResponseEntity<CommonResult> delete(@ApiParam(value = "회원번호", required = true) @PathVariable long userNo) {
         userService.deleteByUserNo(userNo);
-        return new ResponseEntity<>(responseService.getSuccessDeleted(), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getSuccessDeleted(),
+                HttpStatus.OK
+        );
     }
 }

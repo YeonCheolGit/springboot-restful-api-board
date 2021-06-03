@@ -34,14 +34,22 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 정보 조회", notes = "게시판 정보를 조회 합니다")
     @GetMapping(value = "/{boardName}")
-    public SingleResult<Board> boardInfo(@PathVariable String boardName) {
-        return responseService.getSingleResult(boardService.findBoard(boardName));
+    public ResponseEntity<SingleResult<Board>> boardInfo(@PathVariable String boardName) {
+//        return responseService.getSingleResult(boardService.findBoard(boardName));
+        return new ResponseEntity<>(
+                responseService.getSingleResult(boardService.findBoard(boardName)),
+                HttpStatus.OK
+        );
     }
 
     @ApiOperation(value = "게시판 글 리스트", notes = "게시판 글 리스트를 조회 합니다")
     @GetMapping(value = "/{boardName}/posts")
-    public ListResult<Post> posts(@PathVariable String boardName) {
-        return responseService.getListResult(boardService.findPosts(boardName));
+    public ResponseEntity<ListResult<Post>> posts(@PathVariable String boardName) {
+//        return responseService.getListResult(boardService.findPosts(boardName));
+        return new ResponseEntity<>(
+                responseService.getListResult(boardService.findPosts(boardName)),
+                HttpStatus.OK
+        );
     }
 
     @ApiImplicitParams({
@@ -53,13 +61,19 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.writePost(userId, boardName, commonParamPost);
-        return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                responseService.getSuccessCreated(),
+                HttpStatus.CREATED
+        );
     }
 
     @ApiOperation(value = "게시판의 글 상세보기", notes = "게시판의 글을 상세보기 합니다")
     @GetMapping(value = "/post/{postNo}")
     public ResponseEntity<SingleResult<Post>> post(@PathVariable long postNo) {
-        return new ResponseEntity<>(responseService.getSingleResult(boardService.getPost(postNo)), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getSingleResult(boardService.getPost(postNo)),
+                HttpStatus.OK
+        );
     }
 
     @ApiImplicitParams({
@@ -71,7 +85,10 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.updatePost(postNo, userId, commonParamPost);
-        return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getSuccessResult(),
+                HttpStatus.OK
+        );
     }
 
     @ApiImplicitParams({
@@ -83,6 +100,9 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.deletePost(postNo, userId);
-        return new ResponseEntity<>(responseService.getSuccessDeleted(), HttpStatus.OK);
+        return new ResponseEntity<>(
+                responseService.getSuccessDeleted(),
+                HttpStatus.OK
+        );
     }
 }
