@@ -1,8 +1,6 @@
 package com.example.springboot.service.exception;
 
-import com.example.springboot.model.response.CommonResult;
-import com.example.springboot.model.response.ListResult;
-import com.example.springboot.model.response.SingleResult;
+import com.example.springboot.model.response.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -4,9 +4,6 @@ import com.example.springboot.advice.exception.KakaoApiException;
 import com.example.springboot.model.KakaoAuth;
 import com.example.springboot.model.KakaoProfile;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -16,7 +13,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -36,7 +32,10 @@ public class KakaoService {
     @Value("${spring.social.kakao.redirect}")
     private String kakaoRedirect;
 
-    // 카카오 Acesss Token 바탕으로 회원 정보를 가지고 옵니다
+    /*
+     * 카카오 Acesss Token 파라미터로 회원 정보를 가지고 옵니다
+     * 'https://kapi.kakao.com/v2/user/me' 사용자 프로필 정보 가지고 옵니다.
+     */
     public KakaoProfile getKakaoProfile(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -53,7 +52,9 @@ public class KakaoService {
         throw new KakaoApiException("카카오 API 회원 정보 가지고 오는 것 에러 발생 했습니다.");
     }
 
-    // 해당 회원의 카카오 Access Token 가져 옵니다
+    /*
+     * 카카오로 부터 발급 받은 인가 코드를 파라미터로 받아, access token 발급 합니다.
+     */
     public KakaoAuth getKakaoTokenInfo(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
