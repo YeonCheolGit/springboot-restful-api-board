@@ -1,5 +1,6 @@
 package com.example.springboot.service.User;
 
+import com.example.springboot.DTO.user.KakaoUserRequestDTO;
 import com.example.springboot.DTO.user.UserRequestDTO;
 import com.example.springboot.entity.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public interface UserService {
     List<User> findAll();
 
     @Transactional
-    User save(User user);
+    void save(KakaoUserRequestDTO user);
 
     @Transactional
     void saveEmailUser(UserRequestDTO userRequestDTO);

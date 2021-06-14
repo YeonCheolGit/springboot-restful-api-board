@@ -1,5 +1,6 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.DTO.user.KakaoUserRequestDTO;
 import com.example.springboot.DTO.user.UserRequestDTO;
 import com.example.springboot.advice.exception.AuthFailException;
 import com.example.springboot.advice.exception.DuplicatedDataException;
@@ -24,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.Optional;
 
 // 회원 로그인, 가입 관련 컨트롤러
@@ -42,7 +42,7 @@ public class SignController {
     private final PasswordEncoder passwordEncoder;
 
     /*
-     * 회원가입 합니다.
+     * 이메일, 비밀번호 활용한 일반적인 회원가입 합니다.
      * DTO 거쳐서 Entity 접근 합니다.
      */
     @ApiOperation(value = "회원가입", notes = "회원 가입 합니다")
@@ -71,15 +71,16 @@ public class SignController {
     }
 
     /*
-     1. 인가 코드 (code) 발급 후 redirect uri 컨트롤러
+     1. 인가 코드 (authorization code) 발급 후 redirect uri 컨트롤러
      2. 인가 코드 파라미터 받은 후 getKakaoTokenInfo(인가 코드) 실행 --> access_token 발급 합니다.
      3. getKakaoProfile(access_token) --> 'https://kapi.kakao.com/v2/user/me' 사용자 프로필 정보 가지고 옵니다.
      4. 회원 가입 절차 진행 합니다.
      */
     @ApiOperation(value = "카카오 계정 가입", notes = "카카오 계정 Access Token 이용 회원가입 합니다")
-    @PostMapping(value = "/signUp/kakao_auth_code")
-    public ResponseEntity<CommonResult> signUpByKakaoAccessToken(@ApiParam(value = "카카오 토큰 (access_token)", required = true) @RequestParam String code) {
-        String access_token = kakaoService.getKakaoTokenInfo(code).getAccess_token(); // access tocken 가지고 옵니다.
+    @PostMapping(value = "/signUp/kakaoAuthCode")
+    public ResponseEntity<CommonResult> signUpByKakaoAccessToken(@ApiParam(value = "카카오 인가 코드 (authorization code)", required = true) @RequestParam String code) {
+        String access_token = kakaoService.getKakaoTokenInfo(code).getAccess_token(); // 인가 코드를 바탕으로 access tocken 가지고 옵니다.
+
         Role role = new Role();
         role.setRoleNo(1);
 
@@ -89,48 +90,18 @@ public class SignController {
         if (user.isPresent())
             throw new DuplicatedDataException("중복된 회원 이메일 입니다.");
 
-        userService.save(User.builder()
+        userService.save(KakaoUserRequestDTO.builder()
                 .userId(String.valueOf(profile.getKakao_account().getEmail()))
-                .provider("kakao")
                 .userName("kakao")
-                .roles(Collections.singleton(role))
-                .build());
+                .provider("kakao")
+                .build()
+        );
+
         return new ResponseEntity<>(
                 responseService.getSuccessCreated(),
                 HttpStatus.CREATED
         );
     }
-
-    // 가지고 온 카카오 Access Token을 이용해서 가입합니다
-//    @ApiOperation(value = "카카오 계정 가입", notes = "카카오 계정 Access Token 이용 회원가입 합니다")
-//    @PostMapping(value = "/signUp/{provider}")
-//    public ResponseEntity<CommonResult> signUpByProvider(@ApiParam(value = "서비스 제공자 (provider)", required = true, defaultValue = "kakao") @PathVariable String provider,
-//                                         @ApiParam(value = "카카오 토큰 (access_token)", required = true) @RequestParam String accessToken,
-//                                         @ApiParam(value = "회원 이름 (userName)", required = true) @RequestParam String userName) {
-//        System.out.println("================= 카카오 가입 실행 ================= ");
-//        System.out.println("provider >>>>>>>>>>> " + provider);
-//        System.out.println("accessToken >>>>>>>>>>> " + accessToken);
-//        System.out.println("userName >>>>>>>>>>> " + userName);
-//        Role role = new Role();
-//        role.setRoleNo(1);
-//
-//        KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
-//
-//        Optional<User> user = userService.findByUserIdAndProvider(String.valueOf(profile.getKakao_account().getEmail()), provider);
-//        if (user.isPresent())
-//            throw new DuplicatedDataException("중복된 회원 이메일 입니다.");
-//
-//        userService.save(User.builder()
-//                .userId(String.valueOf(profile.getKakao_account().getEmail()))
-//                .provider(provider)
-//                .userName(userName)
-//                .roles(Collections.singleton(role))
-//                .build());
-//        return new ResponseEntity<>(
-//                responseService.getSuccessCreated(),
-//                HttpStatus.CREATED
-//        );
-//    }
 
     @ApiOperation(value = "카카오 로그인", notes = "카카오 회원 로그인 합니다")
     @PostMapping(value = "/signIn/{provider}")

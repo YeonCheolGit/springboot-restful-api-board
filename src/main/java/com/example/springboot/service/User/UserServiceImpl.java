@@ -1,5 +1,6 @@
 package com.example.springboot.service.User;
 
+import com.example.springboot.DTO.user.KakaoUserRequestDTO;
 import com.example.springboot.DTO.user.UserRequestDTO;
 import com.example.springboot.advice.exception.DuplicatedDataException;
 import com.example.springboot.advice.exception.FindAnyFailException;
@@ -45,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public void save(KakaoUserRequestDTO kakaoUserRequestDTO) {
+        userRepository.save(kakaoUserRequestDTO.toEntity());
     }
 
     @Override
