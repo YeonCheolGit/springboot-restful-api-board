@@ -1,8 +1,11 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.advice.exception.KakaoApiException;
+import com.example.springboot.model.KakaoProfile;
 import com.example.springboot.model.response.SingleResult;
 import com.example.springboot.service.exception.ResponseService;
 import com.example.springboot.service.social.KakaoService;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 @Api(tags = {"4. Social"})
 @Controller
 @RequiredArgsConstructor
@@ -25,9 +30,9 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoTokenController {
 
     private final Environment environment;
-    private final KakaoService kakaoService;
     private final ResponseService responseService;
     private final RestTemplate restTemplate;
+    private final Gson gson;
 
     @Value("${spring.url.base}")
     private String baseUrl;
@@ -40,7 +45,7 @@ public class KakaoTokenController {
 
     /*
      1. 프론트에서 카카오 회원가입 버튼 클릭 합니다.
-     2. 카카오 인가 코드 발급 위한 URI 생성 후 '/api/v1/signUp/kakao_auth_code/return' 파라미터로 넘깁니다.
+     2. 카카오 인가 코드 발급 위한 URI 생성 후 클라이언트 response
      */
     @GetMapping(value = "/kakaoAuthCode")
     @ApiOperation(value = "카카오 인가 코드 발급 URI")
@@ -50,7 +55,7 @@ public class KakaoTokenController {
                 .append("?client_id=").append(kakaoClientId)
                 .append("&redirect_uri=").append(baseUrl).append(kakaoRedirect)
                 .append("&response_type=code");
-        System.out.println("인가 코드 발급 URI >>> " + loginUrl);
+        System.out.println(loginUrl);
         return new ResponseEntity<>(responseService.getSingleResult(loginUrl), HttpStatus.OK);
     }
 
@@ -59,18 +64,18 @@ public class KakaoTokenController {
      2. 받은 인가 코드 '/api/v1/signUp/kakaoAuthCode'로 넘깁니다. (회원가입 Post method 위함)
      *  프론트를 거치지 않습니다.
      */
-    @ApiOperation(value = "카카오 계정 가입", notes = "회원가입 시 post 메서드 위해 해당 컨트롤러 거칩니다.")
-    @GetMapping(value = "/kakaoAuthCode/return")
-    public ResponseEntity<String> authCodeReturn(@ApiParam(value = "카카오 인가 코드 (authorization code)", required = true) @RequestParam String code) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", code);
-
-        final String url = "http://localhost:8080/api/v1/signUp/kakaoAuthCode";
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
-        return response;
-    }
+//    @ApiOperation(value = "카카오 계정 가입", notes = "회원가입 시 post 메서드 위해 해당 컨트롤러에서 인가코드 보냅니다.")
+//    @GetMapping(value = "/kakaoAuthCode/return")
+//    public ResponseEntity<String> authCodeReturn(@ApiParam(value = "카카오 인가 코드 (authorization code)", required = true) @RequestParam String code) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+//        params.add("code", code);
+//
+//        final String url = "http://localhost:8080/api/v1/signUp/kakaoAuthCode";
+//        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+//        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+//        return response;
+//    }
 }

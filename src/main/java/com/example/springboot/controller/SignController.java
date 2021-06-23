@@ -84,7 +84,7 @@ public class SignController {
         Role role = new Role();
         role.setRoleNo(1);
 
-        KakaoProfile profile = kakaoService.getKakaoProfile(access_token); // 만들어진 access tocken으로 회원 정보 가지고 옵니다.
+        KakaoProfile profile = kakaoService.getKakaoProfile(access_token); // 만들어진 access token으로 회원 정보 가지고 옵니다.
 
         Optional<User> user = userService.findByUserIdAndProvider(String.valueOf(profile.getKakao_account().getEmail()), "kakao");
         if (user.isPresent())
