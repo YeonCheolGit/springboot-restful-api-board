@@ -35,10 +35,12 @@ public class JwtTokenProvider {
     }
 
     /*
-     * 토큰 생성 한다
+     Params:
+        userPk - 이미 인증된 회원의 PK
+        roles - 이미 인증된 회원의 role
+     Return: 생성된 String 값의 JWT 토큰
      */
     public String createToken(String userPk, Set<Role> roles) {
-        log.debug("createToken");
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("roles", roles);
         Date now = new Date();
@@ -52,10 +54,9 @@ public class JwtTokenProvider {
     }
 
     /*
-     * Request Header에서 토큰 값 가지고 온다
+     Param: Request Header에서 파싱한 토큰 값
      */
     public String resolveToken(HttpServletRequest request) {
-        log.debug("resolveToken");
         return request.getHeader("X-AUTH-TOKEN");
     }
 
@@ -63,7 +64,6 @@ public class JwtTokenProvider {
      * 토큰 유효성 + 만료일자 검증
      */
     public boolean validateToken(String jwtToken) {
-        log.debug("validateToken");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date()); // 만료 날짜가 현재보다 이전이 아니라면
@@ -74,14 +74,12 @@ public class JwtTokenProvider {
     }
 
     /*
-     * 토큰이 유효하다면 실행 됨
-     * 토큰을 기준으로 DB에 저장된 회원 가지고 옮
-     * 토큰 형태로 만들어 인증을 위임
+     Param: 이미 유효한 토큰
+     Return: 인증 주체와 권한을 저장
      */
     public Authentication getAuthentication(String token) {
-        log.debug("getAuthentication");
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token)); // 토큰을 바탕으로 DB에서 회원 조회 합니다.
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()); // 조회한 인증 주체(회원)와 권한
     }
 
     private String getUserPk(String token) {

@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Api(tags = {"2. user"})
 @RequiredArgsConstructor
 @RestController
@@ -45,6 +47,7 @@ public class UserController {
     public ResponseEntity<SingleResult<User>> findUserById() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
+
         return new ResponseEntity<>(
                 responseService.getSingleResult(userService.findByUserId(userId).orElseThrow(FindAnyFailException::new)),
                 HttpStatus.OK

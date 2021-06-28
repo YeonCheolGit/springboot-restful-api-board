@@ -78,9 +78,8 @@ public class BoardServiceImpl implements BoardService {
         Post post = getPost(postNo);
         User user = post.getUserNo();
 
-        if (!userId.equals(user.getUserId())) { // 게시글 작성자와 현재 로그인 회원이 다를 경우 수정할 수 없습니다.
+        if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 수정할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 수정할 수 없습니다.");
-        }
 
         post.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
         return post;

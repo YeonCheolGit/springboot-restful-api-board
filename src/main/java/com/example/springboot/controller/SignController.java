@@ -79,7 +79,7 @@ public class SignController {
     @ApiOperation(value = "카카오 계정 가입", notes = "카카오 계정 Access Token 이용 회원가입 합니다")
     @PostMapping(value = "/signUp/kakaoAuthCode")
     public ResponseEntity<CommonResult> signUpByKakaoAccessToken(@ApiParam(value = "카카오 인가 코드 (authorization code)", required = true) @RequestParam String code) {
-        String access_token = kakaoService.getKakaoTokenInfo(code).getAccess_token(); // 인가 코드를 바탕으로 access tocken 가지고 옵니다.
+        String access_token = kakaoService.getKakaoTokenInfo(code).getAccess_token(); // 인가 코드를 바탕으로 access token 가지고 옵니다.
 
         Role role = new Role();
         role.setRoleNo(1);
@@ -87,6 +87,7 @@ public class SignController {
         KakaoProfile profile = kakaoService.getKakaoProfile(access_token); // 만들어진 access token으로 회원 정보 가지고 옵니다.
 
         Optional<User> user = userService.findByUserIdAndProvider(String.valueOf(profile.getKakao_account().getEmail()), "kakao");
+
         if (user.isPresent())
             throw new DuplicatedDataException("중복된 회원 이메일 입니다.");
 
