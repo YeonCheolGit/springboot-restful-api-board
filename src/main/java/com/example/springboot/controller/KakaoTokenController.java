@@ -2,7 +2,6 @@ package com.example.springboot.controller;
 
 import com.example.springboot.model.response.SingleResult;
 import com.example.springboot.service.exception.ResponseService;
-import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -10,13 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = {"4. Social"})
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/social/login")
 public class KakaoTokenController {
@@ -45,7 +43,6 @@ public class KakaoTokenController {
                 .append("?client_id=").append(kakaoClientId)
                 .append("&redirect_uri=").append(baseUrl).append(kakaoRedirect)
                 .append("&response_type=code");
-        System.out.println(loginUrl);
         return new ResponseEntity<>(responseService.getSingleResult(loginUrl), HttpStatus.OK);
     }
 }

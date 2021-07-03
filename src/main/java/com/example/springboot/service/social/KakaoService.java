@@ -1,8 +1,12 @@
 package com.example.springboot.service.social;
 
+import com.example.springboot.advice.exception.AuthFailException;
 import com.example.springboot.advice.exception.KakaoApiException;
+import com.example.springboot.config.security.JwtTokenProvider;
+import com.example.springboot.entity.User;
 import com.example.springboot.model.KakaoAuth;
 import com.example.springboot.model.KakaoProfile;
+import com.example.springboot.service.User.UserService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +26,8 @@ public class KakaoService {
     private final RestTemplate restTemplate;
     private final Environment environment;
     private final Gson gson;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${spring.url.base}")
     private String baseUrl;
@@ -72,5 +78,12 @@ public class KakaoService {
             return gson.fromJson(response.getBody(), KakaoAuth.class);
         }
         return null;
+    }
+
+    // 카카오 로그인 시 사용 됩니다.
+    public String signInByKakaoAccessToken(String accessToken) {
+        KakaoProfile profile = getKakaoProfile(accessToken); // accessToken으로 회원 정보 추출 합니다.
+        User user = userService.findByUserIdAndProvider(String.valueOf(profile.getKakao_account().getEmail()), "kakao").orElseThrow(AuthFailException::new); // 추출한 회원정보와 DB를 조회 합니다.
+        return jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles()); // 생성된 JWT 토큰을 return 합니다.
     }
 }
