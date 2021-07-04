@@ -6,7 +6,7 @@ import com.example.springboot.entity.User;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;
 import com.example.springboot.model.response.SingleResult;
-import com.example.springboot.service.User.UserService;
+import com.example.springboot.service.user.UserService;
 import com.example.springboot.service.exception.ResponseService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Api(tags = {"2. user"})
 @RequiredArgsConstructor

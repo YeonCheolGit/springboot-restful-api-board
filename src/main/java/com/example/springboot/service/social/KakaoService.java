@@ -6,7 +6,7 @@ import com.example.springboot.config.security.JwtTokenProvider;
 import com.example.springboot.entity.User;
 import com.example.springboot.model.KakaoAuth;
 import com.example.springboot.model.KakaoProfile;
-import com.example.springboot.service.User.UserService;
+import com.example.springboot.service.user.UserService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

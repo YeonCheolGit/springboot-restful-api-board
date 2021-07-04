@@ -1,4 +1,4 @@
-package com.example.springboot.service.Board;
+package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
 import com.example.springboot.entity.Board;

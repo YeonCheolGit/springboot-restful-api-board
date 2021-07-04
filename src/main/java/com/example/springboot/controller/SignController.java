@@ -8,7 +8,7 @@ import com.example.springboot.entity.Role;
 import com.example.springboot.entity.User;
 import com.example.springboot.model.KakaoProfile;
 import com.example.springboot.model.response.CommonResult;
-import com.example.springboot.service.User.UserService;
+import com.example.springboot.service.user.UserService;
 import com.example.springboot.service.exception.ResponseService;
 import com.example.springboot.service.social.KakaoService;
 import io.swagger.annotations.Api;

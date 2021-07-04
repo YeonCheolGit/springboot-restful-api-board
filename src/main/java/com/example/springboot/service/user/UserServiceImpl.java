@@ -1,4 +1,4 @@
-package com.example.springboot.service.User;
+package com.example.springboot.service.user;
 
 import com.example.springboot.DTO.user.KakaoUserRequestDTO;
 import com.example.springboot.DTO.user.UserRequestDTO;
