@@ -24,7 +24,7 @@ public class BoardServiceImpl implements BoardService {
     private final PostRepository postRepository;
 
     /*
-     * 게시판 이름으로 특정 게시판 글 조회 합니다.
+     * 게시판 이름으로 특정 게시판 정보를 조회 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
     @Override
@@ -34,7 +34,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /*
-     * 게시물 번호로 특정 게시물 찾습니다.
+     * 게시판 이름으로 특정 게시판 글 조회 합니다.
+     * findByBoardNo(findBoard(boardName)) - 게시판 이름으로 찾은 후 해당 No를 기준으로 게시물 찾습니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
     @Override

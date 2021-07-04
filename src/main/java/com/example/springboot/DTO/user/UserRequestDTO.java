@@ -3,6 +3,7 @@ package com.example.springboot.DTO.user;
 import com.example.springboot.entity.Role;
 import com.example.springboot.entity.User;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -16,14 +17,17 @@ import java.util.Collections;
 public class UserRequestDTO {
     @NotEmpty
     @Email(message = "아이디는 비밀번호 형식으로 입력하셔야 합니다.")
+    @Length(min = 1, max = 50)
     private String userId;
 
     @NotEmpty
+    @Length(min = 1, max = 50)
     private String userName;
 
     @NotEmpty
     @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
             message = "최소 1개 이상의 소문자, 대문자, 숫자, 특수기호가 포함되어야 합니다.")
+    @Length(max = 100)
     private String userPwd;
 
     public User toEntity(){

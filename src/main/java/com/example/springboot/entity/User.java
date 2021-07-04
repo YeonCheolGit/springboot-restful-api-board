@@ -26,18 +26,18 @@ public class User implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userNo;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true)
     private String userId;
 
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(length = 100) // 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
+    @Column// 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
     private String userPwd;
 
-    @Column(length = 100)
+    @Column
     private String provider; // 소셜 로그인 제공자 (카카오)
 
     @JsonIgnore
