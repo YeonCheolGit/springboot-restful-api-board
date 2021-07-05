@@ -2,14 +2,11 @@ package com.example.springboot.controller;
 
 import com.example.springboot.DTO.CommonParamPost;
 import com.example.springboot.entity.Board;
-import com.example.springboot.entity.Comment;
 import com.example.springboot.entity.Post;
-import com.example.springboot.model.response.CommentResult;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;
 import com.example.springboot.model.response.SingleResult;
 import com.example.springboot.service.board.BoardService;
-import com.example.springboot.service.comment.CommentService;
 import com.example.springboot.service.exception.ResponseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,7 +31,6 @@ public class BoardController {
 
     private final BoardService boardService;
     private final ResponseService responseService;
-    private final CommentService commentService;
 
     @ApiOperation(value = "게시판 정보 조회", notes = "게시판 정보를 조회 합니다")
     @GetMapping(value = "/{boardName}")

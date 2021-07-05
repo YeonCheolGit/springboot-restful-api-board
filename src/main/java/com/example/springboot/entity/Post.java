@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -33,6 +35,10 @@ public class Post extends CommonDateEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userNo")
     private User userNo;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "replyNo")
+    private Set<Reply> replyNo = new HashSet<>();
 
     public Post(User userNo, Board boardNo, String author, String title, String content) {
         this.title = title;
