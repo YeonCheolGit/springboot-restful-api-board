@@ -1,15 +1,15 @@
 package com.example.springboot.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "Reply")
 public class Reply {
@@ -20,12 +20,16 @@ public class Reply {
     private String content;
     @Column
     private String author;
-    @Column
-    private long postNo;
 
-    public Reply(String content, String author, long postNo) {
+    @ManyToOne
+    @JoinColumn(name = "postNo")
+    private Post postNo;
+
+    @ManyToOne
+    @JoinColumn(name = "userNo")
+    private User userNo;
+
+    public void setUpdate(String content) {
         this.content = content;
-        this.author = author;
-        this.postNo = postNo;
     }
 }

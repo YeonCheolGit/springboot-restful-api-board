@@ -34,9 +34,9 @@ public class UserRequestDTO {
         Role role = new Role();
         role.setRoleNo(1);
         return User.builder()
-                .userId(userId)
-                .userName(userName)
-                .userPwd(userPwd)
+                .userId(this.userId)
+                .userName(this.userName)
+                .userPwd(this.userPwd)
                 .roles(Collections.singleton(role))
                 .build();
     }

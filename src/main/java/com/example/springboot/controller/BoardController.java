@@ -59,10 +59,7 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.writePost(userId, boardName, commonParamPost);
-        return new ResponseEntity<>(
-                responseService.getSuccessCreated(),
-                HttpStatus.CREATED
-        );
+        return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "게시판의 글 상세보기", notes = "게시판의 글을 상세보기 합니다")
@@ -80,10 +77,7 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.updatePost(postNo, userId, commonParamPost);
-        return new ResponseEntity<>(
-                responseService.getSuccessResult(),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
     }
 
     @ApiImplicitParams({
@@ -95,9 +89,6 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         boardService.deletePost(postNo, userId);
-        return new ResponseEntity<>(
-                responseService.getSuccessDeleted(),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(responseService.getSuccessDeleted(), HttpStatus.OK);
     }
 }

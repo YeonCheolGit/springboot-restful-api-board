@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BoardService {
 
-    Board findBoard(String boardName);
+    public Board findBoard(String boardName);
 
     List<Post> findPosts(String boardName);
 

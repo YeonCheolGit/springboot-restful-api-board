@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<List<Post>> findByBoardNo(Board board);
+
+    Post findByPostNo(long postNo);
 }

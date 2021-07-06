@@ -7,5 +7,9 @@ import org.springframework.stereotype.Service;
 
 public interface ReplyService {
 
-    void writeReply(String userId, long postNo, ParamReply reply);
+    void writeReply(long postNo, String userId, ParamReply reply);
+
+    Reply updateReply(long replyNo, String userId, ParamReply reply);
+
+    void deleteReply(long replyNo, String userId);
 }
