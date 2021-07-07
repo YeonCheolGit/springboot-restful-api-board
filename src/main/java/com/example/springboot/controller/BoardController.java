@@ -44,9 +44,7 @@ public class BoardController {
     @ApiOperation(value = "게시판 글 리스트", notes = "게시판 글 리스트를 조회 합니다")
     @GetMapping(value = "/{boardName}/posts")
     public ResponseEntity<ListResult<Post>> posts(@PathVariable String boardName) {
-        return new ResponseEntity<>(
-                responseService.getListResult(boardService.findPosts(boardName)),
-                HttpStatus.OK
+        return new ResponseEntity<>(responseService.getListResult(boardService.findPosts(boardName)), HttpStatus.OK
         );
     }
 

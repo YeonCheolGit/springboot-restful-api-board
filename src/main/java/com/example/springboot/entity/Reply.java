@@ -1,5 +1,6 @@
 package com.example.springboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class Reply {
     @Column
     private String author;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "postNo")
     private Post postNo;

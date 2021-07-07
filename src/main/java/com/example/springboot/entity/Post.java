@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,18 +28,18 @@ public class Post extends CommonDateEntity {
     @Column(nullable = false, length = 500)
     private String content;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardNo")
-    private Board boardNo;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userNo")
     private User userNo;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "replyNo")
-    private Set<Reply> replyNo = new HashSet<>();
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "boardNo")
+    private Board boardNo;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postNo")
+    private Set<Reply> reply_postNo;
 
     public Post(User userNo, Board boardNo, String author, String title, String content) {
         this.title = title;
