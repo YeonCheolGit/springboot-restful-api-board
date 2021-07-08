@@ -2,11 +2,9 @@ package com.example.springboot.service.reply;
 
 import com.example.springboot.DTO.ParamReply;
 import com.example.springboot.DTO.reply.ReplyRequestDTO;
-import com.example.springboot.DTO.user.UserRequestDTO;
 import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.Post;
 import com.example.springboot.entity.Reply;
-import com.example.springboot.entity.User;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.ReplyRepository;
 import com.example.springboot.respository.UserRepository;
@@ -30,7 +28,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     private Post getPost(long postNo) {
-        return Optional.ofNullable(postRepository.findByPostNo(postNo)).orElseThrow(FindAnyFailException::new);
+        return postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new);
     }
 
     @Transactional

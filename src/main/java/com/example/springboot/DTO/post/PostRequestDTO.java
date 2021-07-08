@@ -2,12 +2,13 @@ package com.example.springboot.DTO.post;
 
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
+import com.example.springboot.entity.Reply;
 import com.example.springboot.entity.User;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Data
 @Getter
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostRequestDTO {
+    private long postNo;
 
     @NotEmpty
     @Length(min = 1, max = 100)
@@ -30,9 +32,12 @@ public class PostRequestDTO {
 
     private User userNo;
     private Board boardNo;
+    private Set<Reply> replyByPostNo;
 
+    // DTO to Entity
     public Post toEntity() {
         return Post.builder()
+                .postNo(this.postNo)
                 .title(this.title)
                 .author(this.author)
                 .content(this.content)
@@ -41,12 +46,13 @@ public class PostRequestDTO {
                 .build();
     }
 
-//    public Post setUpdate() {
-//        return Post.builder()
-//                .postNo(this.postNo.getPostNo())
-//                .title(this.title)
-//                .author(this.author)
-//                .content(this.content)
-//                .build();
-//    }
+    /*
+     1. 게시물 수정 가능한 속성만 정의 합니다.
+     2. 속성 정의 후 toEntity()로 실제 DB 업데이트
+     */
+    public void setUpdate(String author, String title, String content) {
+        this.title = title;
+        this.author = author;
+        this.content = content;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.springboot.controller;
 
 import com.example.springboot.DTO.CommonParamPost;
+import com.example.springboot.DTO.post.PostRequestDTO;
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
 import com.example.springboot.model.response.CommonResult;
@@ -62,7 +63,7 @@ public class BoardController {
 
     @ApiOperation(value = "게시판의 글 상세보기", notes = "게시판의 글을 상세보기 합니다")
     @GetMapping(value = "/post/{postNo}")
-    public ResponseEntity<SingleResult<Post>> post(@PathVariable long postNo) {
+    public ResponseEntity<SingleResult<PostRequestDTO>> post(@PathVariable long postNo) {
         return new ResponseEntity<>(responseService.getSingleResult(boardService.getPost(postNo)), HttpStatus.OK);
     }
 

@@ -51,8 +51,8 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     @Transactional
-    public Post getPost(long postNo) {
-        return postRepository.findById(postNo).orElseThrow(FindAnyFailException::new); // 없는 게시물 조회 시 발생 합니다.
+    public PostRequestDTO getPost(long postNo) {
+        return postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new).toDTO(); // Entity to DTO
     }
 
     /*
@@ -82,14 +82,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional // update dirty checking 위한 설정 입니다
     public Post updatePost(long postNo, String userId, CommonParamPost commonParamPost) {
-        Post post = getPost(postNo);
+        PostRequestDTO post = getPost(postNo);
         User user = post.getUserNo();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 수정할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 수정할 수 없습니다.");
 
         post.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
-        return post;
+        return postRepository.save(post.toEntity());
     }
 
     /*
@@ -99,13 +99,13 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Boolean deletePost(long postNo, String userId) {
-        Post post = getPost(postNo);
+        PostRequestDTO post = getPost(postNo);
         User user = post.getUserNo();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 삭제할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 삭제할 수 없습니다.");
 
-        postRepository.delete(post);
+        postRepository.delete(post.toEntity());
         return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.springboot.respository;
 
+import com.example.springboot.DTO.post.PostRequestDTO;
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<List<Post>> findByBoardNo(Board board);
 
-    Post findByPostNo(long postNo);
+    Optional<Post> findByPostNo(long postNo);
 }

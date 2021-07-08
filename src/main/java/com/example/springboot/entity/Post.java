@@ -1,5 +1,6 @@
 package com.example.springboot.entity;
 
+import com.example.springboot.DTO.post.PostRequestDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,13 +37,13 @@ public class Post extends CommonDateEntity {
     private User userNo;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "boardNo")
     private Board boardNo;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "postNo")
-    private Set<Reply> reply_postNo;
+    private Set<Reply> replyByPostNo;
 
 //    public Post(User userNo, Board boardNo, String author, String title, String content) {
 //        this.title = title;
@@ -52,10 +53,16 @@ public class Post extends CommonDateEntity {
 //        this.boardNo = boardNo;
 //    }
 
-//     JPA dirty checking으로 인한 업데이트
-    public void setUpdate(String author, String title, String content) {
-        this.author = author;
-        this.title = title;
-        this.content = content;
+    // Entity to DTO
+    public PostRequestDTO toDTO() {
+        return PostRequestDTO.builder()
+                .postNo(this.postNo)
+                .title(this.title)
+                .author(this.author)
+                .content(this.content)
+                .userNo(this.userNo)
+                .boardNo(this.boardNo)
+                .replyByPostNo(this.replyByPostNo)
+                .build();
     }
 }
