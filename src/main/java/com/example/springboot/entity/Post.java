@@ -1,6 +1,8 @@
 package com.example.springboot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +13,8 @@ import java.util.Set;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 @Table(name = "post")
 public class Post extends CommonDateEntity {
 
@@ -19,13 +22,13 @@ public class Post extends CommonDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long postNo;
 
-    @Column(nullable = false, length = 100)
+    @Column
     private String title;
 
-    @Column(nullable = false, length = 50)
+    @Column
     private String author;
 
-    @Column(nullable = false, length = 500)
+    @Column
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,15 +44,15 @@ public class Post extends CommonDateEntity {
     @JoinColumn(name = "postNo")
     private Set<Reply> reply_postNo;
 
-    public Post(User userNo, Board boardNo, String author, String title, String content) {
-        this.title = title;
-        this.author = author;
-        this.content = content;
-        this.userNo = userNo;
-        this.boardNo = boardNo;
-    }
+//    public Post(User userNo, Board boardNo, String author, String title, String content) {
+//        this.title = title;
+//        this.author = author;
+//        this.content = content;
+//        this.userNo = userNo;
+//        this.boardNo = boardNo;
+//    }
 
-    // JPA dirty checking으로 인한 업데이트
+//     JPA dirty checking으로 인한 업데이트
     public void setUpdate(String author, String title, String content) {
         this.author = author;
         this.title = title;

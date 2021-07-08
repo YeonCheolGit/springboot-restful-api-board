@@ -1,6 +1,7 @@
 package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
+import com.example.springboot.DTO.post.PostRequestDTO;
 import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
@@ -63,10 +64,15 @@ public class BoardServiceImpl implements BoardService {
     public Post writePost(String userId, String boardName, CommonParamPost commonParamPost) {
         Board board = findBoard(boardName);
 
-        Post post = new Post(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new), // 회원이 아닌 경우 등록할 수 없습니다.
-                board, commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
+        PostRequestDTO postRequestDTO = new PostRequestDTO().builder()
+                .userNo(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
+                .boardNo(board)
+                .author(commonParamPost.getAuthor())
+                .title(commonParamPost.getTitle())
+                .content(commonParamPost.getContent())
+                .build();
 
-        return postRepository.save(post);
+        return postRepository.save(postRequestDTO.toEntity());
     }
 
     /*
