@@ -1,5 +1,6 @@
 package com.example.springboot.entity;
 
+import com.example.springboot.DTO.reply.ReplyDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,13 @@ public class Reply {
     @JoinColumn(name = "userNo")
     private User userNo;
 
-    public void setUpdate(String content) {
-        this.content = content;
+    public ReplyDTO toDTO() { // Entity to DTO
+        return ReplyDTO.builder()
+                .replyNo(this.replyNo)
+                .content(this.content)
+                .author(this.author)
+                .postNo(this.postNo)
+                .userNo(this.userNo)
+                .build();
     }
 }

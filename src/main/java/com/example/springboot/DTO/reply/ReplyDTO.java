@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Data
-public class ReplyRequestDTO {
+public class ReplyDTO {
 
     private long replyNo;
 
@@ -27,12 +27,17 @@ public class ReplyRequestDTO {
     private User userNo;
     private Post postNo;
 
-    public Reply toEntity() {
+    public Reply toEntity() { // DTO to Entity
         return Reply.builder()
+                .replyNo(this.replyNo)
                 .content(this.content)
                 .author(this.author)
                 .userNo(this.userNo)
                 .postNo(this.postNo)
                 .build();
+    }
+
+    public void setUpdate(String content) {
+        this.content = content;
     }
 }

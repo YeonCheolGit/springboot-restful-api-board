@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostRequestDTO {
+public class PostDTO {
     private long postNo;
 
     @NotEmpty

@@ -1,7 +1,7 @@
 package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
-import com.example.springboot.DTO.post.PostRequestDTO;
+import com.example.springboot.DTO.post.PostDTO;
 import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
@@ -51,7 +51,7 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     @Transactional
-    public PostRequestDTO getPost(long postNo) {
+    public PostDTO getPost(long postNo) {
         return postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new).toDTO(); // Entity to DTO
     }
 
@@ -64,7 +64,7 @@ public class BoardServiceImpl implements BoardService {
     public Post writePost(String userId, String boardName, CommonParamPost commonParamPost) {
         Board board = findBoard(boardName);
 
-        PostRequestDTO postRequestDTO = new PostRequestDTO().builder()
+        PostDTO postDTO = new PostDTO().builder()
                 .userNo(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
                 .boardNo(board)
                 .author(commonParamPost.getAuthor())
@@ -72,7 +72,7 @@ public class BoardServiceImpl implements BoardService {
                 .content(commonParamPost.getContent())
                 .build();
 
-        return postRepository.save(postRequestDTO.toEntity());
+        return postRepository.save(postDTO.toEntity());
     }
 
     /*
@@ -82,14 +82,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional // update dirty checking 위한 설정 입니다
     public Post updatePost(long postNo, String userId, CommonParamPost commonParamPost) {
-        PostRequestDTO post = getPost(postNo);
-        User user = post.getUserNo();
+        PostDTO postDTO = getPost(postNo);
+        User user = postDTO.getUserNo();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 수정할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 수정할 수 없습니다.");
 
-        post.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
-        return postRepository.save(post.toEntity());
+        postDTO.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
+        return postRepository.save(postDTO.toEntity());
     }
 
     /*
@@ -99,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Boolean deletePost(long postNo, String userId) {
-        PostRequestDTO post = getPost(postNo);
+        PostDTO post = getPost(postNo);
         User user = post.getUserNo();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 삭제할 수 없습니다.

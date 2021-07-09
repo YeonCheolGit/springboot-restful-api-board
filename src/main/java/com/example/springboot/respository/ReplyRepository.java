@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
-    Reply findByReplyNo(Long replyNo);
+    Optional<Reply> findByReplyNo(Long replyNo);
 }

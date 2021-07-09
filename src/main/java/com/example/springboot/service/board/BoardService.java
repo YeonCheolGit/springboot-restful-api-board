@@ -1,7 +1,7 @@
 package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
-import com.example.springboot.DTO.post.PostRequestDTO;
+import com.example.springboot.DTO.post.PostDTO;
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
 
@@ -13,7 +13,7 @@ public interface BoardService {
 
     List<Post> findPosts(String boardName);
 
-    PostRequestDTO getPost(long postId);
+    PostDTO getPost(long postId);
 
     Post writePost(String userId, String boardName, CommonParamPost commonParamPost);
 

@@ -1,6 +1,6 @@
 package com.example.springboot.entity;
 
-import com.example.springboot.DTO.post.PostRequestDTO;
+import com.example.springboot.DTO.post.PostDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -45,17 +43,9 @@ public class Post extends CommonDateEntity {
     @JoinColumn(name = "postNo")
     private Set<Reply> replyByPostNo;
 
-//    public Post(User userNo, Board boardNo, String author, String title, String content) {
-//        this.title = title;
-//        this.author = author;
-//        this.content = content;
-//        this.userNo = userNo;
-//        this.boardNo = boardNo;
-//    }
-
     // Entity to DTO
-    public PostRequestDTO toDTO() {
-        return PostRequestDTO.builder()
+    public PostDTO toDTO() {
+        return PostDTO.builder()
                 .postNo(this.postNo)
                 .title(this.title)
                 .author(this.author)

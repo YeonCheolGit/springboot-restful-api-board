@@ -1,6 +1,5 @@
 package com.example.springboot.respository;
 
-import com.example.springboot.DTO.post.PostRequestDTO;
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
