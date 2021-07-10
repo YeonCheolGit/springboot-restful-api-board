@@ -7,12 +7,13 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Data
-public class ReplyDTO {
+public class ReplyDTO implements Serializable {
 
     private long replyNo;
 

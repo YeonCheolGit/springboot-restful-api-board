@@ -36,10 +36,7 @@ public class BoardController {
     @ApiOperation(value = "게시판 정보 조회", notes = "게시판 정보를 조회 합니다")
     @GetMapping(value = "/{boardName}")
     public ResponseEntity<SingleResult<Board>> boardInfo(@PathVariable String boardName) {
-        return new ResponseEntity<>(
-                responseService.getSingleResult(boardService.findBoard(boardName)),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(responseService.getSingleResult(boardService.findBoard(boardName)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "게시판 글 리스트", notes = "게시판 글 리스트를 조회 합니다")

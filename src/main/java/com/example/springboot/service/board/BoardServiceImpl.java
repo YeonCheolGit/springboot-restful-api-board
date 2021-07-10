@@ -10,11 +10,11 @@ import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Board findBoard(String boardName) {
-        return Optional.ofNullable(boardRepository.findByName(boardName)).orElseThrow(FindAnyFailException::new);
+        return boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
     }
 
     /*
@@ -39,6 +39,7 @@ public class BoardServiceImpl implements BoardService {
      * findByBoardNo(findBoard(boardName)) - 게시판 이름으로 찾은 후 해당 No를 기준으로 게시물 찾습니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
+    @Cacheable(key = "#boardName", value = "findPosts")
     @Override
     @Transactional
     public List<Post> findPosts(String boardName) {
@@ -54,6 +55,7 @@ public class BoardServiceImpl implements BoardService {
     public PostDTO getPost(long postNo) {
         return postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new).toDTO(); // Entity to DTO
     }
+
 
     /*
      * 게시물 등록 합니다.

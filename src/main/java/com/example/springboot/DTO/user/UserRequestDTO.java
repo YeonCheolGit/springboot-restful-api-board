@@ -8,13 +8,14 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Collections;
 
 @Getter
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Data
-public class UserRequestDTO {
+public class UserRequestDTO implements Serializable {
     @NotEmpty
     @Email(message = "아이디는 비밀번호 형식으로 입력하셔야 합니다.")
     @Length(min = 1, max = 50)

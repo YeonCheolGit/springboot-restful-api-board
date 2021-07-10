@@ -1,5 +1,7 @@
 package com.example.springboot.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,7 +9,8 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor @AllArgsConstructor
 @Table(name = "board")
 public class Board extends CommonDateEntity {
 

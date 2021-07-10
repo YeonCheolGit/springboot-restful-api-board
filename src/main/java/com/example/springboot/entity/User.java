@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Proxy(lazy = false)
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class User implements UserDetails{
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column// 카카오 로그인 경우 비밀번호 필요 X, Null 허용 합니다
+    @Column
     private String userPwd;
 
     @Column
@@ -83,11 +83,13 @@ public class User implements UserDetails{
         return true;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isEnabled() {
         return true;

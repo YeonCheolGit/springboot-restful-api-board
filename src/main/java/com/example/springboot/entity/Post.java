@@ -32,16 +32,15 @@ public class Post extends CommonDateEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userNo")
-    private User userNo;
+    private User userNo; // 게시물 작성한 유저
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "boardNo")
-    private Board boardNo;
+    private Board boardNo; // 게시물 작성된 게시판
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "postNo")
-    private Set<Reply> replyByPostNo;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "postNo")
+    private Set<Reply> replyByPostNo; // 게시물의 댓글들
 
     // Entity to DTO
     public PostDTO toDTO() {
