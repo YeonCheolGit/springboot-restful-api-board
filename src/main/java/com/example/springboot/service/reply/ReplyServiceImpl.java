@@ -8,6 +8,8 @@ import com.example.springboot.entity.Reply;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.ReplyRepository;
 import com.example.springboot.respository.UserRepository;
+import com.example.springboot.service.ToDTO;
+import com.example.springboot.service.ToEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +22,15 @@ public class ReplyServiceImpl implements ReplyService {
     private final ReplyRepository replyRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final ToDTO toDTO;
+    private final ToEntity toEntity;
 
     private ReplyDTO getReply(long replyNo) {
-        return replyRepository.findByReplyNo(replyNo).orElseThrow(FindAnyFailException::new).toDTO();
+        return toDTO.toReplyDTO(replyRepository.findByReplyNo(replyNo).orElseThrow(FindAnyFailException::new));
     }
 
     public PostDTO getPost(long postNo) {
-        return postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new).toDTO(); // Entity to DTO
+        return toDTO.toSinglePostDTO(postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new));
     }
 
     @Transactional
@@ -35,13 +39,13 @@ public class ReplyServiceImpl implements ReplyService {
         PostDTO postDTO = getPost(postNo);
 
         ReplyDTO replyDTO = new ReplyDTO().builder()
-                .postNo(postDTO.toEntity())
+                .postNo(toEntity.toPostEntity(postDTO))
                 .userNo(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
                 .author(paramReply.getAuthor())
                 .content(paramReply.getContent())
                 .build();
 
-        replyRepository.save(replyDTO.toEntity());
+        replyRepository.save(toEntity.toReplyEntity(replyDTO));
     }
 
     @Transactional
@@ -54,7 +58,7 @@ public class ReplyServiceImpl implements ReplyService {
 
         replyDTO.setUpdate(paramReply.getContent());
 
-        return replyRepository.save(replyDTO.toEntity());
+        return replyRepository.save(toEntity.toReplyEntity(replyDTO));
     }
 
     @Transactional
@@ -65,6 +69,6 @@ public class ReplyServiceImpl implements ReplyService {
         if (!replyDTO.getAuthor().equals(userId))
             throw new FindAnyFailException("타인의 글은 수정할 수 없습니다.");
 
-        replyRepository.delete(replyDTO.toEntity());
+        replyRepository.delete(toEntity.toReplyEntity(replyDTO));
     }
 }

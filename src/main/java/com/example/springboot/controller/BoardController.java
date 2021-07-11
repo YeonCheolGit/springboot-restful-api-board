@@ -1,9 +1,8 @@
 package com.example.springboot.controller;
 
 import com.example.springboot.DTO.CommonParamPost;
+import com.example.springboot.DTO.board.BoardDTO;
 import com.example.springboot.DTO.post.PostDTO;
-import com.example.springboot.entity.Board;
-import com.example.springboot.entity.Post;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;
 import com.example.springboot.model.response.SingleResult;
@@ -35,15 +34,14 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 정보 조회", notes = "게시판 정보를 조회 합니다")
     @GetMapping(value = "/{boardName}")
-    public ResponseEntity<SingleResult<Board>> boardInfo(@PathVariable String boardName) {
-        return new ResponseEntity<>(responseService.getSingleResult(boardService.findBoard(boardName)), HttpStatus.OK);
+    public ResponseEntity<SingleResult<BoardDTO>> boardInfo(@PathVariable String boardName) {
+        return new ResponseEntity<>(responseService.getSingleResult(boardService.findBoardDTO(boardName)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "게시판 글 리스트", notes = "게시판 글 리스트를 조회 합니다")
     @GetMapping(value = "/{boardName}/posts")
-    public ResponseEntity<ListResult<Post>> posts(@PathVariable String boardName) {
-        return new ResponseEntity<>(responseService.getListResult(boardService.findPosts(boardName)), HttpStatus.OK
-        );
+    public ResponseEntity<ListResult<BoardDTO>> posts(@PathVariable String boardName) {
+        return new ResponseEntity<>(responseService.getListResult(boardService.findPosts(boardName)), HttpStatus.OK);
     }
 
     @ApiImplicitParams({

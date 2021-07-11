@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CommonParamPost {
 
-    @NotBlank
+    @NotEmpty
     @Size(min = 2, max = 50)
     @ApiModelProperty(value = "글 작성자명", required = true)
     private String author;

@@ -24,21 +24,11 @@ public class Reply {
     private String author;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postNo")
     private Post postNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNo")
     private User userNo;
-
-    public ReplyDTO toDTO() { // Entity to DTO
-        return ReplyDTO.builder()
-                .replyNo(this.replyNo)
-                .content(this.content)
-                .author(this.author)
-                .postNo(this.postNo)
-                .userNo(this.userNo)
-                .build();
-    }
 }
