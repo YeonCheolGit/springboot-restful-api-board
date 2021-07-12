@@ -1,14 +1,13 @@
 package com.example.springboot.entity;
 
 import com.example.springboot.DTO.board.BoardDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -16,7 +15,8 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Table(name = "board")
-public class Board extends CommonDateEntity {
+public class Board implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Board extends CommonDateEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "boardNo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "boardNo")
     private Set<Post> posts;
 
     public static BoardDTO toDTO(Board board) {

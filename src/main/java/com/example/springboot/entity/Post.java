@@ -1,13 +1,14 @@
 package com.example.springboot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -15,7 +16,8 @@ import java.util.Set;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Table(name = "post")
-public class Post {
+public class Post implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +37,7 @@ public class Post {
     private User userNo; // 게시물 작성한 유저
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boardNo")
     private Board boardNo; // 게시물 작성된 게시판
 

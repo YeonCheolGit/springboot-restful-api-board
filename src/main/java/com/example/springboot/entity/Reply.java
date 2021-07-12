@@ -1,6 +1,5 @@
 package com.example.springboot.entity;
 
-import com.example.springboot.DTO.reply.ReplyDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,13 +7,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "Reply")
-public class Reply {
+public class Reply implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     private long replyNo;

@@ -2,33 +2,62 @@ package com.example.springboot.service.user;
 
 import com.example.springboot.DTO.user.KakaoUserRequestDTO;
 import com.example.springboot.DTO.user.UserRequestDTO;
+import com.example.springboot.advice.exception.DuplicatedDataException;
+import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.User;
-import org.springframework.transaction.annotation.Transactional;
+import com.example.springboot.respository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
+@Service
+@AllArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Transactional(readOnly = true)
-    Optional<User> findByUserNo(long userNo);
+    public Optional<User> findByUserNo(long userNo) {
+        return userRepository.findByUserNo(userNo);
+    }
 
-    @Transactional(readOnly = true)
-    Optional<User> findByUserId(String userId);
+    public Optional<User> findByUserId(String userId) {
+        return userRepository.findByUserId(userId);
+    }
 
-    @Transactional
-    User findByUserIdAndToken(String userId, String userName);
+    public User findByUserIdAndToken(String userId, String newUserName) {
+        User user = userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new);
+        return userRepository.save(user.updateUserName(newUserName));
+    }
 
-    @Transactional(readOnly = true)
-    List<User> findAll();
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
-    @Transactional
-    void save(KakaoUserRequestDTO user);
+    public void save(KakaoUserRequestDTO kakaoUserRequestDTO) {
+        userRepository.save(kakaoUserRequestDTO.toEntity());
+    }
 
-    @Transactional
-    void saveEmailUser(UserRequestDTO userRequestDTO);
+    public void saveEmailUser(UserRequestDTO userRequestDTO) {
+        verifyDuplicateEmail(userRequestDTO.getUserId());
+        userRequestDTO.setUserPwd(passwordEncoder.encode(userRequestDTO.getUserPwd()));
+        userRepository.save(userRequestDTO.toEntity());
+    }
 
-    void deleteByUserNo(long userNo);
+    private void verifyDuplicateEmail(String userId) {
+        if (userRepository.findByUserId(userId).isPresent()) {
+            throw new DuplicatedDataException(userId + " > 이미 가입된 회원 아이디 입니다.");
+        }
+    }
 
-    Optional<User> findByUserIdAndProvider(String userId, String provider);
+    public void deleteByUserNo(long userNo) {
+        userRepository.deleteByUserNo(userNo);
+    }
+
+    public Optional<User> findByUserIdAndProvider(String userId, String provider) {
+        return userRepository.findByUserIdAndProvider(userId, provider);
+    }
 }

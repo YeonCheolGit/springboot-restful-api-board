@@ -2,7 +2,6 @@ package com.example.springboot.controller;
 
 import com.example.springboot.DTO.CommonParamPost;
 import com.example.springboot.DTO.board.BoardDTO;
-import com.example.springboot.DTO.post.PostDTO;
 import com.example.springboot.DTO.post.RequestSinglePostDTO;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;

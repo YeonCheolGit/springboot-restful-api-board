@@ -17,13 +17,11 @@ import java.util.stream.Collectors;
 public class BoardDTO {
 
     private long boardNo;
-
     private String name;
-
     private Set<Post> posts;
 
     public BoardDTO toBoardDTO(Board board) {
-        return new BoardDTO().builder()
+        return BoardDTO.builder()
                 .boardNo(board.getBoardNo())
                 .name(board.getName())
                 .build();
