@@ -2,9 +2,7 @@ package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
 import com.example.springboot.DTO.board.BoardDTO;
-import com.example.springboot.DTO.post.PostDTO;
-import com.example.springboot.entity.Board;
-import com.example.springboot.entity.Post;
+import com.example.springboot.DTO.post.RequestSinglePostDTO;
 
 import java.util.List;
 
@@ -13,7 +11,7 @@ public interface BoardService {
 
     List<BoardDTO> findPosts(String boardName);
 
-    PostDTO getPost(long postId);
+    RequestSinglePostDTO getPost(long postId);
 
     void writePost(String userId, String boardName, CommonParamPost commonParamPost);
 

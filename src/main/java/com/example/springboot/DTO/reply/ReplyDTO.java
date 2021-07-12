@@ -3,16 +3,22 @@ package com.example.springboot.DTO.reply;
 import com.example.springboot.entity.Post;
 import com.example.springboot.entity.Reply;
 import com.example.springboot.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+/*
+ * Referenced Entity: Reply
+ * Reply entity 전체 필드를 참조 합니다.
+ */
 @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-@Data
 public class ReplyDTO implements Serializable {
 
     private long replyNo;
@@ -28,17 +34,29 @@ public class ReplyDTO implements Serializable {
     private User userNo;
     private Post postNo;
 
-    public Reply toEntity() { // DTO to Entity
-        return Reply.builder()
-                .replyNo(this.replyNo)
-                .content(this.content)
-                .author(this.author)
-                .userNo(this.userNo)
-                .postNo(this.postNo)
+    public void setUpdate(String content) {
+        this.content = content;
+    }
+
+    // Reply(entity) to ReplyDTO(DTO)
+    public ReplyDTO toReplyDTO(Reply reply) {
+        return new ReplyDTO().builder()
+                .replyNo(reply.getReplyNo())
+                .content(reply.getContent())
+                .author(reply.getAuthor())
+                .userNo(reply.getUserNo())
+                .postNo(reply.getPostNo())
                 .build();
     }
 
-    public void setUpdate(String content) {
-        this.content = content;
+    // ReplyDTO(DTO) to Reply(entity)
+    public Reply toReplyEntity(ReplyDTO replyDTO) {
+        return Reply.builder()
+                .replyNo(replyDTO.getReplyNo())
+                .content(replyDTO.getContent())
+                .author(replyDTO.getAuthor())
+                .postNo(replyDTO.getPostNo())
+                .userNo(replyDTO.getUserNo())
+                .build();
     }
 }
