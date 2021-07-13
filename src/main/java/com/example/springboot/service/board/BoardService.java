@@ -38,15 +38,15 @@ public class BoardService {
 
     /*
      * 게시판 이름으로 특정 게시판 글 조회 합니다.
-     * findByBoardNo(findBoard(boardName)) - 게시판 이름으로 찾은 후 해당 No를 기준으로 게시물 찾습니다.
-     * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
+     * board - 게시판 이름으로 게시판의 정보 가져옵니다.
+     * posts - 찾은 게시판(board)에 해당하는 게시물 가져옵니다.
      */
     @Transactional
 //    @Cacheable(key = "#boardName", value = "findPosts")
     public List<ListPostDTO> findPosts(String boardName) {
         Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
         List<Post> posts = postRepository.findPostByBoard(board).orElseThrow(FindAnyFailException::new);
-        return new ListPostDTO().toListPostDTO(posts); // 없는 게시물 번호 조회 시 발생 합니다.
+        return new ListPostDTO().toListPostDTO(posts); // 게시물 entity를 DTO로 변환합니다.
     }
 
     /*

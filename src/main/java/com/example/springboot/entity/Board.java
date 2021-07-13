@@ -1,6 +1,5 @@
 package com.example.springboot.entity;
 
-import com.example.springboot.DTO.board.BoardDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -24,7 +22,4 @@ public class Board implements Serializable {
 
     @Column(nullable = false, length = 100)
     private String name;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
-    private Set<Post> posts;
 }
