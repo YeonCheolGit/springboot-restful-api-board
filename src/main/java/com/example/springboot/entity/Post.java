@@ -1,6 +1,6 @@
 package com.example.springboot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.springboot.DTO.post.ListPostDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -34,13 +33,23 @@ public class Post implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNo")
-    private User userNo; // 게시물 작성한 유저
+    private User user; // 게시물 작성한 유저
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boardNo")
-    private Board boardNo; // 게시물 작성된 게시판
+    private Board board; // 게시물 작성된 게시판
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "postNo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private Set<Reply> replyByPostNo; // 게시물의 댓글들
+
+    public static ListPostDTO toPostDTO(Post post) {
+        new ListPostDTO();
+        return ListPostDTO.builder()
+                .postNo(post.getPostNo())
+                .title(post.getTitle())
+                .author(post.getAuthor())
+                .content(post.getContent())
+                .user(post.getUser())
+                .build();
+    }
 }

@@ -21,7 +21,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestSinglePostDTO {
+public class SinglePostDTO {
     private long postNo;
 
     @NotEmpty
@@ -36,29 +36,29 @@ public class RequestSinglePostDTO {
     @Length(min = 1, max = 255)
     private String content;
 
-    private User userNo;
+    private User user;
     private Set<Reply> replyByPostNo;
 
     // Post(entity) to RequestSinglePostDTO(DTO)
-    public RequestSinglePostDTO requestSinglePostDTO(Post post) {
-        return new RequestSinglePostDTO().builder()
+    public SinglePostDTO requestSinglePostDTO(Post post) {
+        return SinglePostDTO.builder()
                 .postNo(post.getPostNo())
                 .title(post.getTitle())
                 .author(post.getAuthor())
-                .userNo(post.getUserNo())
+                .user(post.getUser())
                 .replyByPostNo(post.getReplyByPostNo())
                 .build();
     }
 
     // RequestSinglePostDTO(DTO) to Post (entity)
-    public Post toPostEntity(RequestSinglePostDTO requestSinglePostDTO) {
+    public Post toPostEntity(SinglePostDTO singlePostDTO) {
         return Post.builder()
-                .postNo(requestSinglePostDTO.getPostNo())
-                .title(requestSinglePostDTO.getTitle())
-                .author(requestSinglePostDTO.getAuthor())
-                .content(requestSinglePostDTO.getContent())
-                .userNo(requestSinglePostDTO.getUserNo())
-                .replyByPostNo(requestSinglePostDTO.getReplyByPostNo())
+                .postNo(singlePostDTO.getPostNo())
+                .title(singlePostDTO.getTitle())
+                .author(singlePostDTO.getAuthor())
+                .content(singlePostDTO.getContent())
+                .user(singlePostDTO.getUser())
+                .replyByPostNo(singlePostDTO.getReplyByPostNo())
                 .build();
     }
 }

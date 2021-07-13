@@ -27,9 +27,9 @@ public class Reply implements Serializable {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postNo")
-    private Post postNo;
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNo")
-    private User userNo;
+    private User user;
 }

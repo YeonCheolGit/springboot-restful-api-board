@@ -1,9 +1,10 @@
 package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
-import com.example.springboot.DTO.board.BoardDTO;
+import com.example.springboot.DTO.board.OnlyBoardDTO;
 import com.example.springboot.DTO.post.PostDTO;
-import com.example.springboot.DTO.post.RequestSinglePostDTO;
+import com.example.springboot.DTO.post.ListPostDTO;
+import com.example.springboot.DTO.post.SinglePostDTO;
 import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.Board;
 import com.example.springboot.entity.Post;
@@ -12,7 +13,6 @@ import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +31,9 @@ public class BoardService {
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
     @Transactional
-    public BoardDTO findBoardDTO(String boardName) {
+    public OnlyBoardDTO findBoardDTO(String boardName) {
         Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
-        return new BoardDTO().toBoardDTO(board);
+        return new OnlyBoardDTO().toOnlyBoardDTO(board);
     }
 
     /*
@@ -43,11 +43,10 @@ public class BoardService {
      */
     @Transactional
 //    @Cacheable(key = "#boardName", value = "findPosts")
-    public List<BoardDTO> findPosts(String boardName) {
-        return new BoardDTO().toListBoardDTO(
-                boardRepository
-                        .findBoardByBoardNo(findBoardDTO(boardName).getBoardNo())
-                        .orElseThrow(FindAnyFailException::new)); // 없는 게시물 번호 조회 시 발생 합니다.
+    public List<ListPostDTO> findPosts(String boardName) {
+        Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
+        List<Post> posts = postRepository.findPostByBoard(board).orElseThrow(FindAnyFailException::new);
+        return new ListPostDTO().toListPostDTO(posts); // 없는 게시물 번호 조회 시 발생 합니다.
     }
 
     /*
@@ -55,9 +54,9 @@ public class BoardService {
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
     @Transactional
-    public RequestSinglePostDTO getPost(long postNo) {
+    public SinglePostDTO getPost(long postNo) {
         Post post = postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new);
-        return new RequestSinglePostDTO().requestSinglePostDTO(post); // Entity to DTO
+        return new SinglePostDTO().requestSinglePostDTO(post);
     }
 
     /*
@@ -66,11 +65,11 @@ public class BoardService {
      */
     @Transactional
     public void writePost(String userId, String boardName, CommonParamPost commonParamPost) {
-        BoardDTO boardDTO = findBoardDTO(boardName);
+        OnlyBoardDTO boardDTO = findBoardDTO(boardName);
 
         PostDTO postDTO = PostDTO.builder()
-                .userNo(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
-                .boardNo(boardDTO.toBoardEntity(boardDTO))
+                .user(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
+                .board(boardDTO.toBoardEntity(boardDTO))
                 .author(commonParamPost.getAuthor())
                 .title(commonParamPost.getTitle())
                 .content(commonParamPost.getContent())
@@ -87,8 +86,7 @@ public class BoardService {
     public void updatePost(long postNo, String userId, CommonParamPost commonParamPost) {
         PostDTO postDTO = new PostDTO()
                 .toPostDTO(postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new));
-
-        User user = postDTO.getUserNo();
+        User user = postDTO.getUser();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 수정할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 수정할 수 없습니다.");
@@ -102,14 +100,14 @@ public class BoardService {
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
     @Transactional
-    public Boolean deletePost(long postNo, String userId) {
-        RequestSinglePostDTO requestSinglePostDTO = getPost(postNo);
-        User user = requestSinglePostDTO.getUserNo();
+    public Boolean deletePost(long postNo, String userId) { //고침
+        SinglePostDTO singlePostDTO = getPost(postNo);
+        User user = singlePostDTO.getUser();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 삭제할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 삭제할 수 없습니다.");
 
-        postRepository.delete(requestSinglePostDTO.toPostEntity(requestSinglePostDTO));
+        postRepository.delete(singlePostDTO.toPostEntity(singlePostDTO));
         return true;
     }
 }

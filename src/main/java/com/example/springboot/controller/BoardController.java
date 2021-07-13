@@ -1,8 +1,9 @@
 package com.example.springboot.controller;
 
 import com.example.springboot.DTO.CommonParamPost;
-import com.example.springboot.DTO.board.BoardDTO;
-import com.example.springboot.DTO.post.RequestSinglePostDTO;
+import com.example.springboot.DTO.board.OnlyBoardDTO;
+import com.example.springboot.DTO.post.ListPostDTO;
+import com.example.springboot.DTO.post.SinglePostDTO;
 import com.example.springboot.model.response.CommonResult;
 import com.example.springboot.model.response.ListResult;
 import com.example.springboot.model.response.SingleResult;
@@ -34,13 +35,13 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 정보 조회", notes = "게시판 정보를 조회 합니다")
     @GetMapping(value = "/{boardName}")
-    public ResponseEntity<SingleResult<BoardDTO>> boardInfo(@PathVariable String boardName) {
+    public ResponseEntity<SingleResult<OnlyBoardDTO>> boardInfo(@PathVariable String boardName) {
         return new ResponseEntity<>(responseService.getSingleResult(boardService.findBoardDTO(boardName)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "게시판 글 리스트", notes = "게시판 글 리스트를 조회 합니다")
     @GetMapping(value = "/{boardName}/posts")
-    public ResponseEntity<ListResult<BoardDTO>> posts(@PathVariable String boardName) {
+    public ResponseEntity<ListResult<ListPostDTO>> posts(@PathVariable String boardName) {
         return new ResponseEntity<>(responseService.getListResult(boardService.findPosts(boardName)), HttpStatus.OK);
     }
 
@@ -58,7 +59,7 @@ public class BoardController {
 
     @ApiOperation(value = "게시판의 글 상세보기", notes = "게시판의 글을 상세보기 합니다")
     @GetMapping(value = "/post/{postNo}")
-    public ResponseEntity<SingleResult<RequestSinglePostDTO>> post(@PathVariable long postNo) {
+    public ResponseEntity<SingleResult<SinglePostDTO>> post(@PathVariable long postNo) {
         return new ResponseEntity<>(responseService.getSingleResult(boardService.getPost(postNo)), HttpStatus.OK);
     }
 

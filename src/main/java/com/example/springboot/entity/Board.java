@@ -25,15 +25,6 @@ public class Board implements Serializable {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "boardNo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     private Set<Post> posts;
-
-    public static BoardDTO toDTO(Board board) {
-        new BoardDTO();
-        return BoardDTO.builder()
-                .boardNo(board.getBoardNo())
-                .name(board.getName())
-                .posts(board.getPosts())
-                .build();
-    }
 }

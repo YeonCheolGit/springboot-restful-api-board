@@ -1,7 +1,7 @@
 package com.example.springboot.service.reply;
 
 import com.example.springboot.DTO.ParamReply;
-import com.example.springboot.DTO.post.RequestSinglePostDTO;
+import com.example.springboot.DTO.post.SinglePostDTO;
 import com.example.springboot.DTO.reply.ReplyDTO;
 import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.Reply;
@@ -25,16 +25,16 @@ public class ReplyService {
         return new ReplyDTO().toReplyDTO(replyRepository.findByReplyNo(replyNo).orElseThrow(FindAnyFailException::new));
     }
 
-    public RequestSinglePostDTO getPost(long postNo) {
-        return new RequestSinglePostDTO().requestSinglePostDTO(postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new));
+    public SinglePostDTO getPost(long postNo) {
+        return new SinglePostDTO().requestSinglePostDTO(postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new));
     }
 
     @Transactional
     public void writeReply(long postNo, String userId, ParamReply paramReply) { // 댓글 작성 합니다.
-        RequestSinglePostDTO requestSinglePostDTO = getPost(postNo);
+        SinglePostDTO singlePostDTO = getPost(postNo);
 
         ReplyDTO replyDTO = ReplyDTO.builder()
-                .postNo(requestSinglePostDTO.toPostEntity(requestSinglePostDTO))
+                .postNo(singlePostDTO.toPostEntity(singlePostDTO))
                 .userNo(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
                 .author(paramReply.getAuthor())
                 .content(paramReply.getContent())

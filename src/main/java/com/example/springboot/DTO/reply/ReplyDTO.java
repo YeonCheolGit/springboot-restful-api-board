@@ -40,12 +40,12 @@ public class ReplyDTO implements Serializable {
 
     // Reply(entity) to ReplyDTO(DTO)
     public ReplyDTO toReplyDTO(Reply reply) {
-        return new ReplyDTO().builder()
+        return ReplyDTO.builder()
                 .replyNo(reply.getReplyNo())
                 .content(reply.getContent())
                 .author(reply.getAuthor())
-                .userNo(reply.getUserNo())
-                .postNo(reply.getPostNo())
+                .userNo(reply.getUser())
+                .postNo(reply.getPost())
                 .build();
     }
 
@@ -55,8 +55,8 @@ public class ReplyDTO implements Serializable {
                 .replyNo(replyDTO.getReplyNo())
                 .content(replyDTO.getContent())
                 .author(replyDTO.getAuthor())
-                .postNo(replyDTO.getPostNo())
-                .userNo(replyDTO.getUserNo())
+                .post(replyDTO.getPostNo())
+                .user(replyDTO.getUserNo())
                 .build();
     }
 }

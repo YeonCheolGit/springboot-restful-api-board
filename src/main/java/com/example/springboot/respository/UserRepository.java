@@ -19,7 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAll();
 
-    @Transactional
     void deleteByUserNo(long userNo);
 
     // Provider(소셜 계정)으로

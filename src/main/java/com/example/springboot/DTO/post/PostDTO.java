@@ -36,8 +36,8 @@ public class PostDTO {
     @Length(min = 1, max = 255)
     private String content;
 
-    private User userNo;
-    private Board boardNo;
+    private User user;
+    private Board board;
     private Set<Reply> replyByPostNo;
 
     /*
@@ -57,20 +57,20 @@ public class PostDTO {
                 .title(postDTO.getTitle())
                 .author(postDTO.getAuthor())
                 .content(postDTO.getContent())
-                .userNo(postDTO.getUserNo())
-                .boardNo(postDTO.getBoardNo())
+                .user(postDTO.getUser())
+                .board(postDTO.getBoard())
                 .replyByPostNo(postDTO.getReplyByPostNo())
                 .build();
     }
 
     // Post(entity) to PostDTO(DTO)
     public PostDTO toPostDTO(Post post) {
-        return new PostDTO().builder()
+        return PostDTO.builder()
                 .postNo(post.getPostNo())
                 .title(post.getTitle())
                 .author(post.getAuthor())
-                .userNo(post.getUserNo())
-                .boardNo(post.getBoardNo())
+                .user(post.getUser())
+                .board(post.getBoard())
                 .replyByPostNo(post.getReplyByPostNo())
                 .build();
     }
