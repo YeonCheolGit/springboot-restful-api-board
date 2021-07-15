@@ -34,8 +34,8 @@ public class ReplyService {
         SinglePostDTO singlePostDTO = getPost(postNo);
 
         ReplyDTO replyDTO = ReplyDTO.builder()
-                .postNo(singlePostDTO.toPostEntity(singlePostDTO))
-                .userNo(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
+                .post(singlePostDTO.toPostEntity(singlePostDTO))
+                .user(userRepository.findByUserId(userId).orElseThrow(FindAnyFailException::new))
                 .author(paramReply.getAuthor())
                 .content(paramReply.getContent())
                 .build();

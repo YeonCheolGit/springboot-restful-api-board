@@ -11,8 +11,9 @@ import org.springframework.data.redis.connection.lettuce.LettuceClientConfigurat
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @AllArgsConstructor
@@ -29,9 +30,9 @@ public class RedisConfig {
 //                .clusterNode("localhost", 6000)
 //                .clusterNode("localhost", 6001)
 //                .clusterNode("localhost", 6002)
-//                .clusterNode("localhost", 6003)
-//                .clusterNode("localhost", 6004)
-//                .clusterNode("localhost", 6005);
+//                .clusterNode("localhost", 7001)
+//                .clusterNode("localhost", 7002)
+//                .clusterNode("localhost", 7003);
 
         return new LettuceConnectionFactory(serverConfig, clientConfig);
     }
@@ -39,11 +40,8 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
-
-        redisTemplate.setKeySerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.setHashKeySerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setConnectionFactory(connectionFactory);
 
         return redisTemplate;

@@ -1,6 +1,7 @@
 package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
+import com.example.springboot.DTO.board.BoardDTO;
 import com.example.springboot.DTO.board.OnlyBoardDTO;
 import com.example.springboot.DTO.post.PostDTO;
 import com.example.springboot.DTO.post.ListPostDTO;
@@ -13,9 +14,14 @@ import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
@@ -41,12 +47,12 @@ public class BoardService {
      * board - 게시판 이름으로 게시판의 정보 가져옵니다.
      * posts - 찾은 게시판(board)에 해당하는 게시물 가져옵니다.
      */
+    @Cacheable(cacheNames = "person")
     @Transactional
-//    @Cacheable(key = "#boardName", value = "findPosts")
     public List<ListPostDTO> findPosts(String boardName) {
         Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
         List<Post> posts = postRepository.findPostByBoard(board).orElseThrow(FindAnyFailException::new);
-        return new ListPostDTO().toListPostDTO(posts); // 게시물 entity를 DTO로 변환합니다.
+        return new ListPostDTO().toListPostDTO(posts);
     }
 
     /*
@@ -63,6 +69,7 @@ public class BoardService {
      * 게시물 등록 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
+    @CachePut(cacheNames = "person", key = "#userId")
     @Transactional
     public void writePost(String userId, String boardName, CommonParamPost commonParamPost) {
         OnlyBoardDTO boardDTO = findBoardDTO(boardName);
@@ -99,6 +106,7 @@ public class BoardService {
      * 게시물 삭제 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
+    @CacheEvict(cacheNames = "person", key = "#postNo")
     @Transactional
     public Boolean deletePost(long postNo, String userId) { //고침
         SinglePostDTO singlePostDTO = getPost(postNo);

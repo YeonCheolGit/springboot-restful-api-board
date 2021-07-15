@@ -1,5 +1,6 @@
 package com.example.springboot.DTO.post;
 
+import com.example.springboot.DTO.user.UserRequestDTO;
 import com.example.springboot.entity.Post;
 import com.example.springboot.entity.User;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,9 @@ public class ListPostDTO {
     @Length(min = 1, max = 255)
     private String content;
 
-    private User user;
+    private String userId;
+
+//    private User user;
 
     // List<Post> entity to List<postDTO> dto
     public List<ListPostDTO> toListPostDTO(List<Post> posts) {

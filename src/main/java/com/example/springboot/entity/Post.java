@@ -43,13 +43,13 @@ public class Post implements Serializable {
     private Set<Reply> replyByPostNo; // 게시물의 댓글들
 
     public static ListPostDTO toPostDTO(Post post) {
-        new ListPostDTO();
         return ListPostDTO.builder()
                 .postNo(post.getPostNo())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .content(post.getContent())
-                .user(post.getUser())
+                .userId(post.getUser().getUserId())
+//                .user(post.getUser())
                 .build();
     }
 }

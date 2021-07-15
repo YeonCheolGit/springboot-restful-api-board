@@ -58,10 +58,9 @@ public class SignController {
         if (!passwordEncoder.matches(userPwd, user.getPassword()))
             throw new EmailSignInFailException(userId + " > 입력된 비밀번호가 일치하지 않습니다.");
 
-        return new ResponseEntity<>(
-                responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles())),
-                HttpStatus.OK
-        );
+        String jwtToken = jwtTokenProvider.createToken(String.valueOf(user.getUserNo()), user.getRoles());
+
+        return new ResponseEntity<>(responseService.getSingleResult(jwtToken), HttpStatus.OK);
     }
 
     /*

@@ -31,8 +31,8 @@ public class ReplyDTO implements Serializable {
     @Length(min = 1, max = 50)
     private String author;
 
-    private User userNo;
-    private Post postNo;
+    private User user;
+    private Post post;
 
     public void setUpdate(String content) {
         this.content = content;
@@ -44,8 +44,8 @@ public class ReplyDTO implements Serializable {
                 .replyNo(reply.getReplyNo())
                 .content(reply.getContent())
                 .author(reply.getAuthor())
-                .userNo(reply.getUser())
-                .postNo(reply.getPost())
+                .user(reply.getUser())
+                .post(reply.getPost())
                 .build();
     }
 
@@ -55,8 +55,8 @@ public class ReplyDTO implements Serializable {
                 .replyNo(replyDTO.getReplyNo())
                 .content(replyDTO.getContent())
                 .author(replyDTO.getAuthor())
-                .post(replyDTO.getPostNo())
-                .user(replyDTO.getUserNo())
+                .post(replyDTO.getPost())
+                .user(replyDTO.getUser())
                 .build();
     }
 }

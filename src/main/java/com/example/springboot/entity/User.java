@@ -21,8 +21,13 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Proxy(lazy = false)
+@NamedEntityGraph( // roles fetch Eager 위함
+        name = "User.roles",
+        attributeNodes = {@NamedAttributeNode("roles")}
+)
 public class User implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
+    private static EntityManager entityManager;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +47,6 @@ public class User implements UserDetails, Serializable {
     @Column
     private String provider; // 소셜 로그인 제공자 (카카오)
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "userNo"),
