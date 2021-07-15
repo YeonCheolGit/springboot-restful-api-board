@@ -2,13 +2,11 @@
 ![Generic badge](https://img.shields.io/badge/JDK-11-red.svg)
 ![Generic badge](https://img.shields.io/badge/SrpingBoot-2.4.4-green.svg)
 ![Generic badge](https://img.shields.io/badge/SpringSecurity-2.4.4-green.svg)
-![Generic badge](https://img.shields.io/badge/JWT-0.9.1-blue.svg)
-![Generic badge](https://img.shields.io/badge/Oauth2-black.svg)
-![Generic badge](https://img.shields.io/badge/Swagger-2.6.1-black.svg)
-![Generic badge](https://img.shields.io/badge/Lombok-1.18.18-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Redis-2.5.2-blue.svg)
+![Generic badge](https://img.shields.io/badge/Swagger2-2.6.1-blue.svg)
 
 ## Introduction
-This API provides CRUD operations for board application. This API focuses on Authentication/Authorisation(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
+This API provides CRUD operations for board application. It focuses on Authentication/Authorization(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
 
 ## Full Documentation
 See the [Wiki](https://github.com/YeonCheolGit/springboot-restful-api-board/wiki) for full documentation, examples, operational details and other information.
@@ -17,7 +15,7 @@ See the [Wiki](https://github.com/YeonCheolGit/springboot-restful-api-board/wiki
 [Github Issues](https://github.com/YeonCheolGit/springboot-restful-api-board/issues)
 
 ## Database UML
-![image](https://user-images.githubusercontent.com/65603611/118960297-1a2c1500-b99e-11eb-93b2-6611f710341c.png)
+![image](https://user-images.githubusercontent.com/65603611/125815785-afb199f3-4f03-4ffb-b86c-a397ace590fe.png)
 
 ## To build
 ```
