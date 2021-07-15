@@ -1,10 +1,9 @@
 package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
-import com.example.springboot.DTO.board.BoardDTO;
 import com.example.springboot.DTO.board.OnlyBoardDTO;
-import com.example.springboot.DTO.post.PostDTO;
 import com.example.springboot.DTO.post.ListPostDTO;
+import com.example.springboot.DTO.post.PostDTO;
 import com.example.springboot.DTO.post.SinglePostDTO;
 import com.example.springboot.advice.exception.FindAnyFailException;
 import com.example.springboot.entity.Board;
@@ -14,14 +13,13 @@ import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
@@ -31,6 +29,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
+    private final CacheManager cacheManager;
 
     /*
      * 게시판 이름으로 특정 게시판 정보를 조회 합니다.
@@ -47,7 +46,7 @@ public class BoardService {
      * board - 게시판 이름으로 게시판의 정보 가져옵니다.
      * posts - 찾은 게시판(board)에 해당하는 게시물 가져옵니다.
      */
-    @Cacheable(cacheNames = "person")
+    @Cacheable(cacheNames = "findPost", value = "findPost", key = "#boardName")
     @Transactional
     public List<ListPostDTO> findPosts(String boardName) {
         Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
@@ -69,7 +68,7 @@ public class BoardService {
      * 게시물 등록 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-    @CachePut(cacheNames = "person", key = "#userId")
+    @CachePut(cacheNames = "writePost", value = "writePost", key = "#boardName")
     @Transactional
     public void writePost(String userId, String boardName, CommonParamPost commonParamPost) {
         OnlyBoardDTO boardDTO = findBoardDTO(boardName);
@@ -81,6 +80,8 @@ public class BoardService {
                 .title(commonParamPost.getTitle())
                 .content(commonParamPost.getContent())
                 .build();
+
+        cacheManager.getCache("findPost").clear();
 
         postRepository.save(postDTO.toPostEntity(postDTO));
     }
@@ -106,7 +107,7 @@ public class BoardService {
      * 게시물 삭제 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-    @CacheEvict(cacheNames = "person", key = "#postNo")
+    @CacheEvict(cacheNames = "deletePost", value = "deletePost", key = "#postNo")
     @Transactional
     public Boolean deletePost(long postNo, String userId) { //고침
         SinglePostDTO singlePostDTO = getPost(postNo);
@@ -114,6 +115,8 @@ public class BoardService {
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 삭제할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 삭제할 수 없습니다.");
+
+        cacheManager.getCache("findPost").clear();
 
         postRepository.delete(singlePostDTO.toPostEntity(singlePostDTO));
         return true;
