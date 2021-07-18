@@ -81,15 +81,16 @@ public class BoardService {
                 .content(commonParamPost.getContent())
                 .build();
 
-        cacheManager.getCache("findPost").clear();
-
         postRepository.save(postDTO.toPostEntity(postDTO));
+
+        cacheManager.getCache("findPost").clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
     }
 
     /*
      * 게시물 수정 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
+    @CachePut(cacheNames = "updatePost", value = "updatePost", key = "#postNo")
     @Transactional
     public void updatePost(long postNo, String userId, CommonParamPost commonParamPost) {
         PostDTO postDTO = new PostDTO()
@@ -101,6 +102,8 @@ public class BoardService {
 
         postDTO.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
         postRepository.save(postDTO.toPostEntity(postDTO));
+
+        cacheManager.getCache("findPost").clear(); // 글 수정 후 전체글 목록 캐시 삭제
     }
 
     /*
@@ -109,16 +112,17 @@ public class BoardService {
      */
     @CacheEvict(cacheNames = "deletePost", value = "deletePost", key = "#postNo")
     @Transactional
-    public Boolean deletePost(long postNo, String userId) { //고침
+    public Boolean deletePost(long postNo, String userId) {
         SinglePostDTO singlePostDTO = getPost(postNo);
         User user = singlePostDTO.getUser();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 삭제할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 삭제할 수 없습니다.");
 
-        cacheManager.getCache("findPost").clear();
-
         postRepository.delete(singlePostDTO.toPostEntity(singlePostDTO));
+
+        cacheManager.getCache("findPost").clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
+
         return true;
     }
 }

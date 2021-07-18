@@ -17,6 +17,11 @@ configurations {
 repositories {
     mavenCentral()
 }
+apply plugin: 'war'
+
+war {
+    enabled = true
+}
 
 dependencies {
     // 스프링 부트 핵심
@@ -46,7 +51,7 @@ dependencies {
     // MySql
     runtimeOnly 'mysql:mysql-connector-java'
 
-    // Swagger 문서화
+    // Swagger documentation
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
 
@@ -56,6 +61,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.5'
+
+//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 test {
