@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = {"4. Social"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/social/login")
+@RequestMapping(value = "/api/v1")
 public class KakaoTokenController {
 
     private final Environment environment;
@@ -35,7 +35,7 @@ public class KakaoTokenController {
      1. 프론트에서 카카오 회원가입 버튼 클릭 합니다.
      2. 카카오 인가 코드 발급 위한 URI 생성 후 클라이언트 response
      */
-    @GetMapping(value = "/kakaoAuthCode")
+    @GetMapping(value = "/get/kakaoAuthCode")
     @ApiOperation(value = "카카오 인가 코드 발급 URI")
     public ResponseEntity<SingleResult> kakaoSignUpButton() {
         StringBuilder loginUrl = new StringBuilder()
