@@ -28,11 +28,15 @@ $ ./gradlew build
 
 ## Swagger API test documentation
 ```
+// local
 localhost:8080/swagger-ui.html
+
+// Oracl Cloud
+http://146.56.161.75:8080/springboot-jpa-board-0.0.1-SNAPSHOT/swagger-ui.html 
 ```
 
 ## Angualar Frontend project
-[repository](https://github.com/YeonCheolGit/angular-frontend)
+[Front-End repository](https://github.com/YeonCheolGit/angular-frontend)
 
 ## LICENSES
 [Spring Boot is Open Source software released under the Apache 2.0 license.](https://www.apache.org/licenses/)  
