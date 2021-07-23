@@ -32,7 +32,7 @@ $ ./gradlew build
 localhost:8080/swagger-ui.html
 
 // Oracl Cloud
-http://146.56.161.75:8080/springboot-jpa-board-0.0.1-SNAPSHOT/swagger-ui.html 
+http://146.56.161.75:8080/board/swagger-ui.html
 ```
 
 ## Angualar Frontend project

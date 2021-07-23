@@ -21,6 +21,7 @@ apply plugin: 'war'
 
 war {
     enabled = true
+    archiveFileName = 'board.war'
 }
 
 dependencies {
