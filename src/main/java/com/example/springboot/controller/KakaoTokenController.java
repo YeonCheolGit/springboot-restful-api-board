@@ -35,9 +35,9 @@ public class KakaoTokenController {
      1. 프론트에서 카카오 회원가입 버튼 클릭 합니다.
      2. 카카오 인가 코드 발급 위한 URI 생성 후 클라이언트 response
      */
-    @GetMapping(value = "/get/kakaoAuthCode")
-    @ApiOperation(value = "카카오 인가 코드 발급 URI")
-    public ResponseEntity<SingleResult> kakaoSignUpButton() {
+    @GetMapping(value = "/social/getKakaoAuthCode")
+    @ApiOperation(value = "카카오 인가 코드 발급 URI", notes = "카카오 인가 코드 발급 가능한 URI return 합니다. 인가 코드는 클라이언트에게 바로 전달됩니다.")
+    public ResponseEntity<SingleResult<StringBuilder>> kakaoSignUpButton() {
         StringBuilder loginUrl = new StringBuilder()
                 .append(environment.getProperty("spring.social.kakao.url.login"))
                 .append("?client_id=").append(kakaoClientId)
