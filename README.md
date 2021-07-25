@@ -17,7 +17,7 @@ See the [Wiki](https://github.com/YeonCheolGit/springboot-restful-api-board/wiki
 ## Database
 ![image](https://user-images.githubusercontent.com/65603611/125815785-afb199f3-4f03-4ffb-b86c-a397ace590fe.png)
 ## Redis Server
-![image](https://user-images.githubusercontent.com/65603611/126342639-ad789ad6-06db-429e-96c4-d0d1323308e4.png)
+![image](https://user-images.githubusercontent.com/65603611/126900762-68d6dd4c-51ef-4a9e-8edf-f63629a75ded.png)
 
 ## To build
 ```
