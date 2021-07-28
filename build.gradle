@@ -7,7 +7,6 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-targetCompatibility = '11'
 
 configurations {
     compileOnly {
@@ -19,12 +18,12 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'war'
-
-war {
-    enabled = true
-    archiveFileName = 'board.war'
-}
+//apply plugin: 'war'
+//
+//war {
+//    enabled = true
+//    archiveFileName = 'board.war'
+//}
 
 dependencies {
     // 스프링 부트 핵심
@@ -64,8 +63,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.5'
-
-//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 test {
