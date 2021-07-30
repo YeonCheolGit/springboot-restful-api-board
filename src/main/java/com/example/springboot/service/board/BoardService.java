@@ -12,7 +12,7 @@ import com.example.springboot.entity.User;
 import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -21,9 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardService {
 
     private final UserRepository userRepository;
@@ -83,7 +84,7 @@ public class BoardService {
 
         postRepository.save(postDTO.toPostEntity(postDTO));
 
-        cacheManager.getCache("findPost").clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPost")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
     }
 
     /*
@@ -103,7 +104,7 @@ public class BoardService {
         postDTO.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
         postRepository.save(postDTO.toPostEntity(postDTO));
 
-        cacheManager.getCache("findPost").clear(); // 글 수정 후 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPost")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
     }
 
     /*
@@ -121,7 +122,7 @@ public class BoardService {
 
         postRepository.delete(singlePostDTO.toPostEntity(singlePostDTO));
 
-        cacheManager.getCache("findPost").clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPost")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
 
         return true;
     }

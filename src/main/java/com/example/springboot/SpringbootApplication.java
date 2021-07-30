@@ -8,12 +8,14 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching // redis chaching
 public class SpringbootApplication {
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
-            + "/home/ubuntu/application-real.yml";
+            + "classpath:application-local.yml,"
+            + "optional:/home/ubuntu/application-deploy.yml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(SpringbootApplication.class)
                 .properties(APPLICATION_LOCATIONS)
                 .run(args);
+
 //        SpringApplication.run(SpringbootApplication.class, args);
     }
 }
