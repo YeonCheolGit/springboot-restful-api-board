@@ -8,8 +8,9 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching // redis chaching
 public class SpringbootApplication {
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
-            + "classpath:application-local.yml,"
-            + "optional:/home/ubuntu/application-deploy.yml";
+            + "optional:classpath:application-local.yml,"
+            + "optional:/home/ubuntu/application-deploy.yml,"
+            + "optional:/home/ubuntu/deploy/application-deploy.yml";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(SpringbootApplication.class)

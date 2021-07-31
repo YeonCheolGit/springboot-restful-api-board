@@ -18,12 +18,9 @@ repositories {
     mavenCentral()
 }
 
-//apply plugin: 'war'
-//
-//war {
-//    enabled = true
-//    archiveFileName = 'board.war'
-//}
+bootJar {
+    archiveFileName = "springboot.jar"
+}
 
 dependencies {
     // 스프링 부트 핵심
@@ -41,6 +38,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.4.6'
     implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.4.5'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '2.4.5'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.5.3'
 
     // spring data Redis
     implementation 'org.springframework.data:spring-data-redis:2.5.2'
