@@ -39,6 +39,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.4.5'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '2.4.5'
     implementation 'org.springframework.boot:spring-boot-starter-actuator:2.5.3'
+    implementation 'ch.qos.logback:logback-core:1.2.5'
 
     // spring data Redis
     implementation 'org.springframework.data:spring-data-redis:2.5.2'
