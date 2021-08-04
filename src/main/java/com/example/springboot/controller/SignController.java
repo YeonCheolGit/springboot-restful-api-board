@@ -74,7 +74,7 @@ public class SignController {
             notes = "카카오 Access Token 이용 회원가입/로그인 합니다. 이미 가입된 회원일 경우, 로그인 메서드 실행 됩니다.")
     @PostMapping(value = "/signUpOrIn/kakaoAuthCode")
     public ResponseEntity<CommonResult> signUpOrInByKakaoAccessToken(
-            @ApiParam(value = "카카오 인가 코드 /api/v1/social/getKakaoAuthCode", required = true) @RequestParam String code) {
+            @ApiParam(required = true) @RequestParam String code) {
         String accessToken = kakaoService.getKakaoTokenInfo(code).getAccess_token(); // 인가 코드를 바탕으로 access token 가지고 옵니다.
 
         Role role = new Role();

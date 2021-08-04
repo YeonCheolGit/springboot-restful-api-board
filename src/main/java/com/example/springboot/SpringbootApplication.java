@@ -16,7 +16,5 @@ public class SpringbootApplication {
         new SpringApplicationBuilder(SpringbootApplication.class)
                 .properties(APPLICATION_LOCATIONS)
                 .run(args);
-
-//        SpringApplication.run(SpringbootApplication.class, args);
     }
 }
