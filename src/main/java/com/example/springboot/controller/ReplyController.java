@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"4. reply"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1/reply")
 public class ReplyController {
 
     private final ReplyService replyService;
@@ -26,7 +26,7 @@ public class ReplyController {
 
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
     @ApiOperation(value = "게시글에 댓글 등록", notes = "하나의 게시물에 댓글을 작성 합니다")
-    @PostMapping(value = "/reply/{postNo}")
+    @PostMapping(value = "/{postNo}")
     public ResponseEntity<CommonResult> writeReply(@PathVariable long postNo, @ModelAttribute ParamReply reply) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName(); // SecurityContextHolder에 저장된 현재 접속 아이디 입니다.
@@ -36,7 +36,7 @@ public class ReplyController {
 
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
     @ApiOperation(value = "게시글의 댓글 수정", notes = "하나의 게시물에 댓글을 수정 합니다")
-    @PutMapping(value = "/reply/{replyNo}")
+    @PutMapping(value = "/{replyNo}")
     public ResponseEntity<CommonResult> updateReply(@PathVariable long replyNo, @ModelAttribute ParamReply reply) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName(); // SecurityContextHolder에 저장된 현재 접속 아이디 입니다.
@@ -46,7 +46,7 @@ public class ReplyController {
 
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급된 Access Token", required = true, dataType = "String", paramType = "header")
     @ApiOperation(value = "게시글의 댓글 삭제", notes = "하나의 게시물에 댓글을 삭제 합니다")
-    @DeleteMapping(value = "/reply/{replyNo}")
+    @DeleteMapping(value = "/{replyNo}")
     public ResponseEntity<CommonResult> deleteReply(@PathVariable long replyNo) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName(); // SecurityContextHolder에 저장된 현재 접속 아이디 입니다.

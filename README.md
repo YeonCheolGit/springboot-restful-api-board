@@ -8,6 +8,15 @@
 ## Introduction
 This API provides CRUD operations for board application. It focuses on Authentication/Authorization(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
 
+## API
+```
+Common URL: /api/v1
+/board
+/reply
+/sign
+/user
+/social
+```
 ## Full Documentation
 See the [Wiki](https://github.com/YeonCheolGit/springboot-restful-api-board/wiki) for full documentation, examples, operational details and other information.
 
@@ -28,11 +37,7 @@ $ ./gradlew build
 
 ## Swagger API test documentation
 ```
-// local
 localhost:8080/swagger-ui.html
-
-// Oracl Cloud
-http://146.56.161.75/swagger-ui.html
 ```
 
 ## Angualar Frontend project

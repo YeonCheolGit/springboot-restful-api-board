@@ -8,7 +8,6 @@ import com.example.springboot.entity.Reply;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.ReplyRepository;
 import com.example.springboot.respository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

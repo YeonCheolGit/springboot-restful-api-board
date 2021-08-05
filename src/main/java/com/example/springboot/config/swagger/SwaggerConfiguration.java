@@ -24,7 +24,7 @@ public class SwaggerConfiguration {
     @Bean
     public Docket swaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .host("146.56.161.75")
+//                .host("146.56.161.75")
                 .apiInfo(swaggerInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.springboot.controller"))

@@ -11,6 +11,7 @@ import com.example.springboot.entity.Post;
 import com.example.springboot.entity.User;
 import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
+import com.example.springboot.respository.ReplyRepository;
 import com.example.springboot.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +31,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
+    private final ReplyRepository replyRepository;
     private final CacheManager cacheManager;
 
     /*
@@ -121,6 +122,7 @@ public class BoardService {
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 삭제할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 삭제할 수 없습니다.");
 
+        replyRepository.deleteAll(singlePostDTO.getReplyByPostNo()); // Reply가 Post의 외래키를 가지고 있습니다. Reply를 먼저 삭제합니다.
         postRepository.delete(singlePostDTO.toPostEntity(singlePostDTO));
 
         Objects.requireNonNull(cacheManager.getCache("findPost")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제

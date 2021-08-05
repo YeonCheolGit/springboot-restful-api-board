@@ -28,7 +28,7 @@ import java.util.Optional;
 @Api(tags = {"1. Sign"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1/sign")
 @Slf4j
 public class SignController {
 
@@ -72,7 +72,7 @@ public class SignController {
      */
     @ApiOperation(value = "카카오 계정으로 회원가입/로그인",
             notes = "카카오 Access Token 이용 회원가입/로그인 합니다. 이미 가입된 회원일 경우, 로그인 메서드 실행 됩니다.")
-    @PostMapping(value = "/signUpOrIn/kakaoAuthCode")
+    @PostMapping(value = "/kakaoAuthCode")
     public ResponseEntity<CommonResult> signUpOrInByKakaoAccessToken(
             @ApiParam(required = true) @RequestParam String code) {
         String accessToken = kakaoService.getKakaoTokenInfo(code).getAccess_token(); // 인가 코드를 바탕으로 access token 가지고 옵니다.

@@ -53,8 +53,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 
     // Swagger documentation
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'io.springfox:springfox-swagger2:2.6.1'
+    implementation 'io.springfox:springfox-swagger-ui:2.6.1'
 
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"2. user"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1/user")
 public class UserController {
 
     private final UserService userService;
@@ -41,7 +41,7 @@ public class UserController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원 한명 조회합니다")
-    @GetMapping(value = "/user")
+    @GetMapping
     public ResponseEntity<SingleResult<User>> findUserById() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
@@ -56,7 +56,7 @@ public class UserController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 이름 수정", notes = "한명의 회원 이름을 수정 합니다")
-    @PutMapping(value = "/user")
+    @PutMapping
     public ResponseEntity<SingleResult<User>> modify(@ApiParam(value = "회원이름(userName)", required = true) @RequestParam String userName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ResponseEntity<>(
@@ -69,7 +69,7 @@ public class UserController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 삭제", notes = "userId로 한명의 회원정보를 삭제합니다")
-    @DeleteMapping(value = "/user/{userNo}")
+    @DeleteMapping(value = "/{userNo}")
     public ResponseEntity<CommonResult> delete(@ApiParam(value = "회원번호", required = true) @PathVariable long userNo) {
         userService.deleteByUserNo(userNo);
         return new ResponseEntity<>(
