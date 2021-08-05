@@ -17,8 +17,6 @@ Common URL: /api/v1
 /user
 /social
 ```
-## Full Documentation
-See the [Wiki](https://github.com/YeonCheolGit/springboot-restful-api-board/wiki) for full documentation, examples, operational details and other information.
 
 ## Communication
 [Github Issues](https://github.com/YeonCheolGit/springboot-restful-api-board/issues)
