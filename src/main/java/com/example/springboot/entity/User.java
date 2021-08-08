@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-@ToString(exclude = "userPwd")
+@ToString(exclude = {"userPwd", "roles"})
 @Proxy(lazy = false)
 @NamedEntityGraph( // roles fetch Eager 위함
         name = "User.roles",

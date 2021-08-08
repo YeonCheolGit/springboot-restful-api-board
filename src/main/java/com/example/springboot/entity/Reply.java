@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"user", "post"})
 public class Reply implements Serializable {
     private static final long serialVersionUID = 1L;
 

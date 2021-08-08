@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"user", "board", "replyByPostNo"})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
 
