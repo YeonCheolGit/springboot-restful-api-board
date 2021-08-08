@@ -1,20 +1,18 @@
 package com.example.springboot.entity;
 
 import com.example.springboot.DTO.post.ListPostDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@Table(name = "post")
 @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-@Table(name = "post")
+@ToString
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
 

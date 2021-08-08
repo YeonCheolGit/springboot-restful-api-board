@@ -17,8 +17,9 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 @Getter @Setter
-@Builder
 @NoArgsConstructor @AllArgsConstructor
+@Builder
+@ToString(exclude = "userPwd")
 @Proxy(lazy = false)
 @NamedEntityGraph( // roles fetch Eager 위함
         name = "User.roles",
