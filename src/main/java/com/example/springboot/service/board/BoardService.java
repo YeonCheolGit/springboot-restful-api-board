@@ -18,6 +18,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,11 +51,13 @@ public class BoardService {
      * board - 게시판 이름으로 게시판의 정보 가져옵니다.
      * posts - 찾은 게시판(board)에 해당하는 게시물 가져옵니다.
      */
-    @Cacheable(cacheNames = "findPost", value = "findPost", key = "#boardName")
+    @Cacheable(cacheNames = "findPosts", value = "findPosts", key = "#boardName + #pageNo")
     @Transactional
-    public List<ListPostDTO> findPosts(String boardName) {
+    public List<ListPostDTO> findPosts(String boardName, int pageNo) {
         Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
-        List<Post> posts = postRepository.findPostByBoard(board).orElseThrow(FindAnyFailException::new);
+        Pageable pageable = PageRequest.of(pageNo, 10);
+        List<Post> posts = postRepository.findPostByBoard(board, pageable).orElseThrow(FindAnyFailException::new);
+
         return new ListPostDTO().toListPostDTO(posts);
     }
 
@@ -86,7 +90,7 @@ public class BoardService {
 
         postRepository.save(postDTO.toPostEntity(postDTO));
 
-        Objects.requireNonNull(cacheManager.getCache("findPost")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
     }
 
     /*
@@ -106,7 +110,7 @@ public class BoardService {
         postDTO.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
         postRepository.save(postDTO.toPostEntity(postDTO));
 
-        Objects.requireNonNull(cacheManager.getCache("findPost")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
     }
 
     /*
@@ -125,8 +129,26 @@ public class BoardService {
         replyRepository.deleteAll(singlePostDTO.getReplyByPostNo()); // Reply가 Post의 외래키를 가지고 있습니다. Reply를 먼저 삭제합니다.
         postRepository.delete(singlePostDTO.toPostEntity(singlePostDTO));
 
-        Objects.requireNonNull(cacheManager.getCache("findPost")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
 
         return true;
+    }
+
+    @Cacheable(cacheNames = "findPostByTitleLike",
+            value = "findPostByTitleLike", key = "#title + #pageNo")
+    @Transactional
+    public List<ListPostDTO> findPostByTitleLike(String title, int pageNo) {
+        Pageable pageRequest = PageRequest.of(pageNo, 10);
+        List posts = postRepository.findPostByTitleLike(title, pageRequest).orElseThrow(FindAnyFailException::new);
+        return new ListPostDTO().toListPostDTO(posts);
+    }
+
+    @Cacheable(cacheNames = "findPostByAuthor",
+            value = "findPostByAuthor", key = "#author + #pageNo")
+    @Transactional
+    public List<ListPostDTO> findPostByAuthor(String author, int pageNo) {
+        Pageable pageRequest = PageRequest.of(pageNo, 10);
+        List posts = postRepository.findPostByAuthor(author, pageRequest).orElseThrow(FindAnyFailException::new);
+        return new ListPostDTO().toListPostDTO(posts);
     }
 }

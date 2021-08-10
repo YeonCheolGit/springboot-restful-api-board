@@ -15,7 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = {"4. reply"})
+@Api(tags = {"5. reply"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/reply")

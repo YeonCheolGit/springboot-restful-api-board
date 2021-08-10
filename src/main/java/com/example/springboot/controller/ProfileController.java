@@ -12,7 +12,7 @@ import java.util.Arrays;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile")
-@Api(tags = {"6. profile"})
+@Api(tags = {"7. profile"})
 public class ProfileController {
 
     private final Environment environment;
