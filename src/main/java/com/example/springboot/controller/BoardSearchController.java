@@ -28,7 +28,7 @@ public class BoardSearchController {
     @ApiOperation(value = "게시판 비슷한 글 조회", notes = "입력된 제목과 비슷한 글 조회합니다.")
     @GetMapping(value = "/post/title/{pageNo}")
     public ResponseEntity<ListResult<ListPostDTO>> findPostByTitleLike(@RequestParam String title, @PathVariable int pageNo) {
-        List<ListPostDTO> posts = boardService.findPostByTitleLike("%" + title + "%", pageNo);
+        List<ListPostDTO> posts = boardService.findPostByTitleLike(title, pageNo);
         return new ResponseEntity<>(responseService.getListResult(posts), HttpStatus.OK);
     }
 

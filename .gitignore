@@ -5,6 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 script.sql
+META-INF
 
 ### STS ###
 .apt_generated

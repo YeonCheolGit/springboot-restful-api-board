@@ -12,6 +12,7 @@ This API provides CRUD operations for board application. It focuses on Authentic
 ```
 Common URL: /api/v1
 /board
+/boardSearch
 /reply
 /sign
 /user
