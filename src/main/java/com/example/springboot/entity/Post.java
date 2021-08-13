@@ -5,14 +5,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Table(name = "post")
 @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-@ToString(exclude = {"user", "board", "replyByPostNo"})
+@ToString(exclude = {"user", "board"})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -37,17 +36,13 @@ public class Post implements Serializable {
     @JoinColumn(name = "boardNo")
     private Board board; // 게시물 작성된 게시판
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    private Set<Reply> replyByPostNo; // 게시물의 댓글들
-
-    public static ListPostDTO toPostDTO(Post post) {
+    public static ListPostDTO toResponsePostDTO(Post post) {
         return ListPostDTO.builder()
                 .postNo(post.getPostNo())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .content(post.getContent())
                 .userId(post.getUser().getUserId())
-//                .user(post.getUser())
                 .build();
     }
 }

@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * Referenced Entity: Reply
@@ -39,7 +41,7 @@ public class ReplyDTO implements Serializable {
     }
 
     // Reply(entity) to ReplyDTO(DTO)
-    public ReplyDTO toReplyDTO(Reply reply) {
+    public ReplyDTO toResponseReplyDTO(Reply reply) {
         return ReplyDTO.builder()
                 .replyNo(reply.getReplyNo())
                 .content(reply.getContent())
@@ -50,7 +52,7 @@ public class ReplyDTO implements Serializable {
     }
 
     // ReplyDTO(DTO) to Reply(entity)
-    public Reply toReplyEntity(ReplyDTO replyDTO) {
+    public Reply toRequestReplyEntity(ReplyDTO replyDTO) {
         return Reply.builder()
                 .replyNo(replyDTO.getReplyNo())
                 .content(replyDTO.getContent())
@@ -58,5 +60,10 @@ public class ReplyDTO implements Serializable {
                 .post(replyDTO.getPost())
                 .user(replyDTO.getUser())
                 .build();
+    }
+
+    // List<Post> entity to List<postDTO> dto
+    public List<ReplyDTO> toResponseListReplyDTO(List<Reply> replies) {
+        return replies.stream().map(Reply::toResponseReplyDTO).collect(Collectors.toList());
     }
 }

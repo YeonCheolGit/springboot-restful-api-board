@@ -58,7 +58,7 @@ public class BoardService {
         Pageable pageable = PageRequest.of(pageNo, 10);
         List<Post> posts = postRepository.findPostByBoard(board, pageable).orElseThrow(FindAnyFailException::new);
 
-        return new ListPostDTO().toListPostDTO(posts);
+        return new ListPostDTO().toResponseListPostDTO(posts);
     }
 
     /*
@@ -68,7 +68,7 @@ public class BoardService {
     @Transactional
     public SinglePostDTO getPost(long postNo) {
         Post post = postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new);
-        return new SinglePostDTO().requestSinglePostDTO(post);
+        return new SinglePostDTO().toResponseSinglePostDTO(post);
     }
 
     /*
@@ -88,7 +88,7 @@ public class BoardService {
                 .content(commonParamPost.getContent())
                 .build();
 
-        postRepository.save(postDTO.toPostEntity(postDTO));
+        postRepository.save(postDTO.toRequestPostEntity(postDTO));
 
         Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
     }
@@ -101,14 +101,14 @@ public class BoardService {
     @Transactional
     public void updatePost(long postNo, String userId, CommonParamPost commonParamPost) {
         PostDTO postDTO = new PostDTO()
-                .toPostDTO(postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new));
+                .toResponsePostDTO(postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new));
         User user = postDTO.getUser();
 
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 수정할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 수정할 수 없습니다.");
 
         postDTO.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
-        postRepository.save(postDTO.toPostEntity(postDTO));
+        postRepository.save(postDTO.toRequestPostEntity(postDTO));
 
         Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
     }
@@ -126,8 +126,8 @@ public class BoardService {
         if (!userId.equals(user.getUserId())) // 게시글 작성자와 현재 로그인 회원이 다를 경우 삭제할 수 없습니다.
             throw new FindAnyFailException("타인의 글은 삭제할 수 없습니다.");
 
-        replyRepository.deleteAll(singlePostDTO.getReplyByPostNo()); // Reply가 Post의 외래키를 가지고 있습니다. Reply를 먼저 삭제합니다.
-        postRepository.delete(singlePostDTO.toPostEntity(singlePostDTO));
+        replyRepository.deleteRepliesByPostNo(singlePostDTO.getPostNo()); // Reply가 Post의 외래키를 가지고 있습니다. Reply를 먼저 삭제합니다.
+        postRepository.delete(singlePostDTO.toRequestPostEntity(singlePostDTO));
 
         Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
 
@@ -139,8 +139,8 @@ public class BoardService {
     @Transactional
     public List<ListPostDTO> findPostByTitleLike(String title, int pageNo) {
         Pageable pageRequest = PageRequest.of(pageNo, 10);
-        List posts = postRepository.findPostByTitleLike(title, pageRequest).orElseThrow(FindAnyFailException::new);
-        return new ListPostDTO().toListPostDTO(posts);
+        List<Post> posts = postRepository.findPostByTitleLike(title, pageRequest).orElseThrow(FindAnyFailException::new);
+        return new ListPostDTO().toResponseListPostDTO(posts);
     }
 
     @Cacheable(cacheNames = "findPostByAuthor",
@@ -148,7 +148,7 @@ public class BoardService {
     @Transactional
     public List<ListPostDTO> findPostByAuthor(String author, int pageNo) {
         Pageable pageRequest = PageRequest.of(pageNo, 10);
-        List posts = postRepository.findPostByAuthor(author, pageRequest).orElseThrow(FindAnyFailException::new);
-        return new ListPostDTO().toListPostDTO(posts);
+        List<Post> posts = postRepository.findPostByAuthor(author, pageRequest).orElseThrow(FindAnyFailException::new);
+        return new ListPostDTO().toResponseListPostDTO(posts);
     }
 }

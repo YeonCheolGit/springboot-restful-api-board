@@ -1,7 +1,6 @@
 package com.example.springboot.DTO.post;
 
 import com.example.springboot.entity.Post;
-import com.example.springboot.entity.Reply;
 import com.example.springboot.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
 
 /*
  * Referenced Entity: Post
@@ -37,28 +35,25 @@ public class SinglePostDTO {
     private String content;
 
     private User user;
-    private Set<Reply> replyByPostNo;
 
-    // Post(entity) to RequestSinglePostDTO(DTO)
-    public SinglePostDTO requestSinglePostDTO(Post post) {
+    // Post(entity) to toResponseSinglePostDTO(DTO)
+    public SinglePostDTO toResponseSinglePostDTO(Post post) {
         return SinglePostDTO.builder()
                 .postNo(post.getPostNo())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .user(post.getUser())
-                .replyByPostNo(post.getReplyByPostNo())
                 .build();
     }
 
-    // RequestSinglePostDTO(DTO) to Post (entity)
-    public Post toPostEntity(SinglePostDTO singlePostDTO) {
+    // toRequestPostEntity(DTO) to Post (entity)
+    public Post toRequestPostEntity(SinglePostDTO singlePostDTO) {
         return Post.builder()
                 .postNo(singlePostDTO.getPostNo())
                 .title(singlePostDTO.getTitle())
                 .author(singlePostDTO.getAuthor())
                 .content(singlePostDTO.getContent())
                 .user(singlePostDTO.getUser())
-                .replyByPostNo(singlePostDTO.getReplyByPostNo())
                 .build();
     }
 }

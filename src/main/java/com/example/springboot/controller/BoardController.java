@@ -60,7 +60,7 @@ public class BoardController {
         return new ResponseEntity<>(responseService.getSuccessCreated(), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "게시판 글 상세보기", notes = "게시판의 글을 상세보기 합니다")
+    @ApiOperation(value = "게시판 글 상세보기", notes = "게시판의 글을 상세보기 합니다. 게시물과 댓글 요청 분리합니다.")
     @GetMapping(value = "/post/{postNo}")
     public ResponseEntity<SingleResult<SinglePostDTO>> post(@PathVariable long postNo) {
         SinglePostDTO singleResult = boardService.getPost(postNo);

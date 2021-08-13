@@ -1,6 +1,6 @@
 package com.example.springboot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.springboot.DTO.reply.ReplyDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +23,6 @@ public class Reply implements Serializable {
     @Column
     private String author;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postNo")
     private Post post;
@@ -31,4 +30,12 @@ public class Reply implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNo")
     private User user;
+
+    public static ReplyDTO toResponseReplyDTO(Reply replies) {
+        return ReplyDTO.builder()
+                .replyNo(replies.getReplyNo())
+                .content(replies.getContent())
+                .author(replies.getAuthor())
+                .build();
+    }
 }

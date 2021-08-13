@@ -16,12 +16,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByPostNo(long postNo);
 
-    @Query("from Post where board=:board")
+    @Query("from Post p where p.board=:board")
     Optional<List<Post>> findPostByBoard(@Param("board")Board board, Pageable pageable);
 
-    @Query("from Post where author=:author")
+    @Query("from Post p where p.author=:author")
     Optional<List<Post>> findPostByAuthor(@Param("author")String author, Pageable pageable);
 
-    @Query("FROM Post WHERE title LIKE CONCAT('%', :title, '%')")
+    @Query("FROM Post p WHERE p.title LIKE CONCAT('%', :title, '%')")
     Optional<List<Post>> findPostByTitleLike(@Param("title") String title, Pageable pageable);
 }

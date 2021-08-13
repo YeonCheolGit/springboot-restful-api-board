@@ -38,7 +38,6 @@ public class PostDTO {
 
     private User user;
     private Board board;
-    private Set<Reply> replyByPostNo;
 
     /*
      1. 게시물 수정 가능한 속성만 정의 합니다.
@@ -51,7 +50,7 @@ public class PostDTO {
     }
 
     // PostDTO(DTO) to Post(entity)
-    public Post toPostEntity(PostDTO postDTO) {
+    public Post toRequestPostEntity(PostDTO postDTO) {
         return Post.builder()
                 .postNo(postDTO.getPostNo())
                 .title(postDTO.getTitle())
@@ -59,19 +58,17 @@ public class PostDTO {
                 .content(postDTO.getContent())
                 .user(postDTO.getUser())
                 .board(postDTO.getBoard())
-                .replyByPostNo(postDTO.getReplyByPostNo())
                 .build();
     }
 
     // Post(entity) to PostDTO(DTO)
-    public PostDTO toPostDTO(Post post) {
+    public PostDTO toResponsePostDTO(Post post) {
         return PostDTO.builder()
                 .postNo(post.getPostNo())
                 .title(post.getTitle())
                 .author(post.getAuthor())
                 .user(post.getUser())
                 .board(post.getBoard())
-                .replyByPostNo(post.getReplyByPostNo())
                 .build();
     }
 }

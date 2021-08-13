@@ -40,10 +40,8 @@ public class ListPostDTO {
 
     private String userId;
 
-//    private User user;
-
     // List<Post> entity to List<postDTO> dto
-    public List<ListPostDTO> toListPostDTO(List<Post> posts) {
-        return posts.stream().map(Post::toPostDTO).collect(Collectors.toList());
+    public List<ListPostDTO> toResponseListPostDTO(List<Post> posts) {
+        return posts.stream().map(Post::toResponsePostDTO).collect(Collectors.toList());
     }
 }
