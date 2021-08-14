@@ -12,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @ToString(exclude = {"user", "board"})
-public class Post implements Serializable {
+public class Post extends BaseTime implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -27,6 +27,9 @@ public class Post implements Serializable {
 
     @Column
     private String content;
+
+    @Column
+    private long viewCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNo")
