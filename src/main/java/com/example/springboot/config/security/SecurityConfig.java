@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 토큰 사용으로 세션 필요 없습니다.
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/**/signIn", "/**/signIn/**", "/**/signUpOrIn/**","/**/signUp", "/**/signUp/**", "/social/**").permitAll()
+                    .antMatchers("/**/signIn", "/**/signIn/**", "/**/sign/**", "/**/signUpOrIn/**","/**/signUp", "/**/signUp/**", "/social/**").permitAll()
                     .antMatchers(HttpMethod.GET).permitAll()
                     .anyRequest().hasRole("USER")
                 .and()

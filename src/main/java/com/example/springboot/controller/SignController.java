@@ -52,7 +52,7 @@ public class SignController {
     @ApiOperation(value = "로그인", notes = "회원 로그인 합니다")
     @PostMapping(value = "/signIn")
     public ResponseEntity<CommonResult> signIn(@ApiParam(value = "회원 아이디 (userId): 이메일", required = true) @RequestParam String userId,
-                               @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam String userPwd) {
+                                               @ApiParam(value = "회원 비밀번호 (userPwd)", required = true) @RequestParam String userPwd) {
         User user = userService.findByUserId(userId).orElseThrow(EmailSignInFailException::new);
 
         if (!passwordEncoder.matches(userPwd, user.getPassword()))
@@ -73,8 +73,7 @@ public class SignController {
     @ApiOperation(value = "카카오 계정으로 회원가입/로그인",
             notes = "카카오 Access Token 이용 회원가입/로그인 합니다. 이미 가입된 회원일 경우, 로그인 메서드 실행 됩니다.")
     @PostMapping(value = "/kakaoAuthCode")
-    public ResponseEntity<CommonResult> signUpOrInByKakaoAccessToken(
-            @ApiParam(required = true) @RequestParam String code) {
+    public ResponseEntity<CommonResult> signUpOrInByKakaoAccessToken(@ApiParam(required = true) @RequestParam String code) {
         String accessToken = kakaoService.getKakaoTokenInfo(code).getAccess_token(); // 인가 코드를 바탕으로 access token 가지고 옵니다.
 
         Role role = new Role();
