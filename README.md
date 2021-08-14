@@ -1,12 +1,17 @@
 # SpringBoot RESTful API
 ![Generic badge](https://img.shields.io/badge/JDK-11-red.svg)
 ![Generic badge](https://img.shields.io/badge/SrpingBoot-2.4.4-green.svg)
-![Generic badge](https://img.shields.io/badge/SpringSecurity-2.4.4-green.svg)
 ![Generic badge](https://img.shields.io/badge/Redis-2.5.2-blue.svg)
-![Generic badge](https://img.shields.io/badge/Swagger2-2.6.1-blue.svg)
+![Generic badge](https://img.shields.io/badge/Kafka-2.7.6-blue.svg)
 
 ## Introduction
 This API provides CRUD operations for board application. It focuses on Authentication/Authorization(Spring Security, JWT, Oauth2), Custom Exception Handling and following REST API policy.
+
+
+## Working with
+[kafka-async-server](https://github.com/YeonCheolGit/kafka-async-server)
+
+[angular-frontend](https://github.com/YeonCheolGit/angular-frontend)
 
 ## API
 ```
@@ -38,9 +43,6 @@ $ ./gradlew build
 ```
 localhost:8080/swagger-ui.html
 ```
-
-## Angualar Frontend project
-[Front-End repository](https://github.com/YeonCheolGit/angular-frontend)
 
 ## LICENSES
 [Spring Boot is Open Source software released under the Apache 2.0 license.](https://www.apache.org/licenses/)  

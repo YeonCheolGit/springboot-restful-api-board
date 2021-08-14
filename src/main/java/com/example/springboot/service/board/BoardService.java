@@ -13,6 +13,7 @@ import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.ReplyRepository;
 import com.example.springboot.respository.UserRepository;
+import com.example.springboot.service.kafka.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,6 +21,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,12 @@ public class BoardService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
     private final CacheManager cacheManager;
+    private final KafkaProducer kafkaProducer;
+
+    @Async
+    public void viewCount(long postNo) {
+        kafkaProducer.sendMessage("postNo: ", postNo);
+    }
 
     /*
      * 게시판 이름으로 특정 게시판 정보를 조회 합니다.
@@ -68,6 +76,7 @@ public class BoardService {
     @Transactional
     public SinglePostDTO getPost(long postNo) {
         Post post = postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new);
+        viewCount(post.getPostNo());
         return new SinglePostDTO().toResponseSinglePostDTO(post);
     }
 
