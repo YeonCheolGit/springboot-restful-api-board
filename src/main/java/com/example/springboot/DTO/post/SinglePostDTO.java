@@ -41,6 +41,7 @@ public class SinglePostDTO {
         return SinglePostDTO.builder()
                 .postNo(post.getPostNo())
                 .title(post.getTitle())
+                .content(post.getContent())
                 .author(post.getAuthor())
                 .user(post.getUser())
                 .build();

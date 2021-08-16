@@ -5,9 +5,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication
 @EnableCaching // redis chaching
 @EnableJpaAuditing
+@SpringBootApplication
 public class SpringbootApplication {
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
             + "optional:classpath:application-local.yml,"

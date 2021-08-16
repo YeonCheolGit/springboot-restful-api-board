@@ -28,8 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-@Service
+
 @RequiredArgsConstructor
+@Service
 public class BoardService {
 
     private final UserRepository userRepository;
@@ -41,7 +42,7 @@ public class BoardService {
 
     @Async
     public void viewCount(long postNo) {
-        kafkaProducer.sendMessage("postNo: ", postNo);
+        kafkaProducer.sendMessage(postNo);
     }
 
     /*
