@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAllUsers().orElseThrow(FindAnyFailException::new);
     }
 
     public void save(KakaoUserRequestDTO kakaoUserRequestDTO) {

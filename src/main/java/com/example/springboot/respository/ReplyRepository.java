@@ -1,6 +1,7 @@
 package com.example.springboot.respository;
 
 import com.example.springboot.entity.Reply;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,12 +14,14 @@ import java.util.Optional;
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
+    @EntityGraph(attributePaths = {"post", "user"})
     Optional<Reply> findByReplyNo(Long replyNo);
 
     @Modifying
     @Query("delete from Reply r where r.post.postNo=:postNo")
     void deleteRepliesByPostNo(@Param("postNo") long postNo);
 
+    @EntityGraph(attributePaths = {"post", "user"})
     @Query("from Reply r where r.post.postNo=:postNo")
     Optional<List<Reply>> getRepliesByPostNo(@Param("postNo") long postNo);
 }

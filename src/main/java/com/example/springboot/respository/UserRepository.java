@@ -1,11 +1,10 @@
 package com.example.springboot.respository;
 
-import com.example.springboot.DTO.user.KakaoUserRequestDTO;
-import com.example.springboot.DTO.user.UserRequestDTO;
 import com.example.springboot.entity.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +14,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUserNo(long userNo);
 
+    @EntityGraph(attributePaths = "roles")
     Optional<User> findByUserId(String userId);
 
-    List<User> findAll();
+    @EntityGraph(attributePaths = "roles")
+    @Query("from User u")
+    Optional<List<User>> findAllUsers();
 
     void deleteByUserNo(long userNo);
 

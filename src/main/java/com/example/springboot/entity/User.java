@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@Entity
-@Table(name = "user")
+
+
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
@@ -25,6 +25,8 @@ import java.util.Set;
         name = "User.roles",
         attributeNodes = {@NamedAttributeNode("roles")}
 )
+@Table(name = "user")
+@Entity
 public class User implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
     private static EntityManager entityManager;
