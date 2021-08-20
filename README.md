@@ -28,7 +28,9 @@ Common URL: /api/v1
 [Github Issues](https://github.com/YeonCheolGit/springboot-restful-api-board/issues)
 
 ## Database
-![image](https://user-images.githubusercontent.com/65603611/125815785-afb199f3-4f03-4ffb-b86c-a397ace590fe.png)
+![image](https://user-images.githubusercontent.com/65603611/130247367-da3ba798-5d17-43e6-a06a-7096e187460b.png)
+## Kafka server
+![image](https://user-images.githubusercontent.com/65603611/130247650-534d1fbc-d904-49cc-bae7-762fd1ac672d.png)
 ## Redis Server
 ![image](https://user-images.githubusercontent.com/65603611/126900762-68d6dd4c-51ef-4a9e-8edf-f63629a75ded.png)
 
