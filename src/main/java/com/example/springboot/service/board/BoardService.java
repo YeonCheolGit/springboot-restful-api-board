@@ -2,6 +2,8 @@ package com.example.springboot.service.board;
 
 import com.example.springboot.DTO.CommonParamPost;
 import com.example.springboot.DTO.board.OnlyBoardDTO;
+import com.example.springboot.DTO.kafka.PostViewCountDTO;
+import com.example.springboot.DTO.kafka.SearchedTitleDTO;
 import com.example.springboot.DTO.post.ListPostDTO;
 import com.example.springboot.DTO.post.PostDTO;
 import com.example.springboot.DTO.post.SinglePostDTO;
@@ -13,11 +15,9 @@ import com.example.springboot.respository.BoardRepository;
 import com.example.springboot.respository.PostRepository;
 import com.example.springboot.respository.ReplyRepository;
 import com.example.springboot.respository.UserRepository;
-import com.example.springboot.service.kafka.KafkaProducer;
+import com.example.springboot.service.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 
 @RequiredArgsConstructor
@@ -38,11 +37,16 @@ public class BoardService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
     private final CacheManager cacheManager;
-    private final KafkaProducer kafkaProducer;
+    private final KafkaProducerService kafkaProducerService;
 
     @Async
-    public void viewCount(long postNo) {
-        kafkaProducer.sendMessage(postNo);
+    public void viewCount(PostViewCountDTO postViewCountDTO) {
+        kafkaProducerService.sendPostNo(postViewCountDTO);
+    }
+
+    @Async // 검색한 제목 비동기 전송합니다.
+    public void saveSearchedTitle(SearchedTitleDTO searchedTitleDTO) {
+        kafkaProducerService.sendSearchTitle(searchedTitleDTO);
     }
 
     /*
@@ -60,7 +64,7 @@ public class BoardService {
      * board - 게시판 이름으로 게시판의 정보 가져옵니다.
      * posts - 찾은 게시판(board)에 해당하는 게시물 가져옵니다.
      */
-    @Cacheable(cacheNames = "findPosts", value = "findPosts", key = "#boardName + #pageNo")
+//    @Cacheable(cacheNames = "findPosts", value = "findPosts", key = "#boardName + #pageNo")
     @Transactional
     public List<ListPostDTO> findPosts(String boardName, int pageNo) {
         Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
@@ -77,7 +81,12 @@ public class BoardService {
     @Transactional
     public SinglePostDTO getPost(long postNo) {
         Post post = postRepository.findByPostNo(postNo).orElseThrow(FindAnyFailException::new);
-        viewCount(post.getPostNo());
+        PostViewCountDTO postViewCountDTO = PostViewCountDTO
+                .builder()
+                .postNo(postNo)
+                .build();
+        viewCount(postViewCountDTO);
+
         return new SinglePostDTO().toResponseSinglePostDTO(post);
     }
 
@@ -85,7 +94,7 @@ public class BoardService {
      * 게시물 등록 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-    @CachePut(cacheNames = "writePost", value = "writePost", key = "#boardName")
+//    @CachePut(cacheNames = "writePost", value = "writePost", key = "#boardName")
     @Transactional
     public void writePost(String userId, String boardName, CommonParamPost commonParamPost) {
         OnlyBoardDTO boardDTO = findBoardDTO(boardName);
@@ -100,14 +109,14 @@ public class BoardService {
 
         postRepository.save(postDTO.toRequestPostEntity(postDTO));
 
-        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
+//        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
     }
 
     /*
      * 게시물 수정 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-    @CachePut(cacheNames = "updatePost", value = "updatePost", key = "#postNo")
+//    @CachePut(cacheNames = "updatePost", value = "updatePost", key = "#postNo")
     @Transactional
     public void updatePost(long postNo, String userId, CommonParamPost commonParamPost) {
         PostDTO postDTO = new PostDTO()
@@ -120,14 +129,14 @@ public class BoardService {
         postDTO.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
         postRepository.save(postDTO.toRequestPostEntity(postDTO));
 
-        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
+//        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
     }
 
     /*
      * 게시물 삭제 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-    @CacheEvict(cacheNames = "deletePost", value = "deletePost", key = "#postNo")
+//    @CacheEvict(cacheNames = "deletePost", value = "deletePost", key = "#postNo")
     @Transactional
     public Boolean deletePost(long postNo, String userId) {
         SinglePostDTO singlePostDTO = getPost(postNo);
@@ -139,22 +148,32 @@ public class BoardService {
         replyRepository.deleteRepliesByPostNo(singlePostDTO.getPostNo()); // Reply가 Post의 외래키를 가지고 있습니다. Reply를 먼저 삭제합니다.
         postRepository.delete(singlePostDTO.toRequestPostEntity(singlePostDTO));
 
-        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
+//        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
 
         return true;
     }
 
+    /*
+     * 유사한 제목의 게시물을 검색합니다.
+     * 검색 후 Kafka 메세지를 통해 검색어 저장합니다.
+     */
     @Cacheable(cacheNames = "findPostByTitleLike",
             value = "findPostByTitleLike", key = "#title + #pageNo")
     @Transactional
     public List<ListPostDTO> findPostByTitleLike(String title, int pageNo) {
+        SearchedTitleDTO searchedTitleDTO = SearchedTitleDTO
+                .builder()
+                .searched_title(title)
+                .build();
+        saveSearchedTitle(searchedTitleDTO); // 검색내용 비동기 전송
+
         Pageable pageRequest = PageRequest.of(pageNo, 10);
         List<Post> posts = postRepository.findPostByTitleLike(title, pageRequest).orElseThrow(FindAnyFailException::new);
         return new ListPostDTO().toResponseListPostDTO(posts);
     }
 
-    @Cacheable(cacheNames = "findPostByAuthor",
-            value = "findPostByAuthor", key = "#author + #pageNo")
+//    @Cacheable(cacheNames = "findPostByAuthor",
+//            value = "findPostByAuthor", key = "#author + #pageNo")
     @Transactional
     public List<ListPostDTO> findPostByAuthor(String author, int pageNo) {
         Pageable pageRequest = PageRequest.of(pageNo, 10);

@@ -1,5 +1,6 @@
 package com.example.springboot.entity;
 
+import com.example.springboot.DTO.kafka.PostViewCountDTO;
 import com.example.springboot.DTO.post.ListPostDTO;
 import lombok.*;
 
@@ -46,6 +47,12 @@ public class Post extends BaseTime implements Serializable {
                 .author(post.getAuthor())
                 .content(post.getContent())
                 .userId(post.getUser().getUserId())
+                .build();
+    }
+
+    public static PostViewCountDTO toRequest_PostViewCount_DTO(Post post) {
+        return PostViewCountDTO.builder()
+                .postNo(post.getPostNo())
                 .build();
     }
 }
