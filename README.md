@@ -30,7 +30,7 @@ Common URL: /api/v1
 ## Database
 ![image](https://user-images.githubusercontent.com/65603611/130247367-da3ba798-5d17-43e6-a06a-7096e187460b.png)
 ## Kafka server
-![image](https://user-images.githubusercontent.com/65603611/130247650-534d1fbc-d904-49cc-bae7-762fd1ac672d.png)
+![image](https://user-images.githubusercontent.com/65603611/131687448-2e6c8292-e9ef-42af-a4f4-1931cd6887b8.png)
 ## Redis Server
 ![image](https://user-images.githubusercontent.com/65603611/126900762-68d6dd4c-51ef-4a9e-8edf-f63629a75ded.png)
 

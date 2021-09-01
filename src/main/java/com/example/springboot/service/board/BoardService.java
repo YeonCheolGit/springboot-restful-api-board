@@ -18,6 +18,8 @@ import com.example.springboot.respository.UserRepository;
 import com.example.springboot.service.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 
 @RequiredArgsConstructor
@@ -64,7 +68,7 @@ public class BoardService {
      * board - 게시판 이름으로 게시판의 정보 가져옵니다.
      * posts - 찾은 게시판(board)에 해당하는 게시물 가져옵니다.
      */
-//    @Cacheable(cacheNames = "findPosts", value = "findPosts", key = "#boardName + #pageNo")
+    @Cacheable(cacheNames = "findPosts", value = "findPosts", key = "#boardName + #pageNo")
     @Transactional
     public List<ListPostDTO> findPosts(String boardName, int pageNo) {
         Board board = boardRepository.findByName(boardName).orElseThrow(FindAnyFailException::new);
@@ -94,7 +98,7 @@ public class BoardService {
      * 게시물 등록 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-//    @CachePut(cacheNames = "writePost", value = "writePost", key = "#boardName")
+    @CachePut(cacheNames = "writePost", value = "writePost", key = "#boardName")
     @Transactional
     public void writePost(String userId, String boardName, CommonParamPost commonParamPost) {
         OnlyBoardDTO boardDTO = findBoardDTO(boardName);
@@ -109,14 +113,14 @@ public class BoardService {
 
         postRepository.save(postDTO.toRequestPostEntity(postDTO));
 
-//        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 새 글 작성 후 전체글 목록 캐시 삭제
     }
 
     /*
      * 게시물 수정 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-//    @CachePut(cacheNames = "updatePost", value = "updatePost", key = "#postNo")
+    @CachePut(cacheNames = "updatePost", value = "updatePost", key = "#postNo")
     @Transactional
     public void updatePost(long postNo, String userId, CommonParamPost commonParamPost) {
         PostDTO postDTO = new PostDTO()
@@ -129,14 +133,14 @@ public class BoardService {
         postDTO.setUpdate(commonParamPost.getAuthor(), commonParamPost.getTitle(), commonParamPost.getContent());
         postRepository.save(postDTO.toRequestPostEntity(postDTO));
 
-//        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 수정 후 전체글 목록 캐시 삭제
     }
 
     /*
      * 게시물 삭제 합니다.
      * FindAnyFailException - 없는 데이터 조회 경우 발생합니다.
      */
-//    @CacheEvict(cacheNames = "deletePost", value = "deletePost", key = "#postNo")
+    @CacheEvict(cacheNames = "deletePost", value = "deletePost", key = "#postNo")
     @Transactional
     public Boolean deletePost(long postNo, String userId) {
         SinglePostDTO singlePostDTO = getPost(postNo);
@@ -148,7 +152,7 @@ public class BoardService {
         replyRepository.deleteRepliesByPostNo(singlePostDTO.getPostNo()); // Reply가 Post의 외래키를 가지고 있습니다. Reply를 먼저 삭제합니다.
         postRepository.delete(singlePostDTO.toRequestPostEntity(singlePostDTO));
 
-//        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
+        Objects.requireNonNull(cacheManager.getCache("findPosts")).clear(); // 글 삭제 후 새 전체글 목록 캐시 삭제
 
         return true;
     }
@@ -172,8 +176,8 @@ public class BoardService {
         return new ListPostDTO().toResponseListPostDTO(posts);
     }
 
-//    @Cacheable(cacheNames = "findPostByAuthor",
-//            value = "findPostByAuthor", key = "#author + #pageNo")
+    @Cacheable(cacheNames = "findPostByAuthor",
+            value = "findPostByAuthor", key = "#author + #pageNo")
     @Transactional
     public List<ListPostDTO> findPostByAuthor(String author, int pageNo) {
         Pageable pageRequest = PageRequest.of(pageNo, 10);

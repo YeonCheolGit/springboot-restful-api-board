@@ -19,7 +19,7 @@ public class SearchTitleProducerConfig {
 
     @Bean
     public Map<String,Object> searchedTitle_ProducerConfigs() {
-        return JsonSerializer.getStringObjectMap(bootstrapServer);
+        return CommonJsonSerializer.getStringObjectMap(bootstrapServer);
     }
 
     @Bean

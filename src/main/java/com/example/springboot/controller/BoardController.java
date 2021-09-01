@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RequestMapping(value = "/api/v1/board")
 @RestController
@@ -62,7 +63,7 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 글 상세보기", notes = "게시판의 글을 상세보기 합니다. 게시물과 댓글 요청 분리합니다.")
     @GetMapping(value = "/post/{postNo}")
-    public ResponseEntity<SingleResult<SinglePostDTO>> post(@PathVariable long postNo) {
+    public ResponseEntity<SingleResult<SinglePostDTO>> post(@PathVariable long postNo) throws ExecutionException, InterruptedException {
         SinglePostDTO singleResult = boardService.getPost(postNo);
         return new ResponseEntity<>(responseService.getSingleResult(singleResult), HttpStatus.OK);
     }
